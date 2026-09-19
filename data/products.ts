@@ -80,7 +80,7 @@ export const products: Product[] = [
     shortDescription: '50ml stream spray, 8–10 feet of range, locking cap so it never goes off in your bag.',
     longDescription: 'A 50ml OC stream canister built for one-handed use, with a locking cap so it stays inert until you release it. Range is 8–10 feet.',
     price: 499,
-    images: ['/products/pepper-spray-mockup.webp', '/products/pepper-spray-product.webp'],
+    images: ['/products/B0HK3641GW Secondary 3.jpg', '/B0HK3641GW Secondary 3.jpg'],
     features: ['One-hand deployment', 'Protective safety lock', 'Stream spray format', 'Pocket-friendly canister'],
     specifications: [
       { label: 'Formula', value: 'Oleoresin Capsicum (OC) pepper formula' },
