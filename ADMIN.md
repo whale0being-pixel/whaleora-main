@@ -29,9 +29,22 @@ NEXT_PUBLIC_CONVEX_URL=<Convex deployment URL>
 ORDERS_INGEST_SECRET=<the same secret set in the Convex deployment>
 CONTENT_NAMESPACE=whaleora-production
 UPLOADTHING_TOKEN=<UploadThing app token, for customer review photos>
+CONVEX_DEPLOY_KEY=<production deploy key from the Convex dashboard>
 ```
 
 Generate a session secret with `openssl rand -hex 32`. Never prefix these variables with `NEXT_PUBLIC_`. Changing the password or secret invalidates existing sessions. `ADMIN_ORIGIN` must exactly match the origin used to visit the panel (no trailing slash); set it when using a reverse proxy. Use HTTPS in production.
+
+### Deploying the Convex functions
+
+Anything under `convex/` runs on Convex, not on Vercel, and a `git push` does not carry it there. The build command in `vercel.json` therefore deploys both halves together:
+
+```text
+npx convex deploy --cmd 'npm run build'
+```
+
+This pushes the functions and schema, then runs the Next build against the deployment it just wrote, so the two always match. It needs `CONVEX_DEPLOY_KEY` in the Vercel environment; generate one in the Convex dashboard under Settings -> Deploy keys.
+
+Deploying the two halves separately is what breaks quietly: the storefront reads through `lib/convex.ts`, which falls back to an empty result whenever a query is missing or fails. A page that calls a function the deployment does not have yet renders as "no data" rather than as an error, so a half-deploy looks like a feature that was never built.
 
 Vercel saves require Convex and local uploads are disabled there. Upload videos/images to Shopify Files or your media host and paste their HTTPS URLs. Convex holds the content document, not video files. An empty namespace starts with the bundled demo reviews; to migrate local content, paste `.whaleora/reviews.json` into a `content` row with that `namespace` before editing on the new host. Take a backup first. Keep preview and production namespaces separate — they are rows in the same table, so a shared name means one environment overwrites the other.
 
