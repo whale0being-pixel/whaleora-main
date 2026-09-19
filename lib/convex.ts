@@ -58,3 +58,44 @@ export async function reviewSummary(productHandle: string): Promise<ReviewSummar
     return EMPTY_SUMMARY;
   }
 }
+
+type ReviewRow = Awaited<ReturnType<typeof approvedReviews>>[number];
+
+/**
+ * The same numbers `summary` returns, counted from the reviews a page already
+ * holds.
+ *
+ * Convex functions deploy separately from the site, so a deployment that
+ * predates the `summary` query answers "no such function" and the page would
+ * print "no customer ratings yet" above a list of rated reviews. Counting the
+ * rows on hand keeps the stars right meanwhile, and is the same answer for
+ * every product whose reviews fit on one page of 50.
+ */
+export function summarizeReviews(rows: ReviewRow[]): ReviewSummary {
+  if (!rows.length) return EMPTY_SUMMARY;
+  const spread = [0, 0, 0, 0, 0];
+  let total = 0;
+  for (const row of rows) {
+    const rating = Math.min(5, Math.max(1, Math.round(row.rating)));
+    spread[rating - 1] += 1;
+    total += rating;
+  }
+  return {
+    count: rows.length,
+    average: total / rows.length,
+    // Highest rating first, the order a rating breakdown is read in.
+    spread: [5, 4, 3, 2, 1].map((value) => ({ value, count: spread[value - 1] })),
+    // `approvedReviews` is newest first, and the strip pages through 24.
+    photos: rows.flatMap((row) => row.images).slice(0, 24),
+  };
+}
+
+/**
+ * A product's published reviews and the rating printed above them, fetched
+ * together — the rating falls back to the reviews themselves when the summary
+ * query is unavailable.
+ */
+export async function productRating(productHandle: string) {
+  const [written, summary] = await Promise.all([approvedReviews(productHandle), reviewSummary(productHandle)]);
+  return { written, rating: summary.count ? summary : summarizeReviews(written) };
+}

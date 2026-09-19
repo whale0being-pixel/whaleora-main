@@ -9,7 +9,7 @@ import { RatingBadge, RatingSummary, Stars } from '@/components/review-rating';
 import { ArrowRight, ArrowUpRight, Headphones, PackageCheck, Truck } from 'lucide-react';
 import { publishedContent } from '@/lib/content/store';
 import { productReviews } from '@/lib/content/product-reviews';
-import { approvedReviews, reviewSummary } from '@/lib/convex';
+import { productRating } from '@/lib/convex';
 import { formatPrice, PRODUCT_IMAGE_FALLBACK } from '@/data/products';
 import { getCatalog, getCatalogProduct } from '@/lib/shopify/catalog';
 import './product-page.css';
@@ -43,7 +43,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const related = catalog.filter((item) => item.id !== product.id).slice(0, 3);
   const { quotes, videos } = productReviews(content, product);
   const handle = product.shopify?.handle ?? product.slug;
-  const [written, rating] = await Promise.all([approvedReviews(handle), reviewSummary(handle)]);
+  const { written, rating } = await productRating(handle);
   // The page shows a taste of the reviews; the full set lives on /products/[slug]/reviews.
   const writtenPreview = written.slice(0, 3);
   const quotePreview = quotes.slice(0, Math.max(0, 3 - writtenPreview.length));

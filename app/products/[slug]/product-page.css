@@ -282,7 +282,8 @@
 /* Customer reviews: stars, verified badge, and the submission form. */
 .pdp-written-card figcaption small.is-verified { margin-left: auto; padding: 3px 8px; border-radius: 999px; background: rgba(111, 143, 104, .16); color: #4c6647; font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
 
-.review-form-cta { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+/* Sits under a centred section heading, so the button and its line of copy centre with it. */
+.review-form-cta { margin-top: 28px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
 .review-form-cta span { max-width: 46ch; font-size: 13px; line-height: 1.6; color: rgba(16, 40, 68, .62); }
 
 .review-form { margin-top: 28px; padding: clamp(20px, 3svh, 30px); display: grid; gap: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--ivory); }
@@ -322,7 +323,9 @@
 
 .star-bar { position: relative; display: inline-flex; flex: none; font-size: 14px; line-height: 1; letter-spacing: 2px; color: rgba(16, 40, 68, .2); }
 .star-bar > span:last-child { position: absolute; inset: 0 auto 0 0; overflow: hidden; color: var(--terracotta); }
-.star-bar > span:last-child > span { display: block; }
+/* max-content, so the coloured row keeps its natural width and the clip above
+   cuts a star in half rather than wrapping the row onto a hidden second line. */
+.star-bar > span:last-child > span { display: block; width: max-content; }
 .star-bar-lg { font-size: 19px; letter-spacing: 3px; }
 
 .pdp-rating-badge { display: inline-flex; align-items: center; gap: 10px; margin: -6px 0 18px; font-size: 12px; color: rgba(16, 40, 68, .7); }

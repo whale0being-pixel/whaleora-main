@@ -10,7 +10,7 @@ import { Stars } from '@/components/review-rating';
 import { uploadsConfigured } from '@/app/api/uploadthing/core';
 import { publishedContent } from '@/lib/content/store';
 import { productReviews } from '@/lib/content/product-reviews';
-import { approvedReviews, reviewSummary } from '@/lib/convex';
+import { productRating } from '@/lib/convex';
 import { formatPrice, PRODUCT_IMAGE_FALLBACK } from '@/data/products';
 import { getCatalog, getCatalogProduct } from '@/lib/shopify/catalog';
 import '../product-page.css';
@@ -41,8 +41,8 @@ export default async function ProductReviewsPage({ params }: { params: Promise<{
   if (!product) notFound();
   const { quotes, videos } = productReviews(content, product);
   const handle = product.shopify?.handle ?? product.slug;
-  // The summary counts every published review; `written` is the page of 50 shown below it.
-  const [written, rating] = await Promise.all([approvedReviews(handle), reviewSummary(handle)]);
+  // The rating counts every published review; `written` is the page of 50 shown below it.
+  const { written, rating } = await productRating(handle);
   const total = written.length + quotes.length;
 
   return <main className="page-main pdp-reference reviews-page">
