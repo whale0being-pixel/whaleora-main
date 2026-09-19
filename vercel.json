@@ -1,5 +1,4 @@
 {
   "framework": "nextjs",
-  "_comment": "Convex functions deploy with the site only when a deploy key is set. Without one `npx convex deploy` exits 1 and takes the whole build with it, so the site builds on its own instead — pages fall back to counting the reviews they fetch.",
   "buildCommand": "if [ -n \"$CONVEX_DEPLOY_KEY\" ]; then npx convex deploy --cmd 'npm run build'; else npm run build; fi"
 }
