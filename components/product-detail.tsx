@@ -63,7 +63,7 @@ export function ProductReviewRail({ items }: { items: VideoReview[] }) {
   </section>;
 }
 
-export function ProductPurchase({ product, children }: { product: CatalogProduct; children?: ReactNode }) {
+export function ProductPurchase({ product, rating, children }: { product: CatalogProduct; rating?: ReactNode; children?: ReactNode }) {
   const [quantity, setQuantity] = useState(1);
   const [variantId, setVariantId] = useState(product.shopify?.variantId || '');
   const [showSticky, setShowSticky] = useState(false);
@@ -83,6 +83,9 @@ export function ProductPurchase({ product, children }: { product: CatalogProduct
 
   return <><div className="pdp-purchase">
     <p className="pdp-category">{product.label}</p><h1>{product.title}</h1>
+    {/* Rendered on the server and passed down, so the rating panel's markup
+        stays out of this client bundle. */}
+    {rating}
     <p className="pdp-purchase-description">{product.longDescription}</p>
     <ul className="pdp-benefit-list">{product.features.slice(0, 3).map((feature) => <li key={feature}><Check size={15} aria-hidden="true" />{feature}</li>)}</ul>
     <fieldset className="pdp-set-picker"><legend>Choose your set</legend><div>{[1, 2, 4].map((count) => <label key={count} className={quantity === count ? 'selected' : ''}><input type="radio" name={`set-${product.id}`} value={count} checked={quantity === count} onChange={() => setQuantity(count)} /><strong>{count === 1 ? 'Single' : count === 2 ? 'Duo' : 'Four-piece set'}</strong><span>{formatPrice(chosen.price * count, chosen.currencyCode)}</span><small>{count} {count === 1 ? 'item' : 'items'}</small></label>)}</div><p>Same per-item price. Choose how many you need.</p></fieldset>

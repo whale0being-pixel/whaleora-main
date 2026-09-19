@@ -28,15 +28,41 @@ ADMIN_ORIGIN=https://your-store-domain.example
 NEXT_PUBLIC_CONVEX_URL=<Convex deployment URL>
 ORDERS_INGEST_SECRET=<the same secret set in the Convex deployment>
 CONTENT_NAMESPACE=whaleora-production
+UPLOADTHING_TOKEN=<UploadThing app token, for customer review photos>
+CONVEX_DEPLOY_KEY=<production deploy key from the Convex dashboard>
 ```
 
 Generate a session secret with `openssl rand -hex 32`. Never prefix these variables with `NEXT_PUBLIC_`. Changing the password or secret invalidates existing sessions. `ADMIN_ORIGIN` must exactly match the origin used to visit the panel (no trailing slash); set it when using a reverse proxy. Use HTTPS in production.
+
+### Deploying the Convex functions
+
+Anything under `convex/` runs on Convex, not on Vercel, and a `git push` does not carry it there. The build command in `vercel.json` therefore deploys both halves together:
+
+```text
+npx convex deploy --cmd 'npm run build'
+```
+
+This pushes the functions and schema, then runs the Next build against the deployment it just wrote, so the two always match. It needs `CONVEX_DEPLOY_KEY` in the Vercel environment; generate one in the Convex dashboard under Settings -> Deploy keys.
+
+Deploying the two halves separately is what breaks quietly: the storefront reads through `lib/convex.ts`, which falls back to an empty result whenever a query is missing or fails. A page that calls a function the deployment does not have yet renders as "no data" rather than as an error, so a half-deploy looks like a feature that was never built.
 
 Vercel saves require Convex and local uploads are disabled there. Upload videos/images to Shopify Files or your media host and paste their HTTPS URLs. Convex holds the content document, not video files. An empty namespace starts with the bundled demo reviews; to migrate local content, paste `.whaleora/reviews.json` into a `content` row with that `namespace` before editing on the new host. Take a backup first. Keep preview and production namespaces separate — they are rows in the same table, so a shared name means one environment overwrites the other.
 
 The content document is a single row in the Convex `content` table, written through `convex/content.ts`. Convex mutations are transactional, so the revision check that detects concurrent edits is an ordinary read-compare-write. The `save` mutation is guarded by `ORDERS_INGEST_SECRET`, which must match between the Next.js server and the Convex deployment — a Convex mutation is otherwise callable by anyone holding the deployment URL. If storage is unavailable, the public storefront falls back to bundled demos and the admin refuses to save; errors do not overwrite saved content.
 
 For a self-hosted Node server, a persistent private `CONTENT_DATA_DIR` can be used instead of Convex. Use one server process and back up both credentials and content. Configure the password and session secret through environment variables in production.
+
+## Customer review photos
+
+Reviews carry up to four photos each, uploaded from the review form to [UploadThing](https://uploadthing.com) — Vercel has no writable disk, so the local `/api/media/…` uploads the studio uses are unavailable there.
+
+To turn it on, create an app in the UploadThing dashboard, copy its token, and set `UPLOADTHING_TOKEN` in the environment (and in `.env.local` for development). Nothing else needs configuring: `app/api/uploadthing/route.ts` picks the token up, and the review form shows its photo picker only when the variable is set — with it unset the form works exactly as it did before, minus the picker.
+
+The limits live in `app/api/uploadthing/core.ts`: images only, 4 MB each, four per review, and the browser must be on this store's own origin. `ADMIN_ORIGIN` is the origin checked when it is set; otherwise the request's own `Host` is. Convex stores only URLs on UploadThing's hosts (`utfs.io` and `<appId>.ufs.sh`), which are also the only hosts `next/image` will optimise a review photo from — `lib/images.ts`, `next.config.ts` and `convex/reviews.ts` each hold a copy of that list, so change them together.
+
+Photos publish with the review, on the same terms: immediately unless the abuse filter holds it. They appear in the moderation queue at `/admin` → Customer reviews, where taking the review down hides them. Taking a review down does not delete the file from UploadThing; remove it there if it has to go.
+
+A product page shows the average rating, the 5-to-1 spread and the newest customer photos above its reviews, and a compact rating under the product title. Only customer reviews with a rating count towards it — the editorial quotes from the studio carry no rating and are excluded on purpose.
 
 ## Checks
 

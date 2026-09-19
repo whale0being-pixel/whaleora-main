@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { AddToCartButton, ProductCard } from '@/components/commerce';
 import { ProductGallery, ProductPurchase, ProductQuote, ProductReviewRail } from '@/components/product-detail';
+import { ReviewPhotos } from '@/components/review-photos';
+import { RatingBadge, RatingSummary, Stars } from '@/components/review-rating';
 import { ArrowRight, ArrowUpRight, Headphones, PackageCheck, Truck } from 'lucide-react';
 import { publishedContent } from '@/lib/content/store';
 import { productReviews } from '@/lib/content/product-reviews';
-import { approvedReviews } from '@/lib/convex';
+import { productRating } from '@/lib/convex';
 import { formatPrice, PRODUCT_IMAGE_FALLBACK } from '@/data/products';
 import { getCatalog, getCatalogProduct } from '@/lib/shopify/catalog';
 import './product-page.css';
@@ -40,7 +42,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   if (!product) notFound();
   const related = catalog.filter((item) => item.id !== product.id).slice(0, 3);
   const { quotes, videos } = productReviews(content, product);
-  const written = await approvedReviews(product.shopify?.handle ?? product.slug);
+  const handle = product.shopify?.handle ?? product.slug;
+  const { written, rating } = await productRating(handle);
   // The page shows a taste of the reviews; the full set lives on /products/[slug]/reviews.
   const writtenPreview = written.slice(0, 3);
   const quotePreview = quotes.slice(0, Math.max(0, 3 - writtenPreview.length));
@@ -49,7 +52,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     <nav className="pdp-breadcrumb shell" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/products">Shop</Link><span>/</span><span aria-current="page">{product.title}</span></nav>
     <section className="pdp-layout shell">
       <div className="pdp-media-column"><ProductGallery key={product.id} product={product} /><ProductQuote items={quotes} /></div>
-      <ProductPurchase key={product.id} product={product}>
+      <ProductPurchase key={product.id} product={product} rating={content.settings.showWritten ? <RatingBadge summary={rating} href={`/products/${product.slug}#product-reviews`} /> : null}>
         {content.settings.showWritten && <Link className="pdp-reviews-link" href={`/products/${product.slug}/reviews`}>Read product reviews ({quotes.length + written.length}) <span aria-hidden="true"><ArrowUpRight size={16} strokeWidth={2} /></span></Link>}
         <ProductReviewRail items={videos} />
         {related.length > 0 && <section className="pdp-pair-with"><h2>Pair it with</h2>{related.slice(0, 2).map((item) => <div className="pdp-pair-row" key={item.id}><Link href={`/products/${item.slug}`} className="pdp-pair-image"><ProductImage src={item.images[0] || PRODUCT_IMAGE_FALLBACK} alt={item.title} fill sizes="64px" /></Link><div><Link href={`/products/${item.slug}`}>{item.title}</Link><span>{formatPrice(item.price, item.currencyCode)}</span></div><AddToCartButton product={item} label="Add" /></div>)}</section>}
@@ -64,10 +67,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <span>{quotes.length + written.length} written {quotes.length + written.length === 1 ? 'review' : 'reviews'}</span>
       </div>
       {quotes.some((item) => item.demo) && <p className="pdp-reviews-disclosure">Reviews marked “Demo” are sample content, not customer feedback.</p>}
+      <RatingSummary summary={rating} writeHref={`/products/${product.slug}/reviews#write`} />
       {(quotes.length + written.length) ? <div className="pdp-written-grid">
         {writtenPreview.map((review) => <figure className="pdp-written-card" key={review.id}>
-          <div className="pdp-review-stars" aria-label={`${review.rating} out of 5`}>{'★'.repeat(review.rating)}<span>{'★'.repeat(5 - review.rating)}</span></div>
+          <Stars value={review.rating} />
           <blockquote>“{review.body}”</blockquote>
+          {review.images.length > 0 && <ReviewPhotos photos={review.images} heading={null} compact />}
           <figcaption><span className="pdp-review-initials" aria-hidden="true">{review.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join('')}</span><span><strong>{review.name}</strong><span>{product.title}</span></span>{review.verifiedBuyer && <small className="is-verified">Verified buyer</small>}</figcaption>
         </figure>)}
         {quotePreview.map((review) => <figure className="pdp-written-card" key={review.id}>
@@ -75,10 +80,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <figcaption><span className="pdp-review-initials" aria-hidden="true">{review.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join('')}</span><span><strong>{review.name}</strong><span>{product.title}</span></span>{review.demo && <small>Demo</small>}</figcaption>
         </figure>)}
       </div> : <p className="pdp-reviews-empty">No written reviews for this product yet. Be the first.</p>}
-      <div className="pdp-reviews-actions">
-        <Link className="button button-outline" href={`/products/${product.slug}/reviews#write`}>Write a review</Link>
-        {(quotes.length + written.length) > 0 && <Link className="icon-link pdp-reviews-all" href={`/products/${product.slug}/reviews`}>Read all {quotes.length + written.length} {quotes.length + written.length === 1 ? 'review' : 'reviews'} <span aria-hidden="true"><ArrowUpRight size={15} strokeWidth={2} /></span></Link>}
-      </div>
+      {/* "Write a review" lives in the rating panel above; this row is the way on to the rest. */}
+      {(quotes.length + written.length) > 0 && <div className="pdp-reviews-actions">
+        <Link className="icon-link pdp-reviews-all" href={`/products/${product.slug}/reviews`}>Read all {quotes.length + written.length} {quotes.length + written.length === 1 ? 'review' : 'reviews'} <span aria-hidden="true"><ArrowUpRight size={15} strokeWidth={2} /></span></Link>
+      </div>}
     </section>}
 
     {product.howItWorks.length > 0 && <section className="pdp-how shell pdp-section" id="how-to-use"><div className="pdp-section-heading"><p className="eyebrow dark">Simple by design</p><h2>How to use it.</h2><p>Get familiar with it before you need it. Start with the instructions included with your product.</p></div><div className="pdp-how-layout"><div className="pdp-how-image"><ProductImage src={product.images[1] || product.images[0] || PRODUCT_IMAGE_FALLBACK} alt={`${product.title} up close`} fill sizes="(max-width: 800px) 90vw, 40vw" /></div><ol>{product.howItWorks.map((step, i) => <li key={step.title}><span>0{i + 1}</span><div><h3>{step.title}</h3><p>{step.text}</p></div></li>)}</ol></div></section>}

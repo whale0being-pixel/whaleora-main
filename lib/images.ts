@@ -13,6 +13,17 @@
  */
 export const IMAGE_HOSTS = ['cdn.shopify.com', '**.myshopify.com'] as const;
 
+/**
+ * Where customer review photos live: UploadThing, on the legacy `utfs.io` host
+ * and the per-app `<appId>.ufs.sh` one it now issues.
+ *
+ * Kept apart from IMAGE_HOSTS so the studio's product-photo field stays a
+ * Shopify-only field — a review photo is not catalogue photography. Both lists
+ * reach next/image through next.config.ts, and convex/reviews.ts holds a
+ * matching pattern it checks review URLs against before storing them.
+ */
+export const REVIEW_IMAGE_HOSTS = ['utfs.io', '**.ufs.sh'] as const;
+
 const matchesHost = (pattern: string, hostname: string) => (pattern.startsWith('**.')
   ? hostname === pattern.slice(3) || hostname.endsWith(pattern.slice(2))
   : hostname === pattern);
