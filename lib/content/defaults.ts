@@ -20,6 +20,7 @@ export function productEditorialFromCatalog(): ProductEditorial[] {
     features: [...product.features],
     specifications: product.specifications.map((item) => ({ ...item })),
     howItWorks: product.howItWorks.map((item) => ({ ...item })),
+    howItWorksImage: product.howItWorksImage ?? '',
     scenarios: [...product.scenarios],
     included: [...product.included],
     highlights: product.highlights.map((item) => ({ ...item })),
@@ -51,6 +52,7 @@ function releaseUntouched(item: ProductEditorial): ProductEditorial {
     shortDescription: inherited('shortDescription'),
     longDescription: inherited('longDescription'),
     images: item.images ?? [],
+    howItWorksImage: item.howItWorksImage ?? '',
     price: item.price ?? null,
   };
 }

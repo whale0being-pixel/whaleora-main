@@ -18,6 +18,8 @@ export type ProductEditorial = {
   features: string[];
   specifications: { label: string; value: string }[];
   howItWorks: { title: string; text: string }[];
+  /** The photo beside the how-to-use steps; blank falls back to the second product photo. */
+  howItWorksImage: string;
   scenarios: string[];
   included: string[];
   highlights: { value: string; label: string }[];
@@ -119,6 +121,8 @@ export function validateContent(input: unknown): ReviewContent {
         const row = record(step);
         return { title: text(row.title, 'Step title', 40), text: text(row.text, 'Step text', 240) };
       }),
+      // Blank is the normal setting: it hands the section back to the second product photo.
+      howItWorksImage: typeof entry.howItWorksImage === 'string' && entry.howItWorksImage.trim() ? imageMedia(entry.howItWorksImage, 'How-to-use photo') : '',
       scenarios: strings(entry.scenarios, 'Scenario', 8, 40),
       included: strings(entry.included, 'Included item', 8, 80),
       highlights: entry.highlights.map((item): { value: string; label: string } => {

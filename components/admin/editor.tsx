@@ -174,14 +174,16 @@ export function AdminEditor({ initial, shopify, uploadsEnabled, canSave }: { ini
     setBusy(true); setError('');
     try { const latest = await request('/api/admin/content', 'GET'); setDocument(latest); setContent(latest.draft); setSelectedId(firstId(tab, latest.draft)); setNotice('Latest draft loaded.'); } catch (error) { setError((error as Error).message); } finally { setBusy(false); }
   }
-  async function upload(file: File | undefined, key: 'poster' | 'video', id: string) {
+  async function upload(file: File | undefined, key: 'poster' | 'video' | 'howItWorksImage', id: string) {
     if (!file) return;
     setError(''); setUploading(true);
     try {
-      if (file.size > (key === 'poster' ? 5 : 30) * 1024 * 1024) throw new Error(key === 'poster' ? 'Images must be under 5 MB.' : 'Videos must be under 30 MB.');
+      if (file.size > (key === 'video' ? 30 : 5) * 1024 * 1024) throw new Error(key === 'video' ? 'Videos must be under 30 MB.' : 'Images must be under 5 MB.');
       const response = await fetch('/api/admin/upload', { method: 'POST', headers: { 'Content-Type': file.type }, body: file });
       const data = await response.json(); if (!response.ok) throw new Error(data.error);
-      updateVideo(id, { [key]: data.url }); setNotice('Media uploaded. Save or publish to use it.');
+      if (key === 'howItWorksImage') updateProduct(id, { howItWorksImage: data.url });
+      else updateVideo(id, { [key]: data.url });
+      setNotice('Media uploaded. Save or publish to use it.');
     } catch (error) { setError((error as Error).message); } finally { setUploading(false); }
   }
   async function logout() {
@@ -266,6 +268,8 @@ export function AdminEditor({ initial, shopify, uploadsEnabled, canSave }: { ini
                   <Field label="Features"><textarea rows={5} value={joinLines(product.features)} onChange={(event) => updateProduct(product.id, { features: lines(event.target.value) })} /><small>One per line. 1–8 items.</small></Field>
                   <Field label="Specifications"><textarea rows={6} value={joinPairs(product.specifications.map((item) => ({ left: item.label, right: item.value })))} onChange={(event) => updateProduct(product.id, { specifications: splitPairs(event.target.value).map((row) => ({ label: row.left, value: row.right })) })} /><small>One per line as Label | Value. 1–10 rows.</small></Field>
                   <Field label="How it works"><textarea rows={6} value={joinPairs(product.howItWorks.map((item) => ({ left: item.title, right: item.text })))} onChange={(event) => updateProduct(product.id, { howItWorks: splitPairs(event.target.value).map((row) => ({ title: row.left, text: row.right })) })} /><small>One per line as Title | Text. 1–6 steps.</small></Field>
+                  <Field label="How-to-use photo"><input value={product.howItWorksImage} maxLength={2048} placeholder="Using the second product photo" onChange={(event) => updateProduct(product.id, { howItWorksImage: event.target.value })} /><small>The photo beside the steps on the product page. One /local path or {imageHostHint} URL. Blank uses the second product photo.</small></Field>
+                  {uploadsEnabled && <Field label="Or upload JPG, PNG, WebP · max 5 MB"><input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => { void upload(event.target.files?.[0], 'howItWorksImage', product.id); event.target.value = ''; }} /></Field>}
                   <Field label="Scenarios"><textarea rows={4} value={joinLines(product.scenarios)} onChange={(event) => updateProduct(product.id, { scenarios: lines(event.target.value) })} /><small>One per line. 1–8 short uses.</small></Field>
                   <Field label="What’s included"><textarea rows={4} value={joinLines(product.included)} onChange={(event) => updateProduct(product.id, { included: lines(event.target.value) })} /><small>One per line. 1–8 items.</small></Field>
                   <Field label="Highlights"><textarea rows={3} value={joinPairs(product.highlights.map((item) => ({ left: item.value, right: item.label })))} onChange={(event) => updateProduct(product.id, { highlights: splitPairs(event.target.value).map((row) => ({ value: row.left, label: row.right })) })} /><small>One per line as Figure | Label. 1–3 rows.</small></Field>

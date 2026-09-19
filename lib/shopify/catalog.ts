@@ -119,6 +119,7 @@ function resolve(local: Product, remote: ShopifyProduct | undefined, editorial: 
     features: editorial?.features.length ? editorial.features : local.features,
     specifications: editorial?.specifications.length ? editorial.specifications : local.specifications,
     howItWorks: editorial?.howItWorks.length ? editorial.howItWorks : local.howItWorks,
+    howItWorksImage: editorial?.howItWorksImage?.trim() || local.howItWorksImage || '',
     scenarios: editorial?.scenarios.length ? editorial.scenarios : local.scenarios,
     included: editorial?.included.length ? editorial.included : local.included,
     highlights: editorial?.highlights.length ? editorial.highlights : local.highlights,
