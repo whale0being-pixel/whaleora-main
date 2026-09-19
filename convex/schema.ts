@@ -87,6 +87,9 @@ export default defineSchema({
     status: v.union(v.literal('published'), v.literal('held'), v.literal('removed')),
     // Why the filter held it, for the admin to judge. Absent when published.
     heldReason: v.optional(v.string()),
+    // Photos the reviewer attached, as UploadThing URLs. Absent on the many
+    // reviews that are text only; the storefront treats absent and [] alike.
+    images: v.optional(v.array(v.string())),
     // True when this email has an order in the orders table.
     verifiedBuyer: v.boolean(),
     submittedAt: v.string(),

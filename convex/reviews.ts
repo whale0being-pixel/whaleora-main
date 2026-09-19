@@ -5,6 +5,20 @@ import { screenReview } from './reviewFilter';
 
 const MAX_BODY = 1200;
 const MAX_NAME = 80;
+const MAX_IMAGES = 4;
+
+/**
+ * The only URLs a review photo may be. Mirrors REVIEW_IMAGE_HOSTS in
+ * lib/images.ts, which next.config.ts hands to the image optimiser — Convex
+ * bundles on its own, so the pair is kept in step by hand.
+ *
+ * Without it this mutation, which anyone holding the deployment URL can call,
+ * would put an arbitrary attacker-chosen URL inside an <img> on a product page.
+ */
+const IMAGE_URL = /^https:\/\/(?:[a-z0-9-]+\.ufs\.sh|utfs\.io)\/f\/[A-Za-z0-9._-]{8,256}$/;
+
+const cleanImages = (images: string[] | undefined) =>
+  (images ?? []).map((url) => url.trim()).filter((url) => IMAGE_URL.test(url)).slice(0, MAX_IMAGES);
 
 function assertAdmin(secret: string) {
   const expected = process.env.ORDERS_INGEST_SECRET;
@@ -26,9 +40,44 @@ export const approved = query({
       rating: row.rating,
       name: row.name,
       body: row.body,
+      images: row.images ?? [],
       verifiedBuyer: row.verifiedBuyer,
       submittedAt: row.submittedAt,
     }));
+  },
+});
+
+/**
+ * Public: the rating a product page prints beside its title — the average, the
+ * total, the 5-to-1 spread behind it, and the newest customer photos.
+ *
+ * Separate from `approved` because that one returns a page of 50 reviews, and
+ * an average taken over a page is not the product's average. This counts every
+ * published review, and returns numbers rather than rows.
+ */
+export const summary = query({
+  args: { productHandle: v.string() },
+  handler: async (ctx, args) => {
+    const rows = await ctx.db
+      .query('reviews')
+      .withIndex('by_product_status', (q) => q.eq('productHandle', args.productHandle).eq('status', 'published'))
+      .collect();
+    const spread = [0, 0, 0, 0, 0];
+    let total = 0;
+    for (const row of rows) {
+      const rating = Math.min(5, Math.max(1, Math.round(row.rating)));
+      spread[rating - 1] += 1;
+      total += rating;
+    }
+    return {
+      count: rows.length,
+      average: rows.length ? total / rows.length : 0,
+      // Highest rating first, the order a rating breakdown is read in.
+      spread: [5, 4, 3, 2, 1].map((value) => ({ value, count: spread[value - 1] })),
+      // Newest first, and capped: the strip shows five and its viewer pages
+      // through the rest, so the cap is what "+N" on the last tile promises.
+      photos: [...rows].reverse().flatMap((row) => row.images ?? []).slice(0, 24),
+    };
   },
 });
 
@@ -39,6 +88,7 @@ export const submit = mutation({
     name: v.string(),
     email: v.string(),
     body: v.string(),
+    images: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const rating = Math.round(args.rating);
@@ -50,6 +100,7 @@ export const submit = mutation({
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('That email address does not look right.');
 
     const emailNormalized = normalizeEmail(email);
+    const images = cleanImages(args.images);
 
     // One review per product per email, so a refresh cannot post twice.
     const existing = await ctx.db
@@ -74,6 +125,7 @@ export const submit = mutation({
       email,
       emailNormalized,
       body,
+      images,
       status: verdict.blocked ? 'held' : 'published',
       heldReason: verdict.reason,
       verifiedBuyer: Boolean(order),
@@ -101,6 +153,7 @@ export const queue = query({
       name: row.name,
       email: row.email,
       body: row.body,
+      images: row.images ?? [],
       status: row.status,
       heldReason: row.heldReason,
       verifiedBuyer: row.verifiedBuyer,

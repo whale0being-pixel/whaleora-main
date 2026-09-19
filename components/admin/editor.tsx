@@ -59,7 +59,7 @@ function Toggle({ label, checked, onChange }: { label: string; checked: boolean;
 }
 type Tab = 'testimonials' | 'videos' | 'products' | 'checklists' | 'customer' | 'settings' | 'preview';
 
-type PendingReview = { id: string; productHandle: string; rating: number; name: string; email: string; body: string; status: string; heldReason?: string; verifiedBuyer: boolean; submittedAt: string };
+type PendingReview = { id: string; productHandle: string; rating: number; name: string; email: string; body: string; images: string[]; status: string; heldReason?: string; verifiedBuyer: boolean; submittedAt: string };
 type ReviewView = 'held' | 'published' | 'removed';
 const tabs = [
   { id: 'testimonials', label: 'Written testimonials', icon: MessageSquare },
@@ -312,6 +312,16 @@ export function AdminEditor({ initial, shopify, uploadsEnabled, canSave }: { ini
                 <span className="admin-review-rating" aria-label={`${review.rating} out of 5`}>{'★'.repeat(review.rating)}<i>{'★'.repeat(5 - review.rating)}</i></span>
               </header>
               <p>{review.body}</p>
+              {/* Photos the reviewer attached. Judge them before publishing: a
+                  review takedown is the only thing that hides one. */}
+              {review.images?.length > 0 && <div className="admin-review-photos">
+                {review.images.map((photo, index) => <a key={photo} href={photo} target="_blank" rel="noreferrer">
+                  {/* Remote uploads the studio never sizes; plain <img> keeps
+                      the optimiser out of the admin panel. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={photo} alt={`Photo ${index + 1} on ${review.name}'s review`} loading="lazy" />
+                </a>)}
+              </div>}
               <footer>
                 <a href={`mailto:${review.email}`}>{review.email}</a>
                 <div>

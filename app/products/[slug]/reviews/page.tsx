@@ -5,9 +5,12 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { ProductReviewRail } from '@/components/product-detail';
 import { ReviewForm } from '@/components/review-form';
+import { ReviewPhotos } from '@/components/review-photos';
+import { Stars } from '@/components/review-rating';
+import { uploadsConfigured } from '@/app/api/uploadthing/core';
 import { publishedContent } from '@/lib/content/store';
 import { productReviews } from '@/lib/content/product-reviews';
-import { approvedReviews } from '@/lib/convex';
+import { approvedReviews, reviewSummary } from '@/lib/convex';
 import { formatPrice, PRODUCT_IMAGE_FALLBACK } from '@/data/products';
 import { getCatalog, getCatalogProduct } from '@/lib/shopify/catalog';
 import '../product-page.css';
@@ -16,7 +19,6 @@ import './reviews-page.css';
 export const dynamic = 'force-dynamic';
 
 const initials = (name: string) => name.split(/\s+/).map((part) => part[0]).slice(0, 2).join('');
-const stars = (rating: number) => '★'.repeat(rating);
 
 export async function generateStaticParams() {
   const catalog = await getCatalog();
@@ -38,12 +40,10 @@ export default async function ProductReviewsPage({ params }: { params: Promise<{
   const product = catalog.find((item) => item.slug === slug);
   if (!product) notFound();
   const { quotes, videos } = productReviews(content, product);
-  const written = await approvedReviews(product.shopify?.handle ?? product.slug);
+  const handle = product.shopify?.handle ?? product.slug;
+  // The summary counts every published review; `written` is the page of 50 shown below it.
+  const [written, rating] = await Promise.all([approvedReviews(handle), reviewSummary(handle)]);
   const total = written.length + quotes.length;
-
-  // Only rated customer reviews count towards the average; editorial quotes carry no rating.
-  const average = written.length ? written.reduce((sum, review) => sum + review.rating, 0) / written.length : 0;
-  const spread = [5, 4, 3, 2, 1].map((value) => ({ value, count: written.filter((review) => review.rating === value).length }));
 
   return <main className="page-main pdp-reference reviews-page">
     <nav className="pdp-breadcrumb shell" aria-label="Breadcrumb">
@@ -69,21 +69,22 @@ export default async function ProductReviewsPage({ params }: { params: Promise<{
           <span className="reviews-summary-image"><ProductImage src={product.images[0] || PRODUCT_IMAGE_FALLBACK} alt={product.title} fill sizes="72px" /></span>
           <span><strong>{product.title}</strong><span>{formatPrice(product.price, product.currencyCode)}</span></span>
         </Link>
-        {written.length ? <>
+        {rating.count ? <>
           <div className="reviews-average">
-            <strong>{average.toFixed(1)}</strong>
+            <strong>{rating.average.toFixed(1)}</strong>
             <div>
-              <div className="pdp-review-stars" aria-label={`${average.toFixed(1)} out of 5`}>{stars(Math.round(average))}<span>{stars(5 - Math.round(average))}</span></div>
-              <span>{written.length} customer {written.length === 1 ? 'review' : 'reviews'}</span>
+              <Stars value={rating.average} className="star-bar-lg" />
+              <span>{rating.count} customer {rating.count === 1 ? 'review' : 'reviews'}</span>
             </div>
           </div>
           <ul className="reviews-spread">
-            {spread.map((row) => <li key={row.value}>
+            {rating.spread.map((row) => <li key={row.value}>
               <span>{row.value}★</span>
-              <span className="reviews-bar"><i style={{ width: `${written.length ? (row.count / written.length) * 100 : 0}%` }} /></span>
+              <span className="reviews-bar"><i style={{ width: `${(row.count / rating.count) * 100}%` }} /></span>
               <span>{row.count}</span>
             </li>)}
           </ul>
+          {rating.photos.length > 0 && <div className="reviews-summary-photos"><ReviewPhotos photos={rating.photos} /></div>}
         </> : <p className="reviews-summary-empty">No customer ratings yet. Yours would be the first.</p>}
       </aside>
     </section>
@@ -100,10 +101,11 @@ export default async function ProductReviewsPage({ params }: { params: Promise<{
       {total ? <div className="reviews-list">
         {written.map((review) => <figure className="reviews-card" key={review.id}>
           <div className="reviews-card-top">
-            <div className="pdp-review-stars" aria-label={`${review.rating} out of 5`}>{stars(review.rating)}<span>{stars(5 - review.rating)}</span></div>
+            <Stars value={review.rating} />
             <time dateTime={review.submittedAt}>{new Date(review.submittedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</time>
           </div>
           <blockquote>“{review.body}”</blockquote>
+          {review.images.length > 0 && <ReviewPhotos photos={review.images} heading={null} compact />}
           <figcaption>
             <span className="pdp-review-initials" aria-hidden="true">{initials(review.name)}</span>
             <span><strong>{review.name}</strong><span>{product.title}</span></span>
@@ -123,7 +125,7 @@ export default async function ProductReviewsPage({ params }: { params: Promise<{
 
     <section className="shell pdp-section reviews-write" id="write" aria-labelledby="write-review-title">
       <div className="pdp-section-heading"><p className="eyebrow dark">Your turn</p><h2 id="write-review-title">Tell the next person what it is like.</h2><p>A couple of lines about how you used it, and how it held up, is plenty.</p></div>
-      <ReviewForm productHandle={product.shopify?.handle ?? product.slug} productTitle={product.title} defaultOpen />
+      <ReviewForm productHandle={handle} productTitle={product.title} defaultOpen photosEnabled={uploadsConfigured()} />
     </section>
   </main>;
 }
