@@ -18,7 +18,7 @@
 .pdp-highlight-rail strong { font-size: 15px; font-weight: 600; line-height: 1.1; overflow-wrap: anywhere; }
 .pdp-highlight-rail span { font-size: 10px; line-height: 1.4; }
 .pdp-thumbnails { margin-top: 16px; display: flex; gap: 10px; align-items: center; justify-content: center; }
-.pdp-thumbnails > div { display: flex; gap: 9px; overflow-x: auto; padding: 3px; max-width: calc(100% - 84px); }
+.pdp-thumbnails > div { display: flex; gap: 9px; overflow-x: auto; padding: 3px; min-width: 0; max-width: calc(100% - 84px); }
 .pdp-thumbnails > div > button { flex: 0 0 66px; width: 66px; height: 66px; position: relative; padding: 0; overflow: hidden; border-radius: 5px; border: 1px solid var(--line); cursor: pointer; background: var(--ivory); }
 .pdp-thumbnails > div > button.is-active { border: 2px solid var(--terracotta); }
 .pdp-thumbnails img { object-fit: cover; }
@@ -169,15 +169,19 @@
 .pdp-media-dialog > video { display: block; width: 100%; max-height: 72dvh; background: var(--deep); }
 .pdp-demo-disclosure { padding: 14px 18px; margin: 0; font-size: 11px; }
 @media (max-width: 1100px) { .pdp-layout { gap: 25px; } .pdp-gallery-stage { grid-template-columns: minmax(0, 1fr) 82px; gap: 9px; } .pdp-highlight-rail strong { font-size: 13px; } .pdp-highlight-rail svg { width: 21px; } }
-@media (max-width: 900px) { .pdp-layout { grid-template-columns: 1fr; gap: 36px; } .pdp-media-column { position: static; } .pdp-gallery-stage { grid-template-columns: minmax(0, 1fr) 112px; } .pdp-purchase { max-width: 680px; width: 100%; margin-inline: auto; } .pdp-highlight-rail strong { font-size: 18px; } .pdp-quote { padding-top: 16px; } .pdp-use-grid { grid-template-columns: repeat(2, 1fr); } .pdp-how-layout { gap: 30px; } }
+@media (max-width: 900px) { .pdp-layout { grid-template-columns: minmax(0, 1fr); gap: 36px; } .pdp-media-column { position: static; } .pdp-gallery-stage { grid-template-columns: minmax(0, 1fr) 112px; } .pdp-purchase { max-width: 680px; width: 100%; margin-inline: auto; } .pdp-highlight-rail strong { font-size: 18px; } .pdp-quote { padding-top: 16px; } .pdp-use-grid { grid-template-columns: repeat(2, 1fr); } .pdp-how-layout { gap: 30px; } }
 @media (max-width: 600px) {
   .pdp-reference { padding-bottom: 84px; }
   .pdp-breadcrumb { font-size: 9px; padding-block: 16px; }
   .pdp-layout { gap: 28px; padding-bottom: 40px; }
+  /* `display: contents` promotes these three to grid items in place of the
+     column, so each needs the floor of 0 the column carried. Without it the
+     thumbnail rail's full width becomes the column's minimum and the phone
+     lays the whole page out wider than its own screen. */
   .pdp-media-column { display: contents; }
-  .pdp-gallery-block { order: 1; }
-  .pdp-purchase { order: 2; }
-  .pdp-quote { order: 3; }
+  .pdp-gallery-block { order: 1; min-width: 0; }
+  .pdp-purchase { order: 2; min-width: 0; }
+  .pdp-quote { order: 3; min-width: 0; }
   .pdp-gallery-stage { grid-template-columns: minmax(0, 1fr) 74px; gap: 10px; }
   .pdp-gallery-image { aspect-ratio: .8; border-radius: 9px; }
   .pdp-highlight-rail { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); gap: 8px; }
