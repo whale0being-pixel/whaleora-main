@@ -15,6 +15,8 @@ export type Product = {
   features: string[];
   specifications: { label: string; value: string }[];
   howItWorks: { title: string; text: string }[];
+  /** The photo beside the how-to-use steps. Falls back to the second product photo. */
+  howItWorksImage?: string;
   scenarios: string[];
   included: string[];
   accent: string;
