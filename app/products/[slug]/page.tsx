@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const handle = product.shopify?.handle ?? product.slug;
   const { written, rating } = await productRating(handle);
   // The page shows a taste of the reviews; the full set lives on /products/[slug]/reviews.
-  const writtenPreview = written.slice(0, 3);
+  const writtenPreview = written.slice(0, 5);
   const quotePreview = quotes.slice(0, Math.max(0, 3 - writtenPreview.length));
 
   return <main className="page-main pdp-reference">
