@@ -403,7 +403,7 @@ function CartDrawer() {
               // A Shopify-only line may carry no handle; then the title is plain text.
               const lineSlug = record?.slug ?? line.handle;
               return <div className="cart-line" key={line.id ?? line.variantId ?? line.productId}>
-                <ProductImage src={record?.images[0] || line.image || PRODUCT_IMAGE_FALLBACK} width={130} height={130} alt="" />
+                <ProductImage src={line.image || record?.images[0] || PRODUCT_IMAGE_FALLBACK} width={130} height={130} alt="" />
                 <div><small>{record?.category ?? 'Whaleora'}</small>{lineSlug ? <Link href={`/products/${lineSlug}`} onClick={() => setOpen(false)}>{line.title}</Link> : line.title}<strong>{formatPrice(line.unitPrice, line.currencyCode)}</strong><div className="quantity"><button onClick={() => update(line, line.quantity - 1)} aria-label="Decrease quantity">−</button><span>{line.quantity}</span><button onClick={() => update(line, line.quantity + 1)} aria-label="Increase quantity">+</button></div><button className="remove" onClick={() => remove(line)}>Remove</button></div>
               </div>;
             })}</div>

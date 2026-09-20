@@ -73,9 +73,10 @@ export type CartStateLine = {
   handle: string | null;
   title: string;
   /**
-   * The line's own photo, straight from Shopify. Kept on the line so a product
-   * the site has no bundled record for — anything added to the store later —
-   * still shows its real picture in the bag.
+   * The line's own photo, straight from Shopify, and what the bag shows. The
+   * bundled record is only the fallback, for a local bag built while Shopify
+   * is unreachable; a product the site has no bundled record for — anything
+   * added to the store later — still shows its real picture either way.
    */
   image: string | null;
   quantity: number;
