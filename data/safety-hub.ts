@@ -15,6 +15,8 @@ export type HubChecklist = {
   title: string;
   description: string;
   items: string[];
+  imageUrl?: string; // Add this line
+  videoUrl?: string;
 };
 
 export type HubTool =
@@ -75,6 +77,7 @@ export const hubChecklists: HubChecklist[] = [
       'Have 1091 and 112 written down, not only saved as contacts.',
       'Tell one person when you are home. One is enough.',
     ],
+    imageUrl: '/products/bag sos-clean.png',
   },
   {
     id: 'travel-prep',
@@ -88,6 +91,7 @@ export const hubChecklists: HubChecklist[] = [
       'Save offline maps for the last mile from station to stay.',
       'Carry the alarm on the body, not in checked luggage.',
     ],
+    imageUrl: '/products/bag sos-clean.png',
   },
   {
     id: 'campus',
@@ -101,6 +105,7 @@ export const hubChecklists: HubChecklist[] = [
       'Keep the whistle on the bag you take to class, not the one in the cupboard.',
       'If a plan changes after 9pm, say so before you move.',
     ],
+    imageUrl: '/products/bag sos-clean.png',
   },
   {
     id: 'night-travel',
@@ -113,6 +118,7 @@ export const hubChecklists: HubChecklist[] = [
       'Keep one ear free. Music can wait until you’re inside.',
       'If you feel off, get down at a shop or station and rebook.',
     ],
+    imageUrl: '/products/bag sos-clean.png',
   },
   {
     id: 'travel-safety',
@@ -125,6 +131,7 @@ export const hubChecklists: HubChecklist[] = [
       'Keep documents in two places: one on you, one in the bag.',
       'Tell one person the hotel name and the morning plan.',
     ],
+    imageUrl: '/products/malesos.png',
   },
   {
     id: 'documents',
@@ -137,6 +144,7 @@ export const hubChecklists: HubChecklist[] = [
       'Write the embassy/consulate number if you are leaving India.',
       'Do not store card PINs or OTPs with the copies.',
     ],
+    imageUrl: '/products/bag sos-clean.png',
   },
   {
     id: 'workplace',
@@ -149,6 +157,7 @@ export const hubChecklists: HubChecklist[] = [
       'If a client meeting overruns, update the person expecting you.',
       'Avoid the unlit cut-through even if it saves four minutes.',
     ],
+    imageUrl: '/products/bag sos-clean.png',
   },
   {
     id: 'family-kit',
@@ -161,6 +170,7 @@ export const hubChecklists: HubChecklist[] = [
       'Practise the plan once without making it a scare story.',
       'Keep a small torch, paper contacts and any daily medicine in one tin.',
     ],
+    imageUrl: '/products/bag sos-clean.png',
   },
   {
     id: 'institution',
@@ -173,6 +183,7 @@ export const hubChecklists: HubChecklist[] = [
       'Match tools to the group — night-shift and first-year are not the same kit.',
       'Give people something they can reread privately, not only a session.',
     ],
+    imageUrl: '/products/bag sos-clean.png',
   },
 ];
 

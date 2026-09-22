@@ -209,12 +209,24 @@ export function SafetyHubExplorer({ checklists, catalog }: { checklists: HubChec
               {profile.tools.map((tool) => {
                 const copy = toolLabel(tool, checklistById);
                 return (
-                  <button type="button" key={copy.title} onClick={() => openTool(tool)}>
-                    <small>{tool.kind === 'checklist' ? 'Checklist' : 'Tool'}</small>
-                    <strong>{copy.title}</strong>
-                    <span>{copy.description}</span>
-                    <em>{copy.action} <ArrowRight size={15} strokeWidth={2} aria-hidden="true" /></em>
-                  </button>
+                  <Link
+  key={copy.title}
+  /* 1. For Google/AI: Point to the dedicated SEO page if it is a checklist */
+  href={tool.kind === 'checklist' ? `/safety-hub/${tool.checklistId}` : tool.href}
+  /* 2. For Humans: Intercept the click to open the modal instead */
+  onClick={(e) => {
+    if (tool.kind === 'checklist') {
+      e.preventDefault();
+    }
+    openTool(tool);
+  }}
+  style={{ display: 'flex', flexDirection: 'column', textAlign: 'left', background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+>
+  <small>{tool.kind === 'checklist' ? 'Checklist' : 'Tool'}</small>
+  <strong>{copy.title}</strong>
+  <span>{copy.description}</span>
+  <em>{copy.action} <ArrowRight size={15} strokeWidth={2} aria-hidden="true" /></em>
+</Link>
                 );
               })}
             </div>
@@ -257,16 +269,19 @@ export function SafetyHubExplorer({ checklists, catalog }: { checklists: HubChec
                   Open the tool <span aria-hidden="true">↓</span>
                 </a>
               ) : guide.checklistId ? (
-                <button
-                  type="button"
-                  className="guide-open"
-                  onClick={() => {
-                    const checklist = checklistById.get(guide.checklistId!);
-                    if (checklist) setSheet(checklist);
-                  }}
-                >
-                  Open checklist <span aria-hidden="true"><ArrowRight size={16} strokeWidth={2} /></span>
-                </button>
+                <Link
+  className="guide-open"
+  /* 1. For Google/AI: The real URL */
+  href={`/safety-hub/${guide.checklistId}`}
+  /* 2. For Humans: Open the modal */
+  onClick={(e) => {
+    e.preventDefault();
+    const checklist = checklistById.get(guide.checklistId!);
+    if (checklist) setSheet(checklist);
+  }}
+>
+  Open checklist <span aria-hidden="true"><ArrowRight size={16} strokeWidth={2} /></span>
+</Link>
               ) : (
                 <span className="guide-soon">Publishing soon</span>
               )}

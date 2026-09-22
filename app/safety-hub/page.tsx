@@ -9,7 +9,7 @@ import { whatsappHref } from '@/lib/content/contact';
 import type { Metadata } from 'next';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: 'Safety Hub — free guides & checklists | Whaleora',
