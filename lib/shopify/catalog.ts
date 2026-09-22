@@ -107,6 +107,9 @@ const shopifyLink = (remote: ShopifyProduct) => {
  * Stock, variants and compare-at price are deliberately absent from that list:
  * they drive checkout, so they stay whatever Shopify says. A price override
  * only changes the number on the page — Shopify still charges its own.
+ *
+ * `howItWorksImage` sits outside it too, in the other direction: step 2 is
+ * skipped for it, so the store can never supply the how-to-use photo.
  */
 function resolve(local: Product, remote: ShopifyProduct | undefined, editorial: ProductEditorial | undefined): CatalogProduct {
   const store = remoteFields(remote);
@@ -119,7 +122,11 @@ function resolve(local: Product, remote: ShopifyProduct | undefined, editorial: 
     features: editorial?.features.length ? editorial.features : local.features,
     specifications: editorial?.specifications.length ? editorial.specifications : local.specifications,
     howItWorks: editorial?.howItWorks.length ? editorial.howItWorks : local.howItWorks,
-    howItWorksImage: editorial?.howItWorksImage?.trim() || local.howItWorksImage || '',
+    // Falls back through the *bundled* photos, not the merged ones: the how-to
+    // shot is instructional art that ships with the site, and letting it reach
+    // `images` would put a Shopify merchandising photo beside the steps the
+    // moment the store had a second photo.
+    howItWorksImage: editorial?.howItWorksImage?.trim() || local.howItWorksImage || local.images[1] || local.images[0] || '',
     scenarios: editorial?.scenarios.length ? editorial.scenarios : local.scenarios,
     included: editorial?.included.length ? editorial.included : local.included,
     highlights: editorial?.highlights.length ? editorial.highlights : local.highlights,

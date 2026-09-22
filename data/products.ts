@@ -11,11 +11,21 @@ export type Product = {
   price: number;
   /** ISO currency for `price`. Shopify overrides this when the store is connected. */
   currencyCode?: string;
+  /**
+   * Catalogue photography, and the only images here the connected store
+   * overrides — the gallery and every product card show Shopify's photos when
+   * there are any, so merchandising stays a Shopify job. Everything else on a
+   * product page is bundled art that ships with the site.
+   */
   images: string[];
   features: string[];
   specifications: { label: string; value: string }[];
   howItWorks: { title: string; text: string }[];
-  /** The photo beside the how-to-use steps. Falls back to the second product photo. */
+  /**
+   * The annotated photo beside the how-to-use steps. Always a bundled asset:
+   * see the note on `images` for why this one never comes from the store.
+   * Falls back to the second bundled photo, then the first.
+   */
   howItWorksImage?: string;
   scenarios: string[];
   included: string[];
@@ -48,6 +58,7 @@ export const products: Product[] = [
     longDescription: 'Pull the pin and it does two things at once — a 130dB dual-siren and a strobe light. Push the pin back in and it stops. No app, no pairing, no charging.',
     price: 1799,
     images: ['/products/sos-alarm-mockup.webp', '/lifestyle/sos-alarm-flatlay.webp'],
+    howItWorksImage: '/products/sos-alarm-how-to-use.jpg',
     features: ['Pull-pin activation', 'Compact keychain format', 'Built-in strobe light', 'Weather-resistant casing'],
     specifications: [
       { label: 'Siren output', value: '130dB dual-siren' },
@@ -82,7 +93,10 @@ export const products: Product[] = [
     shortDescription: '50ml stream spray, 8–10 feet of range, locking cap so it never goes off in your bag.',
     longDescription: 'A 50ml OC stream canister built for one-handed use, with a locking cap so it stays inert until you release it. Range is 8–10 feet.',
     price: 499,
-    images: ['/products/B0HK12PJHY Secondary 7.jpg', '/products/B0HK12PJHY Secondary 7.jpg'],
+
+    images: ['/products/B0HK3641GW Secondary 3.jpg', '/products/B0HK3641GW Secondary 7.jpg'],
+    howItWorksImage: '/products/pepper-spray-how-to-use.jpg',
+
     features: ['One-hand deployment', 'Protective safety lock', 'Stream spray format', 'Pocket-friendly canister'],
     specifications: [
       { label: 'Formula', value: 'Oleoresin Capsicum (OC) pepper formula' },
@@ -119,6 +133,7 @@ export const products: Product[] = [
     longDescription: 'Two tools in 28 grams: a spring-loaded tungsten strike point for automotive glass, and a concealed stainless blade for a seatbelt that will not release.',
     price: 599,
     images: ['/products/window-breaker-mockup.webp'],
+    howItWorksImage: '/products/window-breaker-how-to-use.jpg',
     features: ['Spring-loaded strike head', 'Tungsten steel point', 'Concealed seatbelt blade', 'Keyring-friendly format'],
     specifications: [
       { label: 'Mechanism', value: 'Spring-loaded high-impact strike head' },
@@ -154,6 +169,7 @@ export const products: Product[] = [
     longDescription: 'Twelve grams of aviation-grade aluminium with a dual-tube design that puts out 120dB on one breath. No battery, no electronics, nothing that can fail.',
     price: 299,
     images: ['/products/survival-whistle-mockup.webp', '/products/survival-whistle-ecom.webp', '/lifestyle/whistle-bag-shot.webp'],
+    howItWorksImage: '/products/survival-whistle-ecom.webp',
     features: ['Breath activated', 'Dual-tube construction', 'Battery-free', 'Keychain and zipper attachment'],
     specifications: [
       { label: 'Volume output', value: '120dB dual-tube design' },
