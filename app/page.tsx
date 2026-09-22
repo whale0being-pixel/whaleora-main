@@ -18,7 +18,7 @@ import { formatPrice } from '@/data/products';
 
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600
 
 export default async function Home() {
 
@@ -74,10 +74,10 @@ export default async function Home() {
 
           <div className="hero-copy">
 
-            <h1>
-              Protection you’ll actually carry.<br />
-              <em>Beautifully designed. Built for the unexpected.</em>
-            </h1>
+          <h1>
+  Personal safety essentials you’ll actually carry.<br />
+  <em>Beautifully designed. Built for the unexpected.</em>
+</h1>
 
             <p className="hero-intro">
               Everyday personal safety essentials designed to be simple, discreet and ready when you need them — from a 130dB SOS alarm to a car window breaker.

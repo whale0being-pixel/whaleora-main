@@ -16,28 +16,51 @@ const display = Lora({ variable: '--font-display', subsets: ['latin'], style: ['
 const sans = Geist({ variable: '--font-sans', subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://whaleora.com'),
-  title: 'Whaleora — Personal safety tools that fit on a keyring',
-  description: 'A 130dB SOS alarm, a 120dB whistle, pepper spray and a car window breaker. Honest specs and free shipping over ₹1,499 across India.',
+  metadataBase: new URL('https://www.whaleora.com'), 
+  title: {
+    default: 'Whaleora | Personal Safety Essentials & SOS Alarms in India',
+    template: '%s | Whaleora'
+  },
+  description: 'Thoughtfully designed personal safety essentials for everyday peace of mind. Shop 130dB SOS alarms, pepper sprays, and window breakers. Shipping across India.',
   openGraph: {
-    title: 'Whaleora — Personal safety tools that fit on a keyring',
-    description: 'Designed for everyday carry. Ready for unexpected moments. Whaleora makes thoughtfully designed personal safety essentials for everyday life — from a 130dB SOS alarm to a whistle, pepper spray and car window breaker.',
+    title: 'Whaleora | Personal Safety Essentials & SOS Alarms',
+    description: 'Designed for everyday carry. Ready for unexpected moments. Whaleora makes thoughtfully designed personal safety essentials for everyday life.',
     images: [{ url: '/og.png', width: 1536, height: 1024, alt: 'Whaleora personal safety objects' }],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Whaleora — Personal safety tools that fit on a keyring',
-    description: 'Designed for everyday carry. Ready for unexpected moments. Whaleora makes thoughtfully designed personal safety essentials for everyday life — from a 130dB SOS alarm to a whistle, pepper spray and car window breaker.',
+    title: 'Whaleora | Personal Safety Essentials',
+    description: 'Designed for everyday carry. Ready for unexpected moments. Whaleora makes thoughtfully designed personal safety essentials for everyday life.',
     images: ['/og.png'],
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
+    
     <ConvexAuthNextjsServerProvider>
       <html lang="en">
         <body suppressHydrationWarning className={`${display.variable} ${sans.variable}`}>
+        <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Whaleora",
+      "url": "https://www.whaleora.com",
+      "logo": "https://www.whaleora.com/og.png",
+      "description": "Thoughtfully designed personal safety essentials for everyday peace of mind, including SOS alarms and window breakers.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Mumbai",
+        "addressRegion": "Maharashtra",
+        "addressCountry": "IN"
+      }
+    })
+  }}
+/>
           <ConvexClientProvider>
             <SiteFrame>{children}</SiteFrame>
           </ConvexClientProvider>
