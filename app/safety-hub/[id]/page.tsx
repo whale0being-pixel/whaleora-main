@@ -2,10 +2,27 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { hubChecklists } from '@/data/safety-hub'; 
+import { hubChecklists } from '@/data/safety-hub';
+import { publishedContent } from '@/lib/content/store';
+
+// Same cadence as the Safety Hub, so an admin publish shows up on both.
+export const revalidate = 3600;
+
+/**
+ * The checklist copy comes from the published admin content, so edits and new
+ * checklists from the studio appear here. The admin has no media fields, so the
+ * photo and video still come from data/safety-hub.ts, matched by ID.
+ */
+async function loadChecklists() {
+  const { checklists } = await publishedContent();
+  return checklists.map((checklist) => {
+    const bundled = hubChecklists.find((item) => item.id === checklist.id);
+    return { ...checklist, imageUrl: bundled?.imageUrl, videoUrl: bundled?.videoUrl };
+  });
+}
 
 export async function generateStaticParams() {
-  return hubChecklists.map((checklist) => ({
+  return (await loadChecklists()).map((checklist) => ({
     id: checklist.id,
   }));
 }
@@ -13,7 +30,7 @@ export async function generateStaticParams() {
 // FIX: Updated to Promise and added await to match Next.js 15 requirements
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const checklist = hubChecklists.find((c) => c.id === id);
+  const checklist = (await loadChecklists()).find((c) => c.id === id);
   
   if (!checklist) return {};
 
@@ -25,13 +42,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   
 export default async function ChecklistPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params; 
-  const checklist = hubChecklists.find((c) => c.id === id);
+  const checklists = await loadChecklists();
+  const checklist = checklists.find((c) => c.id === id);
   
   if (!checklist) {
     notFound();
   }
 
-  const otherModules = hubChecklists.filter(c => c.id !== id).slice(0, 3);
+  const otherModules = checklists.filter(c => c.id !== id).slice(0, 3);
 
   return (
     <main className="page-main section-pad shell">

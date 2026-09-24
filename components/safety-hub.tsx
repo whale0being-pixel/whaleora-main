@@ -312,9 +312,9 @@ export function SafetyHubExplorer({ checklists, catalog }: { checklists: HubChec
               ))}
             </ol>
             <div className="hub-sheet-actions">
-              <button type="button" className="button button-primary" onClick={() => window.print()}>
-                Print this <span aria-hidden="true"><ArrowRight size={16} strokeWidth={2} /></span>
-              </button>
+              <Link href={`/safety-hub/${sheet.id}`} className="button button-primary">
+                Open <span aria-hidden="true"><ArrowRight size={16} strokeWidth={2} /></span>
+              </Link>
               <button type="button" className="button button-outline" onClick={() => setSheet(null)}>
                 Close
               </button>
