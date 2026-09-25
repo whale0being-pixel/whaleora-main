@@ -1,11 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { getCatalog } from '@/lib/shopify/catalog';
-import { hubChecklists } from '@/data/safety-hub';
+import { publishedContent } from '@/lib/content/store';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = 'https://whaleora.com';
   const routes = ['', '/products', '/about', '/safety-hub', '/institutions', '/contact', '/warranty'];
-  const catalog = await getCatalog();
+  const [catalog, { checklists }] = await Promise.all([getCatalog(), publishedContent()]);
   
   return [
     // 1. Static Routes
@@ -18,6 +18,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...catalog.map((product) => ({ url: `${base}/products/${product.slug}/reviews`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.6 })),
     
     // 4. Dynamic Safety Hub Protocols (Newly Added)
-    ...hubChecklists.map((checklist) => ({ url: `${base}/safety-hub/${checklist.id}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 })),
+    ...checklists.map((checklist) => ({ url: `${base}/safety-hub/${checklist.id}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.7 })),
   ];
 }
