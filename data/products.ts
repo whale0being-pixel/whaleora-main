@@ -58,7 +58,7 @@ export const products: Product[] = [
     longDescription: 'Pull the pin and it does two things at once — a 130dB dual-siren and a strobe light. Push the pin back in and it stops. No app, no pairing, no charging.',
     price: 1799,
     images: ['/products/B0HK12PJHY Secondary 7.jpg', '/lifestyle/sos-alarm-flatlay.webp'],
-    howItWorksImage: '/products/sos-alarm-how-to-use.jpg',
+    howItWorksImage: '/products/B0HK12PJHY Secondary 7.jpg',
     features: ['Pull-pin activation', 'Compact keychain format', 'Built-in strobe light', 'Weather-resistant casing'],
     specifications: [
       { label: 'Siren output', value: '130dB dual-siren' },

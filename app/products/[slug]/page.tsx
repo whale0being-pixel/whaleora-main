@@ -40,15 +40,48 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const [catalog, content] = await Promise.all([getCatalog(), publishedContent()]);
   const product = catalog.find((item) => item.slug === slug);
   if (!product) notFound();
+  
   const related = catalog.filter((item) => item.id !== product.id).slice(0, 3);
   const { quotes, videos } = productReviews(content, product);
   const handle = product.shopify?.handle ?? product.slug;
   const { written, rating } = await productRating(handle);
+  
   // The page shows a taste of the reviews; the full set lives on /products/[slug]/reviews.
   const writtenPreview = written.slice(0, 5);
   const quotePreview = quotes.slice(0, Math.max(0, 3 - writtenPreview.length));
 
+  // --- NEW: AI & SEO Data Structure ---
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.shortDescription,
+    image: product.images,
+    brand: {
+      '@type': 'Brand',
+      name: 'Whaleora',
+    },
+    offers: {
+      '@type': 'Offer',
+      url: `https://www.whaleora.com/products/${product.slug}`,
+      priceCurrency: product.currencyCode || 'INR',
+      price: product.price,
+      itemCondition: 'https://schema.org/NewCondition',
+      availability: 'https://schema.org/InStock',
+      seller: {
+        '@type': 'Organization',
+        name: 'Whaleora',
+      },
+    },
+  };
+
   return <main className="page-main pdp-reference">
+    {/* --- NEW: Invisible Schema Injection --- */}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+    
     <nav className="pdp-breadcrumb shell" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/products">Shop</Link><span>/</span><span aria-current="page">{product.title}</span></nav>
     <section className="pdp-layout shell">
       <div className="pdp-media-column"><ProductGallery key={product.id} product={product} /><ProductQuote items={quotes} /></div>
@@ -80,7 +113,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           <figcaption><span className="pdp-review-initials" aria-hidden="true">{review.name.split(/\s+/).map((part) => part[0]).slice(0, 2).join('')}</span><span><strong>{review.name}</strong><span>{product.title}</span></span>{review.demo && <small>Demo</small>}</figcaption>
         </figure>)}
       </div> : <p className="pdp-reviews-empty">No written reviews for this product yet. Be the first.</p>}
-      {/* "Write a review" lives in the rating panel above; this row is the way on to the rest. */}
       {(quotes.length + written.length) > 0 && <div className="pdp-reviews-actions">
         <Link className="icon-link pdp-reviews-all" href={`/products/${product.slug}/reviews`}>Read all {quotes.length + written.length} {quotes.length + written.length === 1 ? 'review' : 'reviews'} <span aria-hidden="true"><ArrowUpRight size={15} strokeWidth={2} /></span></Link>
       </div>}
