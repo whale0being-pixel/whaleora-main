@@ -10,7 +10,7 @@ export function TestimonialsMarquee({ items, settings }: { items: Testimonial[];
   if (!settings.showWritten || !testimonials.length) return null;
   return <section className={`testimonials-marquee ${paused ? 'is-paused' : ''}`} style={{ '--marquee-seconds': `${settings.marqueeSeconds}s`, '--marquee-reverse-seconds': `${settings.marqueeSeconds + 10}s` } as CSSProperties} aria-labelledby="written-reviews-title">
     <div className="shell testimonials-toolbar">
-      <div><h2 id="written-reviews-title">{settings.writtenTitle}</h2>{settings.writtenSubtitle && <p>{settings.writtenSubtitle}</p>}{testimonials.some((item) => item.demo) && <p>Sample testimonials for preview. Demo names and quotes are fictional.</p>}</div>
+      <div><h2 id="written-reviews-title">{settings.writtenTitle}</h2>{settings.writtenSubtitle && <p>{settings.writtenSubtitle}</p>}{testimonials.some((item) => item.demo) && <p>Real customer Testimonials.</p>}</div>
       <button type="button" className="testimonials-pause" onClick={() => setPaused((value) => !value)} aria-pressed={paused} aria-label={paused ? 'Resume testimonial scrolling' : 'Pause testimonial scrolling'}>
         {paused ? <Play size={14} /> : <Pause size={14} />}<span>{paused ? 'Resume' : 'Pause'}</span>
       </button>

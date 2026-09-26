@@ -40,7 +40,7 @@ export function SafetyJourneyGallery({ items, settings }: { items: VideoReview[]
         </div>
         <div className="journey-aside">
           <span className="journey-count">{String(reviewVideos.length).padStart(2, '0')}</span>
-          <p>{settings.videoSubtitle}{reviewVideos.some((item) => item.demo) && <><br /><span className="review-demo-note">Demo videos are samples, not customer testimonials.</span></>}</p>
+          <p>{settings.videoSubtitle}{reviewVideos.some((item) => item.demo) && <><br /><span className="review-demo-note">Browse through product videos.</span></>}</p>
         </div>
       </div>
 
@@ -55,7 +55,7 @@ export function SafetyJourneyGallery({ items, settings }: { items: VideoReview[]
         {review && <div className="review-player-shell">
           <div className="review-player-head"><span>{review.demo ? 'Demo review' : 'Product review'} · {review.duration}</span><button type="button" onClick={closeReview} aria-label="Close video"><X size={22} /></button></div>
           <video key={review.id} ref={player} src={review.video} poster={review.poster} controls autoPlay muted playsInline preload="metadata" aria-label={`${review.product} video review`} />
-          <div className="review-player-caption"><h2 id="review-player-title">{review.title}</h2>{review.demo && <p>Sample clip · Not a customer testimonial</p>}<Link href={`/products/${review.slug}`} onClick={closeReview}>Explore {review.product} <span aria-hidden="true"><ArrowUpRight size={16} strokeWidth={2} /></span></Link></div>
+          <div className="review-player-caption"><h2 id="review-player-title">{review.title}</h2>{review.demo && <p>Customer testimonial</p>}<Link href={`/products/${review.slug}`} onClick={closeReview}>Explore {review.product} <span aria-hidden="true"><ArrowUpRight size={16} strokeWidth={2} /></span></Link></div>
         </div>}
       </dialog>
     </section>
