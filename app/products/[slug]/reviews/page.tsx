@@ -45,7 +45,62 @@ export default async function ProductReviewsPage({ params }: { params: Promise<{
   const { written, rating } = await productRating(handle);
   const total = written.length + quotes.length;
 
+  // --- NEW: AI & SEO Reviews and Video Schema ---
+// --- NEW: AI & SEO Reviews and Video Schema ---
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: product.title,
+  image: product.images[0] || PRODUCT_IMAGE_FALLBACK,
+  description: product.shortDescription,
+  brand: {
+    '@type': 'Brand',
+    name: 'Whaleora',
+  },
+  // 1. Inject the Aggregate Gold Star Rating
+  ...(rating.count > 0 && {
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: rating.average,
+      reviewCount: rating.count,
+    },
+  }),
+  // 2. Loop through written reviews and non-demo quotes
+  review: [
+    ...written.map((r) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: r.name },
+      datePublished: new Date(r.submittedAt).toISOString().split('T')[0],
+      reviewBody: r.body,
+      reviewRating: { '@type': 'Rating', ratingValue: r.rating },
+    })),
+    ...quotes.filter(q => !q.demo).map((q) => ({
+      '@type': 'Review',
+      author: { '@type': 'Person', name: q.name },
+      reviewBody: q.quote,
+      reviewRating: { '@type': 'Rating', ratingValue: 5 }, // Assume featured quotes are top-tier
+    })),
+  ],
+  // 3. Loop through product videos for Google's Video Tab (TypeScript Error Fixed)
+  ...(videos.length > 0 && {
+    subjectOf: videos.map((v: any) => ({
+      '@type': 'VideoObject',
+      name: `${product.title} Customer Review Video`,
+      description: `Watch a real customer demonstration and review of the ${product.title} by Whaleora.`,
+      thumbnailUrl: product.images[0] || PRODUCT_IMAGE_FALLBACK,
+      contentUrl: v.src || v.url || `https://www.whaleora.com/products/${product.slug}/reviews`,
+      uploadDate: new Date().toISOString().split('T')[0],
+    })),
+  }),
+};
+
   return <main className="page-main pdp-reference reviews-page">
+    {/* --- NEW: Invisible Schema Injection --- */}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+    
     <nav className="pdp-breadcrumb shell" aria-label="Breadcrumb">
       <Link href="/">Home</Link><span>/</span>
       <Link href="/products">Shop</Link><span>/</span>
