@@ -34,7 +34,7 @@ const tracks = [
     kicker: 'Stockists',
     title: <>Retail &amp;<br />Distribution</>,
     text: 'For shops whose customers ask for this and currently get pointed elsewhere.',
-    image: '/lifestyle/sos-alarm-flatlay.webp',
+    image: '/lifestyle/sosinhand.jpeg',
     alt: 'Whaleora safety tools laid out as they would sit in a shop',
   },
 ];

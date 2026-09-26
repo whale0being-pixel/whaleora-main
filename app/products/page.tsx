@@ -15,7 +15,7 @@ export default async function ProductsPage() {
         <p>Output in decibels, weight in grams, battery type, shelf life. If a number matters to your decision, it’s on the page — and so is what the thing can’t do.</p>
       </div>
       <figure className="collection-hero-visual">
-        <Image src="/lifestyle/whistle-bag-shot.webp" fill priority sizes="(max-width: 900px) 100vw, 38vw" alt="Whaleora survival whistle carried on a handbag" />
+        <Image src="/lifestyle/Cyclist_with_product_in_pack.jpg" fill priority sizes="(max-width: 900px) 100vw, 38vw" alt="Whaleora survival whistle carried on a handbag" />
         <figcaption>Designed to be carried, not kept in a drawer.</figcaption>
       </figure>
     </div></section>

@@ -168,7 +168,7 @@ export default async function Home() {
         <div className="story-image">
 
           <Image
-            src="/lifestyle/sos-alarm-flatlay.webp"
+            src="/lifestyle/sosinhand.jpeg"
             alt="Whaleora personal alarm in an everyday flat-lay composition"
             fill
             sizes="(max-width: 800px) 100vw, 50vw"

@@ -25,13 +25,33 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const product = await getCatalogProduct(slug);
   if (!product) return {};
-  const title = `${product.title} — ${formatPrice(product.price, product.currencyCode)} | Whaleora`;
+
+  // --- NEW: High-intent SEO modifiers ---
+  const seoOverrides: Record<string, { title: string; description: string }> = {
+    'pepperspray': {
+      title: 'Maximum Strength Pepper Spray | Whaleora Personal Safety',
+      description: 'Reliable, easy-to-use pepper spray for everyday preparedness. Designed for quick access during commutes, campus life, and late shifts in India.'
+    },
+    'sos-alarm': {
+      title: 'Personal SOS Safety Alarm (130dB) | Whaleora',
+      description: 'A loud, 130dB personal safety alarm designed for urban commutes and night travel. Pull the pin for an instant, attention-grabbing siren.'
+    },
+    'windowbreaker': {
+      title: 'Car Window Breaker & Seatbelt Cutter | Whaleora',
+      description: 'An essential 2-in-1 emergency escape tool for your car. Shatter tempered glass and cut jammed seatbelts instantly during transit emergencies.'
+    }
+  };
+
+  const override = seoOverrides[slug];
+  const title = override ? override.title : `${product.title} — ${formatPrice(product.price, product.currencyCode)} | Whaleora`;
+  const description = override ? override.description : product.shortDescription;
   const card = product.images[0] || PRODUCT_IMAGE_FALLBACK;
+
   return {
     title,
-    description: product.shortDescription,
-    openGraph: { title, description: product.shortDescription, images: [{ url: card }] },
-    twitter: { card: 'summary_large_image', title, description: product.shortDescription, images: [card] },
+    description,
+    openGraph: { title, description, images: [{ url: card }] },
+    twitter: { card: 'summary_large_image', title, description, images: [card] },
   };
 }
 
@@ -50,7 +70,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const writtenPreview = written.slice(0, 5);
   const quotePreview = quotes.slice(0, Math.max(0, 3 - writtenPreview.length));
 
-  // --- NEW: AI & SEO Data Structure ---
+  // --- EXISTING: AI & SEO Data Structure ---
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -76,7 +96,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   };
 
   return <main className="page-main pdp-reference">
-    {/* --- NEW: Invisible Schema Injection --- */}
+    {/* --- EXISTING: Invisible Schema Injection --- */}
     <script
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
