@@ -44,9 +44,24 @@ a:hover .blog-cover img, .blog-featured:hover .blog-cover img { transform: scale
   .blog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
-  .blog-grid { grid-template-columns: 1fr; }
+  .blog-hero { padding-block: 28px 24px; }
+  .blog-hero h1 { font-size: 32px; line-height: 1.1; margin-block: 8px 14px; }
+  .blog-hero > p:not(.eyebrow) { font-size: 13px; line-height: 1.6; }
+  .blog-featured { padding-block: 24px; gap: 18px; }
+  .blog-featured .blog-cover { aspect-ratio: 16 / 9; }
+  .blog-featured h2 { font-size: 25px; margin-block: 12px; }
+  .blog-featured p { font-size: 13px; line-height: 1.6; margin-bottom: 16px; }
+  .blog-grid { grid-template-columns: 1fr; padding-block: 24px 28px; gap: 24px; }
+  .blog-card { gap: 12px; }
+  .blog-card .blog-cover { aspect-ratio: 16 / 9; }
+  .blog-card h3 { font-size: 22px; }
+  .blog-card p { font-size: 13px; }
+  .blog-post-head { padding-block: 24px; }
+  .blog-post-head h1 { font-size: 30px; line-height: 1.1; margin-block: 14px; }
+  .blog-post-head > p { font-size: 15px; margin-bottom: 18px; }
   .blog-post-cover { aspect-ratio: 4 / 3; }
-  .blog-body { font-size: 16px; }
+  .blog-body { font-size: 16px; padding-block: 28px; }
+  .blog-more { padding-block: 28px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .blog-cover img { transition: none; }

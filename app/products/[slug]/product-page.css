@@ -75,7 +75,12 @@
 .pdp-written-card figcaption small { margin-left: auto; font-size: 9px; color: rgba(16,40,68,.65); }
 .pdp-reviews-empty { font-size: 14px; padding: 24px; border: 1px solid var(--line); border-radius: 10px; }
 @media (max-width: 900px) { .pdp-written-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 600px) { .pdp-written-grid { grid-template-columns: 1fr; gap: 12px; } .pdp-written-card { padding: 20px; gap: 22px; } .pdp-reviews-heading { align-items: start; flex-direction: column; gap: 12px; } .pdp-reviews-disclosure { line-height: 1.6; } }
+@media (max-width: 600px) {
+  .pdp-written-grid { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 82%; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+  .pdp-written-card { padding: 16px; gap: 16px; scroll-snap-align: start; }
+  .pdp-reviews-heading { align-items: start; flex-direction: column; gap: 8px; }
+  .pdp-reviews-disclosure { line-height: 1.6; }
+}
 .pdp-category { margin: 0 0 8px; font-size: 13px; color: var(--terracotta); }
 .pdp-purchase h1 { font: 600 clamp(30px, 3vw, 44px)/1.08 var(--font-sans), sans-serif; margin: 0 0 18px; letter-spacing: -.035em; text-wrap: pretty; }
 .pdp-purchase-description { font-size: 15px; line-height: 1.7; margin: 0; color: rgba(16,40,68,.76); }
@@ -228,8 +233,8 @@
 @media (max-width: 900px) { .pdp-layout { grid-template-columns: minmax(0, 1fr); gap: 36px; } .pdp-media-column { position: static; } .pdp-gallery-stage { grid-template-columns: minmax(0, 1fr) 112px; } .pdp-purchase { max-width: 680px; width: 100%; margin-inline: auto; } .pdp-highlight-rail strong { font-size: 18px; } .pdp-quote { padding-top: 16px; } .pdp-use-grid { grid-template-columns: repeat(2, 1fr); } .pdp-how-layout { gap: 30px; } }
 @media (max-width: 600px) {
   .pdp-reference { padding-bottom: 84px; }
-  .pdp-breadcrumb { font-size: 9px; padding-block: 16px; }
-  .pdp-layout { gap: 28px; padding-bottom: 40px; }
+  .pdp-breadcrumb { font-size: 9px; padding-block: 12px; }
+  .pdp-layout { gap: 20px; padding-bottom: 28px; }
   /* `display: contents` promotes these three to grid items in place of the
      column, so each needs the floor of 0 the column carried. Without it the
      thumbnail rail's full width becomes the column's minimum and the phone
@@ -238,22 +243,23 @@
   .pdp-gallery-block { order: 1; min-width: 0; }
   .pdp-purchase { order: 2; min-width: 0; }
   .pdp-quote { order: 3; min-width: 0; }
-  .pdp-gallery-stage { grid-template-columns: minmax(0, 1fr) 74px; gap: 10px; }
-  .pdp-gallery-image { aspect-ratio: .8; border-radius: 9px; }
-  .pdp-highlight-rail { grid-template-columns: 1fr; grid-template-rows: repeat(3, 1fr); gap: 8px; }
-  .pdp-highlight-rail > div { padding: 12px 6px; gap: 5px; border-radius: 7px; }
-  .pdp-highlight-rail strong { font-size: 13px; }
+  .pdp-gallery-stage { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .pdp-gallery-image { aspect-ratio: 1.35; border-radius: 9px; }
+  .pdp-gallery-image > img { object-fit: contain; }
+  .pdp-highlight-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: none; gap: 8px; }
+  .pdp-highlight-rail > div { padding: 10px 6px; gap: 4px; border-radius: 7px; }
+  .pdp-highlight-rail strong { font-size: 12px; }
   .pdp-highlight-rail span { font-size: 9px; }
-  .pdp-highlight-rail svg { width: 20px; height: 20px; }
+  .pdp-highlight-rail svg { display: none; }
   .pdp-thumbnails { margin-top: 10px; gap: 4px; }
-  .pdp-thumbnails > div > button { width: 54px; height: 54px; flex-basis: 54px; }
+  .pdp-thumbnails > div > button { width: 44px; height: 44px; flex-basis: 44px; }
   .pdp-quote { gap: 10px; margin-top: 5px; }
   .pdp-quote-avatar { width: 40px; height: 40px; font-size: 15px; }
   .pdp-quote blockquote { font-size: 11px; }
   .pdp-quote figcaption { font-size: 10px; }
   .pdp-category { font-size: 11px; }
-  .pdp-purchase h1 { font-size: 30px; margin-bottom: 14px; }
-  .pdp-purchase-description { font-size: 14px; }
+  .pdp-purchase h1 { font-size: 27px; margin-bottom: 12px; }
+  .pdp-purchase-description { font-size: 13px; line-height: 1.6; }
   .pdp-benefit-list { gap: 8px 12px; margin-block: 14px 20px; }
   .pdp-set-picker > div { gap: 7px; }
   .pdp-set-picker label { padding: 13px 5px 11px; border-radius: 8px; }
@@ -265,20 +271,22 @@
   .pdp-purchase-assurances { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; }
   .pdp-purchase-assurances span { font-size: 9px; gap: 4px; }
   .pdp-purchase-assurances svg { width: 14px; }
-  .pdp-service-strip > div { flex-direction: column; gap: 16px; padding-block: 22px; align-items: flex-start; }
-  .pdp-service-strip span { font-size: 11px; }
-  .pdp-section { padding-block: 44px; }
-  .pdp-section-heading { margin-bottom: 26px; }
-  .pdp-section-heading h2 { font-size: 27px; }
+  .pdp-service-strip > div { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 12px; padding-block: 16px; align-items: center; }
+  .pdp-service-strip span { font-size: 10px; line-height: 1.5; gap: 8px; }
+  .pdp-service-strip svg { width: 18px; flex-shrink: 0; }
+  .pdp-section { padding-block: 28px; }
+  .pdp-section-heading { margin-bottom: 18px; }
+  .pdp-section-heading h2 { font-size: 24px; }
   .pdp-section-heading > p:not(.eyebrow) { font-size: 13px; }
   .pdp-how-layout { grid-template-columns: 1fr; gap: 12px; }
-  .pdp-how-image { height: 330px; }
-  .pdp-how-layout li { padding-block: 20px; gap: 15px; }
-  .pdp-how-layout h3 { font-size: 20px; }
-  .pdp-how-layout p { font-size: 13px; }
+  .pdp-how-image { height: auto; width: min(100%, 210px); }
+  .pdp-how-image img { object-fit: contain; }
+  .pdp-how-layout li { padding-block: 12px; gap: 12px; }
+  .pdp-how-layout h3 { font-size: 18px; margin-bottom: 6px; }
+  .pdp-how-layout p { font-size: 12px; }
   .pdp-use-grid { gap: 10px; }
-  .pdp-use-grid article { padding: 17px; min-height: 155px; }
-  .pdp-use-grid h3 { font-size: 18px; }
+  .pdp-use-grid article { padding: 14px; min-height: 0; }
+  .pdp-use-grid h3 { font-size: 18px; margin-top: 14px; }
   .pdp-use-grid p { font-size: 11px; }
   .pdp-compare-scroll {
     width: 100vw;
@@ -317,10 +325,10 @@
     overflow-wrap: break-word;
     scroll-snap-align: start;
   }
-  .pdp-compare-scroll th, .pdp-compare-scroll td { padding: 16px; }
+  .pdp-compare-scroll th, .pdp-compare-scroll td { padding: 12px; }
   .pdp-compare-scroll th:first-child,
   .pdp-compare-scroll tbody th { padding-left: 20px; }
-  .pdp-comparison { padding-bottom: 108px; }
+  .pdp-comparison { padding-bottom: 28px; }
   .pdp-compare-hint {
     display: block;
     margin: 14px 0 0;
@@ -330,9 +338,9 @@
     text-transform: uppercase;
     color: var(--terracotta);
   }
-  .pdp-faq-list summary { font-size: 13px; padding-block: 19px; }
-  .pdp-recommendations .product-grid { display: flex; overflow-x: auto; padding-bottom: 12px; scroll-snap-type: x mandatory; gap: 18px; }
-  .pdp-recommendations .product-card { flex: 0 0 72%; scroll-snap-align: start; }
+  .pdp-faq-list summary { min-height: 48px; font-size: 13px; padding-block: 14px; }
+  .pdp-recommendations .product-grid { display: flex; overflow-x: auto; padding-bottom: 12px; scroll-snap-type: x mandatory; gap: 12px; }
+  .pdp-recommendations .product-card { flex: 0 0 44%; scroll-snap-align: start; }
   .pdp-sticky-purchase > div { gap: 12px; }
   .pdp-sticky-purchase > div > div { min-width: 0; }
   .pdp-sticky-purchase strong { display: block; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -371,6 +379,7 @@
 
 @media (max-width: 600px) {
   .review-form-pair { grid-template-columns: 1fr; }
+  .review-form input, .review-form textarea { font-size: 16px; }
 }
 
 .pdp-reviews-actions { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }

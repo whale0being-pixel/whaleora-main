@@ -16,7 +16,7 @@ export default function ContactPage() {
         <div className="shell safety-hero-grid">
           <div>
             <p className="eyebrow dark">Help · Support · Partnerships</p>
-            <h1>A real person<br /><em>reads these.</em></h1>
+            <h1>A real person<br /> <em>reads these.</em></h1>
             <p>Product questions, an order that went sideways, a partnership, or something we haven’t thought of. WhatsApp is fastest; email if it needs a paper trail.</p>
             <nav className="safety-jump" aria-label="On this page">
               <a href="#enquiry">Send an enquiry</a>

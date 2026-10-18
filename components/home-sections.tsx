@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { ShopProduct } from '@/components/commerce';
 import { formatPrice } from '@/data/products';
 import { ArrowRight, ArrowUpRight, Plus } from 'lucide-react';
+import { MobileDisclosure } from '@/components/mobile-disclosure';
 
 const trustPoints = [
   { figure: '130dB', label: 'Loud dual-siren and strobe, on one pull' },
@@ -42,6 +43,7 @@ export function Chooser({ catalog }: { catalog: ShopProduct[] }) {
         <p>The same four safety essentials, compared honestly — including exactly what each one cannot do. Most people start with the SOS Alarm and add the whistle for complete peace of mind.</p>
       </div>
 
+      <MobileDisclosure label="Compare all four essentials">
       <div className="shell chooser-scroll">
         <table className="chooser-table">
           <caption className="visually-hidden">Whaleora personal safety products compared by job, daily routine, power source, carry location, and honest limitations</caption>
@@ -76,6 +78,7 @@ export function Chooser({ catalog }: { catalog: ShopProduct[] }) {
         </table>
       </div>
       <p className="chooser-hint" aria-hidden="true">Swipe to compare <ArrowRight size={15} strokeWidth={2} aria-hidden="true" /></p>
+      </MobileDisclosure>
     </section>
   );
 }

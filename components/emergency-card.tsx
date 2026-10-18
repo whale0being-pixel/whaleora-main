@@ -1,8 +1,9 @@
 'use client';
 
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Download } from 'lucide-react';
 import { clearCardAction, loadCardAction, saveCardAction } from '@/app/actions/emergency-card';
+import { renderCardImage } from '@/components/emergency-card-image';
 import { blankCard, cardLimit, isCardEmpty, toCard, type CardData } from '@/lib/emergency-card';
 
 /**
@@ -129,6 +130,7 @@ export function EmergencyCard() {
   const [data, setData] = useState<CardData>(blank);
   const [restored, setRestored] = useState(false);
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const [fallbackUrl, setFallbackUrl] = useState<string | null>(null);
 
   // Restore after mount so the server and client first paint agree. Deferred
   // a microtask, matching how SafetyHubExplorer reads its own initial state.
@@ -188,9 +190,63 @@ export function EmergencyCard() {
     if (pending.current) clearTimeout(pending.current);
     setData(blank);
     setStatus('idle');
+    setFallbackUrl(null);
     try { window.localStorage.removeItem(STORAGE_KEY); } catch { /* see above */ }
     void clearCardAction();
   }, []);
+
+  // The image is drawn ahead of the tap, on a pause in typing. Safari only lets
+  // navigator.share run close to the tap itself, and drawing first could use up
+  // that window.
+  const deck = useRef<HTMLDivElement>(null);
+  const image = useRef<{ key: string; blob: Blob } | null>(null);
+
+  const drawImage = useCallback(async (card: CardData) => {
+    const key = JSON.stringify(card);
+    if (image.current?.key === key) return image.current.blob;
+    const read = (selector: string) => {
+      const el = deck.current?.querySelector(selector);
+      return el ? getComputedStyle(el).fontFamily : 'serif';
+    };
+    const blob = await renderCardImage({
+      data: card,
+      sample,
+      numbers: emergencyNumbers,
+      fonts: { display: read('.ec-name'), sans: read('.ec-face') },
+    });
+    image.current = { key, blob };
+    return blob;
+  }, []);
+
+  useEffect(() => {
+    if (!restored) return;
+    const timer = setTimeout(() => { void drawImage(data).catch(() => {}); }, 500);
+    return () => clearTimeout(timer);
+  }, [data, restored, drawImage]);
+
+  useEffect(() => () => { if (fallbackUrl) URL.revokeObjectURL(fallbackUrl); }, [fallbackUrl]);
+
+  const saveImage = async () => {
+    const blob = await drawImage(data);
+    const file = new File([blob], 'whaleora-emergency-card.png', { type: 'image/png' });
+    // The share sheet is what offers "Save Image" to the photo library on a phone.
+    if (navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: 'My emergency card' });
+        return;
+      } catch (error) {
+        if ((error as Error).name === 'AbortError') return;
+      }
+    }
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = file.name;
+    link.click();
+    // In-app browsers often swallow the download too, so the image is also shown
+    // on the page, where a long press saves it.
+    setFallbackUrl(url);
+  };
 
   const field = (key: keyof CardData, label: string, extra?: React.InputHTMLAttributes<HTMLInputElement>) => (
     <label className="ec-field">
@@ -266,7 +322,7 @@ export function EmergencyCard() {
           </form>
 
           <div className="ec-preview">
-            <div className="ec-deck">
+            <div className="ec-deck" ref={deck}>
               <div className="ec-live" aria-label="Card front">
                 <CardFront data={data} />
               </div>
@@ -276,15 +332,25 @@ export function EmergencyCard() {
             </div>
 
             <div className="ec-controls">
-              <p className="ec-print-note">Prints at wallet size (85.6 × 54 mm). Fold along the dotted line for a double-sided card.</p>
+              <p className="ec-print-note">Prints at wallet size (85.6 × 54 mm). Fold along the dotted line for a double-sided card. On a phone, save it as an image for your photos or lock screen.</p>
               <div className="ec-actions">
-                <button type="button" className="button button-primary" onClick={() => window.print()}>Print the card <span aria-hidden="true"><ArrowRight size={16} strokeWidth={2} /></span></button>
+                <button type="button" className="button button-primary ec-print-button" onClick={() => window.print()}>Print the card <span aria-hidden="true"><ArrowRight size={16} strokeWidth={2} /></span></button>
+                <button type="button" className="button ec-image-button" onClick={() => void saveImage()}>Save as image <span aria-hidden="true"><Download size={16} strokeWidth={2} /></span></button>
                 <button type="button" className="ec-clear" onClick={clear}>Clear</button>
                 <span className="ec-save-state" role="status" aria-live="polite">
                   {status === 'saving' ? 'Saving…' : status === 'saved' ? 'Saved' : ''}
                 </span>
               </div>
             </div>
+
+            {fallbackUrl && (
+              <figure className="ec-image-fallback">
+                {/* A blob URL, which next/image cannot optimise. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={fallbackUrl} alt="Your emergency card, front and back" />
+                <figcaption>Press and hold the image to save it to your photos.</figcaption>
+              </figure>
+            )}
           </div>
         </div>
 

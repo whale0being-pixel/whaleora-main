@@ -84,8 +84,7 @@ export default async function Home() {
 
             <p className="hero-intro">
               Everyday personal safety essentials designed to be simple, discreet and ready when you need them — from a 130dB SOS alarm to a car window breaker.
-              <br /><br />
-              No app. No complexity. Just safety within reach.
+              <span className="hero-reassurance">No app. No complexity. Just safety within reach.</span>
             </p>
 
             <div className="hero-actions">
@@ -138,7 +137,7 @@ export default async function Home() {
 
         </div>
 
-        <div className="product-grid shell">
+        <div className="product-grid shell collection-products" role="region" aria-label="Safety essentials. Swipe to explore the collection." tabIndex={0}>
           {catalog.map((product) => (
             <ProductCard
               key={product.id}
@@ -146,6 +145,8 @@ export default async function Home() {
             />
           ))}
         </div>
+
+        <p className="collection-scroll-hint shell">Swipe to explore <ArrowRight size={14} aria-hidden="true" /></p>
 
         <div className="center-action">
 

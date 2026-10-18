@@ -26,7 +26,7 @@ export default async function SafetyHubPage() {
         <div className="shell safety-hero-grid">
           <div>
             <p className="eyebrow dark">Learn · Prepare · Stay safe</p>
-            <h1>Everything useful we know,<br /><em>given away.</em></h1>
+            <h1>Everything useful we know,<br /> <em>given away.</em></h1>
             <p>Guides, checklists, emergency numbers and a printable contact card — for commutes, campus, travel and working late. Written to be useful on a second read, not to scare you into buying an alarm.</p>
             <nav className="safety-jump" aria-label="On this page">
               <a href="#habits">Ten habits</a>

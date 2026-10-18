@@ -26,12 +26,15 @@
 .coverflow-dots button[aria-current] span { width: 20px; opacity: 1; background: var(--terracotta); }
 .coverflow-pause { min-height: 44px; min-width: 44px; padding: 0 4px; border: 0; background: none; color: var(--ink); font-size: 10px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 @media (max-width: 600px) {
-  .coverflow-carousel { --coverflow-near: 188px; --coverflow-far: 320px; padding: 20px 0 30px; }
-  .coverflow-stage { height: 355px; margin-bottom: 6px; }
-  .coverflow-card { width: 232px; height: 326px; border-radius: 10px; }
-  .coverflow-content { padding: 14px 17px 20px; }
-  .coverflow-copy h3 { font-size: 25px; }
-  .coverflow-controls { gap: 8px; max-width: calc(100% - 28px); }
+  .coverflow-carousel { --coverflow-near: 158px; --coverflow-far: 280px; padding: 16px 0 20px; }
+  .coverflow-stage { height: 278px; margin-bottom: 4px; }
+  .coverflow-card { width: 196px; height: 260px; border-radius: 10px; }
+  .coverflow-content { padding: 12px 14px 14px; }
+  .coverflow-copy h3 { font-size: 21px; }
+  .coverflow-tag { padding: 5px 6px; font-size: 8px; }
+  .coverflow-subtitle { margin-top: 6px; font-size: 9px; }
+  .coverflow-cta { margin-top: 12px; font-size: 9px; }
+  .coverflow-controls { gap: 4px; max-width: calc(100% - 24px); }
   .coverflow-dots button { width: 24px; }
 }
 @media (prefers-reduced-motion: reduce) {
