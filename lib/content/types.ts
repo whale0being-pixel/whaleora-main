@@ -1,4 +1,4 @@
-import { imageHostHint, isOptimisableImage } from '../images.ts';
+import { canOptimiseImage, imageHostHint, isOptimisableImage } from '../images.ts';
 export type Testimonial = { id: string; quote: string; name: string; detail: string; row: 1 | 2; visible: boolean; demo: boolean };
 export type VideoReview = { id: string; title: string; product: string; slug: string; poster: string; video: string; duration: string; visible: boolean; demo: boolean };
 /**
@@ -87,6 +87,12 @@ export function validateContent(input: unknown): ReviewContent {
   const imageMedia = (value: unknown, label: string) => {
     const result = media(value, label);
     if (!isOptimisableImage(result)) throw new Error(`${label} must be a local path or an image URL on ${imageHostHint}.`);
+    return result;
+  };
+  /** Blog covers also go through next/image, but are uploaded to UploadThing. */
+  const coverMedia = (value: unknown) => {
+    const result = media(value, 'Cover photo');
+    if (!canOptimiseImage(result)) throw new Error('Cover photo must be uploaded from the studio.');
     return result;
   };
   const list = (value: unknown) => { if (!Array.isArray(value) || value.length > 40) throw new Error('Each section supports up to 40 reviews.'); return value; };
@@ -210,7 +216,7 @@ export function validateContent(input: unknown): ReviewContent {
         category: text(entry.category, 'Post category', 40),
         author: text(entry.author, 'Post author', 80),
         date,
-        coverImage: typeof entry.coverImage === 'string' && entry.coverImage.trim() ? imageMedia(entry.coverImage, 'Cover photo') : '',
+        coverImage: typeof entry.coverImage === 'string' && entry.coverImage.trim() ? coverMedia(entry.coverImage) : '',
         body: text(entry.body, 'Post body', BLOG_BODY_LIMIT),
         visible: flag(entry.visible),
       };

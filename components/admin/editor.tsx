@@ -8,6 +8,7 @@ import type { BlogPost, ContentDocument, HubChecklistContent, ProductEditorial, 
 import type { ShopifySnapshot } from '@/lib/shopify/catalog';
 import { BLOG_BODY_LIMIT, BLOG_POST_LIMIT, validateContent } from '@/lib/content/types';
 import { TestimonialsMarquee } from '@/components/testimonials-marquee';
+import { useUploadThing } from '@/lib/uploadthing';
 
 async function request(url: string, method: string, payload?: unknown) {
   const response = await fetch(url, { method, headers: payload ? { 'Content-Type': 'application/json' } : undefined, body: payload ? JSON.stringify(payload) : undefined });
@@ -73,7 +74,7 @@ const tabs = [
 const listTabs = new Set<Tab>(['testimonials', 'videos', 'products', 'checklists', 'posts']);
 const slugify = (value: string) => value.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 100);
 
-export function AdminEditor({ initial, shopify, uploadsEnabled, canSave }: { initial: ContentDocument; shopify: { connected: boolean; items: ShopifySnapshot[] }; uploadsEnabled: boolean; canSave: boolean }) {
+export function AdminEditor({ initial, shopify, uploadsEnabled, coverUploads, canSave }: { initial: ContentDocument; shopify: { connected: boolean; items: ShopifySnapshot[] }; uploadsEnabled: boolean; coverUploads: boolean; canSave: boolean }) {
   const [document, setDocument] = useState(initial);
   const [content, setContent] = useState(initial.draft);
   const [tab, setTab] = useState<Tab>('testimonials');
@@ -109,6 +110,7 @@ export function AdminEditor({ initial, shopify, uploadsEnabled, canSave }: { ini
   function showReviews(view: ReviewView) { setReviewView(view); void loadReviews(view); }
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const { startUpload: startCoverUpload } = useUploadThing('blogCover', { onUploadError: (problem) => setError(problem.message) });
   const dirty = JSON.stringify(content) !== JSON.stringify(document.draft);
   const unpublished = JSON.stringify(content) !== JSON.stringify(document.published);
   useEffect(() => {
@@ -183,7 +185,19 @@ export function AdminEditor({ initial, shopify, uploadsEnabled, canSave }: { ini
     setBusy(true); setError('');
     try { const latest = await request('/api/admin/content', 'GET'); setDocument(latest); setContent(latest.draft); setSelectedId(firstId(tab, latest.draft)); setNotice('Latest draft loaded.'); } catch (error) { setError((error as Error).message); } finally { setBusy(false); }
   }
-  async function upload(file: File | undefined, key: 'poster' | 'video' | 'howItWorksImage' | 'coverImage', id: string) {
+  async function uploadCover(file: File | undefined, id: string) {
+    if (!file) return;
+    setError(''); setUploading(true);
+    try {
+      if (file.size > 4 * 1024 * 1024) throw new Error('Images must be under 4 MB.');
+      // Failures arrive through onUploadError, which has already shown the reason.
+      const uploaded = await startCoverUpload([file]);
+      if (!uploaded?.[0]) return;
+      updatePost(id, { coverImage: uploaded[0].ufsUrl });
+      setNotice('Cover uploaded. Save or publish to use it.');
+    } catch (error) { setError((error as Error).message); } finally { setUploading(false); }
+  }
+  async function upload(file: File | undefined, key: 'poster' | 'video' | 'howItWorksImage', id: string) {
     if (!file) return;
     setError(''); setUploading(true);
     try {
@@ -191,7 +205,6 @@ export function AdminEditor({ initial, shopify, uploadsEnabled, canSave }: { ini
       const response = await fetch('/api/admin/upload', { method: 'POST', headers: { 'Content-Type': file.type }, body: file });
       const data = await response.json(); if (!response.ok) throw new Error(data.error);
       if (key === 'howItWorksImage') updateProduct(id, { howItWorksImage: data.url });
-      else if (key === 'coverImage') updatePost(id, { coverImage: data.url });
       else updateVideo(id, { [key]: data.url });
       setNotice('Media uploaded. Save or publish to use it.');
     } catch (error) { setError((error as Error).message); } finally { setUploading(false); }
@@ -302,8 +315,19 @@ export function AdminEditor({ initial, shopify, uploadsEnabled, canSave }: { ini
                   <Field label="Excerpt"><textarea rows={3} maxLength={280} value={post.excerpt} onChange={(event) => updatePost(post.id, { excerpt: event.target.value })} placeholder="One or two sentences for the card and search results." /><small>{post.excerpt.length}/280 characters</small></Field>
                   <div className="admin-field-pair"><Field label="Category"><input maxLength={40} value={post.category} onChange={(event) => updatePost(post.id, { category: event.target.value })} /></Field><Field label="Author"><input maxLength={80} value={post.author} onChange={(event) => updatePost(post.id, { author: event.target.value })} /></Field></div>
                   <Field label="Date"><input type="date" value={post.date} onChange={(event) => updatePost(post.id, { date: event.target.value })} /><small>Posts are listed newest first.</small></Field>
-                  <Field label="Cover photo"><input value={post.coverImage} maxLength={2048} placeholder="/stock/journey-city.webp" onChange={(event) => updatePost(post.id, { coverImage: event.target.value })} /><small>One /local path or {imageHostHint} URL. Blank shows the post without a photo.</small></Field>
-                  {uploadsEnabled && <Field label="Or upload JPG, PNG, WebP · max 5 MB"><input type="file" accept="image/jpeg,image/png,image/webp" onChange={(event) => { void upload(event.target.files?.[0], 'coverImage', post.id); event.target.value = ''; }} /></Field>}
+                  <div className="admin-cover">
+                    <Field label="Cover photo">
+                      {/* Remote uploads the studio never sizes; plain <img> keeps
+                          the optimiser out of the admin panel. */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      {post.coverImage && <img className="admin-cover-preview" src={post.coverImage} alt="Current cover photo" />}
+                      {coverUploads
+                        ? <input type="file" accept="image/jpeg,image/png,image/webp" disabled={locked} onChange={(event) => { void uploadCover(event.target.files?.[0], post.id); event.target.value = ''; }} />
+                        : <small>Cover uploads need UPLOADTHING_TOKEN set on this deployment.</small>}
+                      <small>JPG, PNG or WebP, up to 4 MB. {post.coverImage ? 'A new file replaces this photo.' : 'Without one, the post shows no photo.'}</small>
+                    </Field>
+                    {post.coverImage && <button type="button" className="admin-button" disabled={locked} onClick={() => updatePost(post.id, { coverImage: '' })}>Remove photo</button>}
+                  </div>
                   <Field label="Body"><textarea rows={18} maxLength={BLOG_BODY_LIMIT} value={post.body} onChange={(event) => updatePost(post.id, { body: event.target.value })} placeholder={'Leave a blank line between paragraphs.\n\n## A subheading\n\n- A list item\n- Another item'} /><small>{post.body.length}/{BLOG_BODY_LIMIT} · Blank line between paragraphs. Start a line with “## ” for a subheading or “- ” for a list item.</small></Field>
                   <Toggle label="Visible on the storefront" checked={post.visible} onChange={(visible) => updatePost(post.id, { visible })} />
                   {post.visible && document.published.posts.some((item) => item.id === post.id && item.visible) && <a className="icon-link" href={`/blog/${document.published.posts.find((item) => item.id === post.id)?.slug}`} target="_blank" rel="noreferrer">View live post <ArrowUpRight size={14} /></a>}

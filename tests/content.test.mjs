@@ -119,6 +119,8 @@ test('rejects bad post slugs, dates, duplicates, cover hosts and an empty list',
   }
   const duplicate = fixture(); duplicate.posts = [samplePost(), { ...samplePost(), id: 'post-two' }]; assert.throws(() => validateContent(duplicate), /slug/);
   const cover = fixture(); cover.posts = [{ ...samplePost(), coverImage: 'https://example.com/a.jpg' }]; assert.throws(() => validateContent(cover), /Cover photo/);
+  const uploaded = fixture(); uploaded.posts = [{ ...samplePost(), coverImage: 'https://abc123.ufs.sh/f/cover.jpg' }];
+  assert.equal(validateContent(uploaded).posts[0].coverImage, 'https://abc123.ufs.sh/f/cover.jpg');
   const empty = fixture(); empty.posts = []; assert.throws(() => validateContent(empty), /blog posts/);
 });
 test('parses a post body into paragraphs, headings and lists', async () => {

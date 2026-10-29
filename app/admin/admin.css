@@ -57,6 +57,10 @@
 .admin-field textarea { resize: vertical; line-height: 1.75; }
 .admin-field small { font-size: 10px; line-height: 1.5; color: #7d827b; }
 .admin-field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.admin-cover { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.admin-cover .admin-field { align-self: stretch; }
+/* Same 4:3 crop as .blog-cover on the storefront, so the preview shows what readers see. */
+.admin-cover-preview { display: block; width: 100%; max-width: 360px; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid #e3ddd2; border-radius: 8px; background: #f3f0e9; }
 .admin-fields > div > .admin-field + .admin-field { margin-top: 10px; }
 .admin-toggle { display: flex; align-items: center; gap: 10px; font-size: 12px; cursor: pointer; }
 .admin-toggle input { width: 17px; height: 17px; accent-color: #102844; }

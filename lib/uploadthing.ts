@@ -4,7 +4,7 @@ import { generateReactHelpers } from '@uploadthing/react';
 import type { UploadRouter } from '@/app/api/uploadthing/core';
 
 /**
- * Typed upload helpers for the review form.
+ * Typed upload helpers for the review form and the studio's blog covers.
  *
  * The hook rather than UploadThing's own <UploadButton>: the storefront has its
  * own buttons and its own CSS, and the packaged component brings Tailwind

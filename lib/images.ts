@@ -14,8 +14,8 @@
 export const IMAGE_HOSTS = ['cdn.shopify.com', '**.myshopify.com'] as const;
 
 /**
- * Where customer review photos live: UploadThing, on the legacy `utfs.io` host
- * and the per-app `<appId>.ufs.sh` one it now issues.
+ * Where customer review photos and blog covers live: UploadThing, on the legacy
+ * `utfs.io` host and the per-app `<appId>.ufs.sh` one it now issues.
  *
  * Kept apart from IMAGE_HOSTS so the studio's product-photo field stays a
  * Shopify-only field — a review photo is not catalogue photography. Both lists

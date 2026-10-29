@@ -1,10 +1,11 @@
 import { createUploadthing, type FileRouter } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
+import { authorize } from '@/lib/admin/http';
 
 /**
- * Photos attached to a customer review.
+ * Photos attached to a customer review, and blog cover photos from the studio.
  *
- * This endpoint is public by necessity — the person writing a review has no
+ * The review endpoint is public by necessity — the person writing a review has no
  * account and no admin session — so the limits are the only thing standing
  * between it and a free image host. Four files, 4 MB each, images only, and
  * the browser must be on our own origin.
@@ -29,6 +30,18 @@ export const uploadRouter = {
     })
     // The client reads the URL from the upload result; this callback only has
     // to exist. Keep it cheap — UploadThing calls it from its own servers.
+    .onUploadComplete(async ({ file }) => ({ url: file.ufsUrl })),
+
+  /**
+   * A blog post's cover photo, uploaded from the studio. Admin session only,
+   * on the same origin check as every other studio write. As with review
+   * photos, the URL reaches the content document only when the post is saved.
+   */
+  blogCover: f({ image: { maxFileSize: '4MB', maxFileCount: 1 } })
+    .middleware(async ({ req }) => {
+      if (await authorize(req)) throw new UploadThingError('Please sign in again.');
+      return {};
+    })
     .onUploadComplete(async ({ file }) => ({ url: file.ufsUrl })),
 } satisfies FileRouter;
 
