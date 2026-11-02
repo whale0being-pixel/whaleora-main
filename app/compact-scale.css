@@ -617,3 +617,10 @@
   .scenario-ticker { white-space: normal; }
   .scenario-ticker .scenario-track span:first-child::before { content: none; }
 }
+
+/* Video reviews header on phones: the big "07" and the second, repeated
+   line just add noise above the carousel. */
+@media (max-width: 600px) {
+  .journey-aside { display: block; }
+  .journey-count, .review-demo-note { display: none; }
+}

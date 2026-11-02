@@ -26,16 +26,21 @@
 .coverflow-dots button[aria-current] span { width: 20px; opacity: 1; background: var(--terracotta); }
 .coverflow-pause { min-height: 44px; min-width: 44px; padding: 0 4px; border: 0; background: none; color: var(--ink); font-size: 10px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 @media (max-width: 600px) {
-  .coverflow-carousel { --coverflow-near: 158px; --coverflow-far: 280px; padding: 16px 0 20px; }
-  .coverflow-stage { height: 278px; margin-bottom: 4px; }
-  .coverflow-card { width: 196px; height: 260px; border-radius: 10px; }
-  .coverflow-content { padding: 12px 14px 14px; }
-  .coverflow-copy h3 { font-size: 21px; }
-  .coverflow-tag { padding: 5px 6px; font-size: 8px; }
+  /* Phones: one clear card with a sliver of its neighbours either side.
+     No 3D tilt, no second row of cards behind, copy kept to the bottom. */
+  .coverflow-carousel { --card-w: min(66vw, 250px); --coverflow-near: calc(var(--card-w) * .07 + 30px); --coverflow-far: calc(var(--card-w) * .07 + 30px); padding: 8px 0 12px; }
+  .coverflow-stage { height: calc(var(--card-w) * 1.3 + 16px); margin-bottom: 6px; perspective: none; }
+  .coverflow-card { width: var(--card-w); height: calc(var(--card-w) * 1.3); border-radius: 12px; transform: translateX(var(--slide-x)) scale(var(--slide-scale)); }
+  .coverflow-card[data-distance="1"] { opacity: .45 !important; box-shadow: none; }
+  .coverflow-card[data-distance="2"], .coverflow-card[data-distance="3"] { opacity: 0 !important; pointer-events: none !important; }
+  .coverflow-shade { background: linear-gradient(180deg, transparent 38%, rgba(10,27,47,.55) 62%, rgba(10,27,47,.96)); }
+  .coverflow-content { padding: 14px 16px 16px; }
+  .coverflow-tag { display: none; }
+  .coverflow-copy h3 { font-size: 20px; line-height: 1.15; }
   .coverflow-subtitle { margin-top: 6px; font-size: 9px; }
-  .coverflow-cta { margin-top: 12px; font-size: 9px; }
-  .coverflow-controls { gap: 4px; max-width: calc(100% - 24px); }
-  .coverflow-dots button { width: 24px; }
+  .coverflow-cta { margin-top: 12px; min-height: 40px; padding: 8px 16px; gap: 8px; font-size: 9.5px; }
+  .coverflow-controls { gap: 6px; max-width: calc(100% - 32px); }
+  .coverflow-dots button { width: 20px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .coverflow-card, .coverflow-content, .coverflow-dots button span { transition: none; }

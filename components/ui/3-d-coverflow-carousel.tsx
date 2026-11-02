@@ -40,24 +40,29 @@ export function CoverFlowCarousel({ items = emptyItems, sectionLabel = 'Product 
   const [reducedMotion, setReducedMotion] = useState(true);
   const [inView, setInView] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
+  // Phones swipe through on their own; a slideshow that moves while you read is just confusing there.
+  const [compact, setCompact] = useState(false);
   const root = useRef<HTMLElement>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const total = items.length;
   const activeIndex = total ? currentIndex % total : 0;
   const nextSlide = useCallback(() => setCurrentIndex((previous) => total ? (previous + 1) % total : 0), [total]);
   const prevSlide = useCallback(() => setCurrentIndex((previous) => total ? (previous - 1 + total) % total : 0), [total]);
-  const rotating = autoplay && !paused && !hovered && !reducedMotion && inView && pageVisible && total > 1;
+  const rotating = autoplay && !compact && !paused && !hovered && !reducedMotion && inView && pageVisible && total > 1;
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const narrow = window.matchMedia('(max-width: 600px)');
     const syncMotion = () => setReducedMotion(media.matches);
+    const syncNarrow = () => setCompact(narrow.matches);
     const syncVisibility = () => setPageVisible(!document.hidden);
-    syncMotion(); syncVisibility();
+    syncMotion(); syncVisibility(); syncNarrow();
     media.addEventListener('change', syncMotion);
+    narrow.addEventListener('change', syncNarrow);
     document.addEventListener('visibilitychange', syncVisibility);
     const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting), { threshold: 0.2 });
     if (root.current) observer.observe(root.current);
-    return () => { media.removeEventListener('change', syncMotion); document.removeEventListener('visibilitychange', syncVisibility); observer.disconnect(); };
+    return () => { media.removeEventListener('change', syncMotion); narrow.removeEventListener('change', syncNarrow); document.removeEventListener('visibilitychange', syncVisibility); observer.disconnect(); };
   }, [total]);
 
   useEffect(() => {
@@ -106,7 +111,7 @@ export function CoverFlowCarousel({ items = emptyItems, sectionLabel = 'Product 
           pointerEvents: distance > 2 ? 'none' : 'auto',
         } as CSSProperties;
         const cta = <>{item.ctaText || 'View details'}<ArrowRightIcon /></>;
-        return <article key={item.id || `${item.img}-${index}`} className={`coverflow-card ${center ? 'is-center' : ''}`} style={style} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${total}: ${item.titleLine1}`} aria-hidden={!center}>
+        return <article key={item.id || `${item.img}-${index}`} className={`coverflow-card ${center ? 'is-center' : ''}`} data-distance={Math.min(distance, 3)} style={style} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${total}: ${item.titleLine1}`} aria-hidden={!center}>
           {/* Optimised and sized for the card; an admin URL on an unlisted host falls back to the original. */}
           <ProductImage src={item.img} alt={item.titleLine1} fill sizes="(max-width: 700px) 232px, 280px" loading={distance <= 1 ? 'eager' : 'lazy'} draggable={false} />
           <div className="coverflow-shade" />
@@ -124,7 +129,7 @@ export function CoverFlowCarousel({ items = emptyItems, sectionLabel = 'Product 
       <button type="button" className="coverflow-arrow" onClick={() => move(-1)} aria-label="Previous review" disabled={total < 2}><ChevronLeftIcon /></button>
       <div className="coverflow-dots" aria-label="Choose a review">{items.map((item, index) => <button type="button" key={item.id || index} onClick={() => { setPaused(true); setCurrentIndex(index); }} aria-label={`Go to review ${index + 1}`} aria-current={index === activeIndex ? 'true' : undefined}><span /></button>)}</div>
       <button type="button" className="coverflow-arrow" onClick={() => move(1)} aria-label="Next review" disabled={total < 2}><ChevronRightIcon /></button>
-      {autoplay && !reducedMotion && total > 1 && <button type="button" className="coverflow-pause" onClick={() => setPaused((value) => !value)} aria-label={paused ? 'Resume review slideshow' : 'Pause review slideshow'}>{paused ? 'Play' : 'Pause'}</button>}
+      {autoplay && !compact && !reducedMotion && total > 1 && <button type="button" className="coverflow-pause" onClick={() => setPaused((value) => !value)} aria-label={paused ? 'Resume review slideshow' : 'Pause review slideshow'}>{paused ? 'Play' : 'Pause'}</button>}
     </div>
     <p className="visually-hidden" aria-live={rotating ? 'off' : 'polite'} aria-atomic="true">Review {activeIndex + 1} of {total}: {items[activeIndex].titleLine1}</p>
   </section>;
