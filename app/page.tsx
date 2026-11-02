@@ -224,54 +224,6 @@ export default async function Home() {
 
       </section>
 
-      <section className="how-section shell section-pad" data-reveal>
-
-        <div className="section-heading">
-
-          <div>
-
-            <p className="eyebrow dark">How the alarm works</p>
-
-            <h2>Three seconds to learn. You’ll never forget it.</h2>
-
-          </div>
-
-          <p>
-            There is no menu, no pairing screen and no subscription. If you can pull a keyring apart, you already know how to use it.
-          </p>
-
-        </div>
-
-        <ol className="how-steps">
-
-          <li>
-            <span>01</span>
-            <strong>Carry</strong>
-            <p>
-              Clip it to a keyring or bag strap, somewhere you can reach without looking.
-            </p>
-          </li>
-
-          <li>
-            <span>02</span>
-            <strong>Pull</strong>
-            <p>
-              Yank the top pin out. Siren and strobe start immediately and stay on.
-            </p>
-          </li>
-
-          <li>
-            <span>03</span>
-            <strong>Reset</strong>
-            <p>
-              Push the pin back in to stop it. Nothing to reconfigure afterwards.
-            </p>
-          </li>
-
-        </ol>
-
-      </section>
-
       <SafetyJourneyGallery
         items={content.videos}
         settings={content.settings}
