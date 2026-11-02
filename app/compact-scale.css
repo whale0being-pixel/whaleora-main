@@ -588,3 +588,32 @@
     display: none;
   }
 }
+
+/* Scenario ticker: one static row on wide screens; on phones the five
+   words don't fit, so the row loops instead of being cut off at the edge.
+   The list is rendered twice and the track slides by exactly one copy. */
+.scenario-track { display: contents; }
+.scenario-dup { display: none; }
+
+@media (max-width: 600px) {
+  .scenario-ticker { padding-inline: 0; }
+  .scenario-track {
+    display: flex;
+    flex: none;
+    gap: 14px;
+    padding-right: 14px;
+    animation: scenario-scroll 22s linear infinite;
+  }
+  .scenario-dup { display: inline; }
+  /* Every word carries its dot so both copies measure the same. */
+  .scenario-ticker .scenario-track span:first-child::before { content: '·'; }
+}
+
+@keyframes scenario-scroll { to { transform: translateX(-50%); } }
+
+@media (max-width: 600px) and (prefers-reduced-motion: reduce) {
+  .scenario-track { animation: none; flex-wrap: wrap; justify-content: center; row-gap: 4px; padding-inline: 16px; }
+  .scenario-dup { display: none; }
+  .scenario-ticker { white-space: normal; }
+  .scenario-ticker .scenario-track span:first-child::before { content: none; }
+}

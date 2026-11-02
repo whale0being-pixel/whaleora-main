@@ -21,6 +21,8 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 // The poster paints first on every homepage visit; send it through the optimiser (1920w, WebP/AVIF) instead of as the raw JPEG.
 const heroPoster = getImageProps({ src: '/lifestyle/hero-commute-poster.jpg', alt: '', width: 960, height: 540 }).props.src;
 
+const SCENARIOS = ['Campus', 'Late commute', 'Solo travel', 'Night shift', 'Everyday carry'];
+
 export const revalidate = 3600
 
 export default async function Home() {
@@ -235,11 +237,13 @@ export default async function Home() {
       />
 
       <div className="scenario-ticker" aria-hidden="true">
-        <span>Campus</span>
-        <span>Late commute</span>
-        <span>Solo travel</span>
-        <span>Night shift</span>
-        <span>Everyday carry</span>
+        <div className="scenario-track">
+          {[...SCENARIOS, ...SCENARIOS].map((label, i) => (
+            <span key={i} className={i >= SCENARIOS.length ? 'scenario-dup' : undefined}>
+              {label}
+            </span>
+          ))}
+        </div>
       </div>
 
       <section className="hub-preview section-pad" data-reveal>
