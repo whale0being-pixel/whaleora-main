@@ -45,7 +45,7 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'Which personal safety tool should I buy?',
     answer:
-      'The best tool is the one that seamlessly fits your everyday routine.\n\nFor daily commutes, late shifts, or campus walks, we highly recommend starting with the Personal SOS Alarm (₹1,799). It features a 130dB siren and strobe light to instantly draw attention. If you need a fail-safe backup for travel, the Survival Whistle (₹299) requires no battery and clips easily to any zipper.\n\nPepper spray (₹499) is ideal when you need to maintain physical distance, provided you keep it accessible in an outer pocket. The emergency window breaker (₹599) is strictly a transit tool—keep it in your car door pocket, not on your keys.',
+      'The best tool is the one that seamlessly fits your everyday routine.\n\nFor daily commutes, late shifts, or campus walks, we highly recommend starting with the Personal SOS Alarm (₹1,699). It features a 130dB siren and strobe light to instantly draw attention. If you need a fail-safe backup for travel, the Survival Whistle (₹299) requires no battery and clips easily to any zipper.\n\nPepper spray (₹499) is ideal when you need to maintain physical distance, provided you keep it accessible in an outer pocket. The emergency window breaker (₹599) is strictly a transit tool—keep it in your car door pocket, not on your keys.',
     keywords: ['which', 'choose', 'pick', 'recommend', 'best', 'right one', 'should i buy', 'should i get', 'which one', 'starter', 'begin', 'first', 'kit', 'compare', 'difference', 'vs', 'versus', 'help me choose', 'self defense'],
     followUps: ['choose-alarm-vs-whistle', 'choose-kit', 'alarm-how', 'orders-shipping'],
     links: [
@@ -115,7 +115,7 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'How much do Whaleora safety products cost?',
     answer:
-      'We believe reliable safety tools should be accessible. Our collection ranges from ₹299 to ₹1,799, with all taxes included.\n\n• Survival Whistle: ₹299\n• Pepper Spray: ₹499\n• Emergency Window Breaker: ₹599\n• Personal SOS Alarm: ₹1,799\n\nThere are no hidden fees, no required apps, and no monthly subscriptions. We also offer free shipping across India on all orders over ₹1,499.',
+      'We believe reliable safety tools should be accessible. Our collection ranges from ₹299 to ₹1,699, with all taxes included.\n\n• Survival Whistle: ₹299\n• Pepper Spray: ₹499\n• Emergency Window Breaker: ₹599\n• Personal SOS Alarm: ₹1,699\n\nThere are no hidden fees, no required apps, and no monthly subscriptions. We also offer free shipping across India on all orders over ₹1,499.',
     keywords: ['price', 'cost', 'how much', '₹', 'rupee', 'expensive', 'cheap', 'afford', '299', '499', '599', '1699', 'subscription', 'value'],
     followUps: ['choose-cheap-alarm', 'orders-shipping', 'choose-which'],
     links: [{ label: 'See all four', href: '/products' }],
