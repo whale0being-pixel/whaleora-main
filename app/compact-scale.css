@@ -624,3 +624,22 @@
   .journey-aside { display: block; }
   .journey-count, .review-demo-note { display: none; }
 }
+
+/* Shop hero: the products are the page, so this stays as short as its copy.
+   The photo fills whatever height the copy sets rather than forcing its own,
+   and goes altogether once the layout stacks, where it would only add height. */
+.collection-hero { padding-block: clamp(20px, 2.4vw, 32px); }
+.collection-hero-copy { padding-block: 0; }
+.collection-hero h1 { margin-block: 6px 12px; font-size: clamp(30px, 3.4vw, 46px); line-height: 1.04; }
+.collection-hero-copy > p:last-child { font-size: 15px; line-height: 1.6; }
+.collection-hero-visual { min-height: 0; aspect-ratio: auto; }
+
+@media (max-width: 900px) {
+  .collection-hero { padding-block: 20px; }
+  /* The copy now sits on the pattern's darkest waves; keep it readable. */
+  .collection-hero::before { opacity: .16; }
+  .collection-hero-visual { display: none; }
+  .collection-hero-grid { gap: 0; }
+  .collection-hero h1 { margin-block: 0 10px; font-size: 30px; line-height: 1.08; }
+  .collection-hero-copy > p:last-child { font-size: 13px; }
+}
