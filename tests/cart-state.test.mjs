@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { addLine, dropLine, lineIdFor, setLineQuantity, unsellable, withLines } from '../lib/shopify/cart-state.ts';
+import { addLine, dropLine, lineIdFor, pickUpsells, setLineQuantity, unlocksFreeShipping, unsellable, withLines } from '../lib/shopify/cart-state.ts';
 
 const line = (over = {}) => ({
   id: null,
@@ -87,4 +87,42 @@ test('a product the connected store has no record of cannot be sold', () => {
   assert.equal(unsellable({ shopify: null }, false), false, 'the local bag still takes it when Shopify is unreachable');
   assert.equal(unsellable({ shopify: { availableForSale: false } }, true), true);
   assert.equal(unsellable({ shopify: { availableForSale: true } }, true), false);
+});
+
+const shopProduct = (id, price, shopify = { handle: id, availableForSale: true }) => ({ id, price, shopify });
+const shelf = [shopProduct('sos-alarm', 1699), shopProduct('pepperspray', 499), shopProduct('windowbreaker', 599), shopProduct('whistle', 299)];
+const ids = (items) => items.map((item) => item.id);
+
+test('upsells lead with what reaches free shipping, then the smallest add-on', () => {
+  const bag = [line({ productId: 'whistle', handle: 'whistle', unitPrice: 299 })];
+  assert.deepEqual(ids(pickUpsells(shelf, bag, true, 1200)), ['sos-alarm', 'pepperspray']);
+});
+
+test('upsells go cheapest first once shipping is already free', () => {
+  assert.deepEqual(ids(pickUpsells(shelf, [line()], true, 0)), ['whistle', 'pepperspray']);
+});
+
+test('upsells never repeat something in the bag, even under another id', () => {
+  const bag = [line({ productId: 'gid-for-whistle', handle: 'whistle' }), line({ productId: 'pepperspray', handle: 'pepperspray' })];
+  assert.deepEqual(ids(pickUpsells(shelf, bag, true, 0)), ['windowbreaker', 'sos-alarm']);
+});
+
+test('upsells skip what the store cannot sell', () => {
+  const soldOut = shopProduct('whistle', 299, { handle: 'whistle', availableForSale: false });
+  const unlisted = shopProduct('pepperspray', 499, null);
+  assert.deepEqual(ids(pickUpsells([soldOut, unlisted, shopProduct('windowbreaker', 599)], [], true, 0)), ['windowbreaker']);
+});
+
+test('upsells leave the catalogue order untouched and run out quietly', () => {
+  const copy = [...shelf];
+  pickUpsells(copy, [], true, 0);
+  assert.deepEqual(ids(copy), ids(shelf));
+  const everything = shelf.map((item) => line({ productId: item.id, handle: item.id }));
+  assert.deepEqual(pickUpsells(shelf, everything, true, 0), []);
+});
+
+test('free shipping is only unlocked by reaching the gap, and only while there is one', () => {
+  assert.equal(unlocksFreeShipping(499, 500), false);
+  assert.equal(unlocksFreeShipping(500, 500), true);
+  assert.equal(unlocksFreeShipping(1699, 0), false);
 });

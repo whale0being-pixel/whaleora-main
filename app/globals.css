@@ -340,6 +340,16 @@ body:has(.pdp-sticky-purchase) .footer-bottom { padding-bottom: calc(22px + 74px
 .quantity button, .quantity span { width: 32px; height: 30px; display: grid; place-items: center; border: 0; background: none; font-size: 11px; }
 .quantity button { cursor: pointer; }
 .remove { margin-top: 8px; padding: 0; border: 0; border-bottom: 1px solid currentColor; background: none; font-size: var(--label-size); color: rgba(16,40,68,.5); cursor: pointer; }
+.cart-upsell { padding: 22px 0 8px; }
+.cart-upsell h3 { margin: 0 0 6px; font-family: var(--font-sans), sans-serif; font-size: var(--label-size); font-weight: var(--label-weight); letter-spacing: var(--label-track); text-transform: uppercase; color: rgba(16,40,68,.6); }
+.cart-upsell-item { padding: 10px 0; display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: center; gap: 14px; }
+.cart-upsell-item img { width: 64px; height: 64px; object-fit: contain; background: var(--ivory); }
+.cart-upsell-item a { display: block; font-family: var(--font-display), serif; font-size: 17px; line-height: 1.2; }
+.cart-upsell-item small { display: block; margin-top: 4px; font-size: 12px; line-height: 1.4; color: rgba(16,40,68,.6); }
+.cart-upsell-item small strong { font-weight: 600; color: var(--ink); }
+.cart-upsell-item small em { font-family: var(--font-sans), sans-serif; font-style: normal; font-weight: 600; color: #b04f2a; }
+.cart-upsell-add { min-height: 44px; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: none; color: var(--ink); font-size: var(--label-size); font-weight: 600; letter-spacing: var(--label-track); text-transform: uppercase; cursor: pointer; transition: background-color .2s ease, color .2s ease; }
+.cart-upsell-add:hover { background: var(--ink); color: var(--paper); }
 .cart-total { padding: 24px 30px 30px; border-top: 1px solid var(--line); }
 .cart-total > div { display: flex; justify-content: space-between; }
 .cart-total > div span { font-family: var(--font-display), serif; font-size: 28px; }

@@ -8,9 +8,9 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition, type CSSProperties } from 'react';
 import { AccountLink } from '@/components/account-link';
 import { addToCartAction, getCartAction, removeCartLineAction, updateCartLineAction } from '@/app/actions/cart';
-import type { CatalogProduct } from '@/lib/shopify/catalog';
+import type { CartProduct, CatalogProduct } from '@/lib/shopify/catalog';
 import type { CartState, CartStateLine } from '@/lib/shopify/types';
-import { addLine, dropLine, lineIdFor, setLineQuantity, unsellable, withLines } from '@/lib/shopify/cart-state';
+import { addLine, dropLine, lineIdFor, pickUpsells, setLineQuantity, unlocksFreeShipping, unsellable, withLines } from '@/lib/shopify/cart-state';
 import { whatsappHref } from '@/lib/content/contact';
 import { burstConfetti } from '@/lib/confetti';
 import { formatPrice, products, PRODUCT_IMAGE_FALLBACK } from '@/data/products';
@@ -48,7 +48,7 @@ type CartContextValue = {
   pending: boolean;
   open: boolean;
   setOpen: (open: boolean) => void;
-  add: (product: ShopProduct, quantity?: number) => void;
+  add: (product: CartProduct, quantity?: number) => void;
   update: (line: CartStateLine, quantity: number) => void;
   remove: (line: CartStateLine) => void;
   count: number;
@@ -68,7 +68,7 @@ export function markCheckoutHandoff() {
   try { window.sessionStorage.setItem(HANDOFF_KEY, '1'); } catch { /* private mode */ }
 }
 /** Local-bag maths, used only while Shopify is unreachable or unconfigured. */
-const localLine = (product: ShopProduct, quantity: number): CartStateLine => ({
+const localLine = (product: CartProduct, quantity: number): CartStateLine => ({
   id: null,
   productId: product.id,
   variantId: product.shopify?.variantId ?? null,
@@ -203,7 +203,7 @@ export function CommerceProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const add = useCallback((product: ShopProduct, quantity = 1) => {
+  const add = useCallback((product: CartProduct, quantity = 1) => {
     celebrate();
     setOpen(true);
     const variantId = product.shopify?.variantId ?? null;
@@ -361,14 +361,79 @@ const localRecord = (line: CartStateLine) =>
   products.find((product) => product.id === line.productId)
   ?? products.find((product) => product.slug === line.handle);
 
+/** Tells Meta and Google a one-tap add happened, the same way from anywhere on the site. */
+function trackAddToCart(product: CartProduct) {
+  const eventId = crypto.randomUUID();
+
+  // 1. Meta & Google Browser Events
+  if (typeof window !== 'undefined') {
+    if (window.fbq) {
+      window.fbq('track', 'AddToCart', {
+        content_ids: [product.shopify?.variantId?.split('/').pop() || product.id],
+        content_name: product.title,
+        content_type: 'product',
+        value: product.price,
+        currency: product.currencyCode || 'INR',
+        num_items: 1
+      }, { eventID: eventId });
+    }
+    if (window.gtag) {
+      window.gtag('event', 'add_to_cart', {
+        currency: product.currencyCode || 'INR',
+        value: product.price,
+        items: [{
+          item_id: product.id,
+          item_name: product.title,
+          price: product.price,
+          quantity: 1
+        }]
+      });
+    }
+  }
+
+  // 2. Meta CAPI Server Action
+  sendAddToCartCAPI({
+    eventId: eventId,
+    productId: product.id,
+    productName: product.title,
+    value: product.price,
+    currency: product.currencyCode || 'INR'
+  });
+}
+
 function CartDrawer() {
-  const { cart, pending, open, setOpen, update, remove } = useCart();
+  const { cart, pending, open, setOpen, add, update, remove } = useCart();
   const closeCart = useCallback(() => setOpen(false), [setOpen]);
   const drawerRef = useOverlayFocus(open, closeCart);
   const [checkoutNote, setCheckoutNote] = useState(false);
   const [gate, setGate] = useState(false);
   const { subtotal, currencyCode, lines } = cart;
   const shippingGap = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+  const [catalog, setCatalog] = useState<CartProduct[] | null>(null);
+  const upsells = pickUpsells(catalog ?? [], lines, cart.connected, shippingGap);
+
+  // Only fetched once someone is looking at a bag with something in it. The bag
+  // works without suggestions, so a failure here just leaves them out.
+  const hasLines = lines.length > 0;
+  useEffect(() => {
+    if (!open || !hasLines || catalog) return;
+    let active = true;
+    fetch('/api/upsell')
+      .then((response) => (response.ok ? response.json() as Promise<CartProduct[]> : null))
+      .then((items) => { if (active && items) setCatalog(items); })
+      .catch(() => { /* no suggestions this time */ });
+    return () => { active = false; };
+  }, [open, hasLines, catalog]);
+
+  const addUpsell = (product: CartProduct) => {
+    trackAddToCart(product);
+    add(product);
+    // The row leaves with the click, so hand focus on rather than dropping it on the page.
+    requestAnimationFrame(() => {
+      const panel = drawerRef.current;
+      (panel?.querySelector<HTMLElement>('.cart-upsell-add') ?? panel?.querySelector<HTMLElement>('.cart-head button'))?.focus({ preventScroll: true });
+    });
+  };
 
   const goToCheckout = () => {
     if (cart.checkoutUrl) {
@@ -447,7 +512,16 @@ function CartDrawer() {
                 <ProductImage src={line.image || record?.images[0] || PRODUCT_IMAGE_FALLBACK} width={130} height={130} alt="" />
                 <div><small>{record?.category ?? 'Whaleora'}</small>{lineSlug ? <Link href={`/products/${lineSlug}`} onClick={() => setOpen(false)}>{line.title}</Link> : line.title}<strong>{formatPrice(line.unitPrice, line.currencyCode)}</strong><div className="quantity"><button onClick={() => update(line, line.quantity - 1)} aria-label="Decrease quantity">−</button><span>{line.quantity}</span><button onClick={() => update(line, line.quantity + 1)} aria-label="Increase quantity">+</button></div><button className="remove" onClick={() => remove(line)}>Remove</button></div>
               </div>;
-            })}</div>
+            })}
+              {upsells.length > 0 && <section className="cart-upsell" aria-labelledby="cart-upsell-title">
+                <h3 id="cart-upsell-title">Add to your kit</h3>
+                {upsells.map((product) => <div className="cart-upsell-item" key={product.id}>
+                  <ProductImage src={product.images[0] || PRODUCT_IMAGE_FALLBACK} width={64} height={64} alt="" />
+                  <div><Link href={`/products/${product.slug}`} onClick={() => setOpen(false)}>{product.title}</Link><small><strong>{formatPrice(product.price, product.currencyCode)}</strong> · {unlocksFreeShipping(product.price, shippingGap) ? <em>Free shipping</em> : product.label}</small></div>
+                  <button type="button" className="cart-upsell-add" onClick={() => addUpsell(product)} aria-label={`Add ${product.title} to bag`}>Add <Plus size={14} strokeWidth={2.2} aria-hidden="true" /></button>
+                </div>)}
+              </section>}
+            </div>
             <div className="cart-total"><div><span>Subtotal</span><strong>{formatPrice(subtotal, currencyCode)}</strong></div><p>Taxes included. Shipping calculated at checkout.</p>
               <button className="button button-primary" onClick={checkout} disabled={pending}>{pending ? 'Updating…' : 'Checkout securely'} <span aria-hidden="true"><ArrowRight size={16} strokeWidth={2} /></span></button>{checkoutNote && !cart.checkoutUrl && <p className="drawer-note" role="status">Checkout isn’t connected on this build yet. To order now, message us on <a href={whatsappHref("Hi Whaleora! I'd like to place an order.")}>WhatsApp</a> or email hello@whaleora.com.</p>}</div>
           </>
@@ -471,44 +545,7 @@ export function ProductCard({ product }: { product: ShopProduct }) {
   const soldOut = unsellable(product, cart.connected);
 
   const handleQuickAdd = () => {
-    const eventId = crypto.randomUUID();
-    
-    // 1. Meta & Google Browser Events
-    if (typeof window !== 'undefined') {
-      if (window.fbq) {
-        window.fbq('track', 'AddToCart', {
-          content_ids: [product.shopify?.variantId?.split('/').pop() || product.id],
-          content_name: product.title,
-          content_type: 'product',
-          value: product.price,
-          currency: product.currencyCode || 'INR',
-          num_items: 1
-        }, { eventID: eventId });
-      }
-      if (window.gtag) {
-        window.gtag('event', 'add_to_cart', {
-          currency: product.currencyCode || 'INR',
-          value: product.price,
-          items: [{
-            item_id: product.id,
-            item_name: product.title,
-            price: product.price,
-            quantity: 1
-          }]
-        });
-      }
-    }
-    
-    // 2. Meta CAPI Server Action
-    sendAddToCartCAPI({
-      eventId: eventId,
-      productId: product.id,
-      productName: product.title,
-      value: product.price,
-      currency: product.currencyCode || 'INR'
-    });
-
-    // 3. Proceed with adding to cart
+    trackAddToCart(product);
     add(product);
   };
 

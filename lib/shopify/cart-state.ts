@@ -58,3 +58,23 @@ export const unsellable = (
   product: { shopify: { availableForSale: boolean } | null },
   connected: boolean,
 ) => (connected && !product.shopify) || (product.shopify ? !product.shopify.availableForSale : false);
+
+/** Whether adding something at this price would carry the bag to free shipping. */
+export const unlocksFreeShipping = (price: number, shippingGap: number) => shippingGap > 0 && price >= shippingGap;
+
+/**
+ * What the bag suggests next: things the shopper can buy and doesn't already
+ * have. While free shipping is out of reach, whatever gets them there comes
+ * first; otherwise the smallest add-on does.
+ */
+export const pickUpsells = <P extends { id: string; price: number; shopify: { handle: string; availableForSale: boolean } | null }>(
+  catalog: P[],
+  lines: CartStateLine[],
+  connected: boolean,
+  shippingGap: number,
+  limit = 2,
+): P[] => catalog
+  .filter((product) => !unsellable(product, connected))
+  .filter((product) => !lines.some((line) => line.productId === product.id || (product.shopify !== null && line.handle === product.shopify.handle)))
+  .sort((a, b) => Number(unlocksFreeShipping(b.price, shippingGap)) - Number(unlocksFreeShipping(a.price, shippingGap)) || a.price - b.price)
+  .slice(0, limit);

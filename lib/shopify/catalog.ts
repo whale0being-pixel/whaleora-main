@@ -158,6 +158,9 @@ const shopifyLink = (remote: ShopifyProduct) => {
  * `howItWorksImage` sits outside it too, in the other direction: step 2 is
  * skipped for it, so the store can never supply the how-to-use photo.
  */
+/** The slice of a product the shopping bag needs to show and add it. */
+export type CartProduct = Pick<CatalogProduct, 'id' | 'slug' | 'title' | 'label' | 'images' | 'price' | 'currencyCode' | 'shopify'>;
+
 function resolve(local: Product, remote: ShopifyProduct | undefined, editorial: ProductEditorial | undefined): CatalogProduct {
   const store = remoteFields(remote);
   const photosFromStore = !editorial?.images.length && store.images.length > 0;
