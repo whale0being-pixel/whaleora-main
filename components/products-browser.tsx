@@ -5,8 +5,10 @@ import { useMemo, useState } from 'react';
 import { ProductCard, type ShopProduct } from '@/components/commerce';
 import { ArrowUpRight } from 'lucide-react';
 
-export function ProductsBrowser({ catalog }: { catalog: ShopProduct[] }) {
-  const [category, setCategory] = useState('All');
+export function ProductsBrowser({ catalog, initialCategory = 'All' }: { catalog: ShopProduct[]; initialCategory?: string }) {
+  // The Bundles filter only appears once the store has published a bundle.
+  const categories = ['All', 'Alarms', 'Tools', ...(catalog.some((product) => product.category === 'Bundles') ? ['Bundles'] : [])];
+  const [category, setCategory] = useState(categories.includes(initialCategory) ? initialCategory : 'All');
   const [sort, setSort] = useState('featured');
   const shown = useMemo(() => {
     const filtered = category === 'All' ? [...catalog] : catalog.filter((product) => product.category === category);
@@ -19,7 +21,7 @@ export function ProductsBrowser({ catalog }: { catalog: ShopProduct[] }) {
   return (
     <section className="shop-section shell section-pad">
       <div className="filters">
-        <div role="group" aria-label="Filter products by category">{['All', 'Alarms', 'Tools'].map((item) => <button key={item} className={category === item ? 'active' : ''} aria-pressed={category === item} onClick={() => setCategory(item)}>{item}<sup>{item === 'All' ? catalog.length : catalog.filter((product) => product.category === item).length}</sup></button>)}</div>
+        <div role="group" aria-label="Filter products by category">{categories.map((item) => <button key={item} className={category === item ? 'active' : ''} aria-pressed={category === item} onClick={() => setCategory(item)}>{item}<sup>{item === 'All' ? catalog.length : catalog.filter((product) => product.category === item).length}</sup></button>)}</div>
         <label>Sort <select value={sort} onChange={(event) => setSort(event.target.value)}><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="name">Name</option></select></label>
       </div>
       <div className="product-grid">{shown.map((product) => <ProductCard key={product.id} product={product} />)}</div>

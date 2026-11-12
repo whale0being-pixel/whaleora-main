@@ -643,3 +643,8 @@
   .collection-hero h1 { margin-block: 0 10px; font-size: 30px; line-height: 1.08; }
   .collection-hero-copy > p:last-child { font-size: 13px; }
 }
+
+/* Bundles page with nothing published yet */
+.bundles-empty { max-width: 560px; padding-block: clamp(8px, 2vw, 24px); }
+.bundles-empty h2 { margin: 0 0 10px; font-family: var(--font-display), serif; font-size: clamp(26px, 3vw, 36px); font-weight: 400; }
+.bundles-empty p { margin: 0 0 22px; color: rgba(16,40,68,.65); line-height: 1.6; }

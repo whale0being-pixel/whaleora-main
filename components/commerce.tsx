@@ -247,6 +247,7 @@ export function useCart() {
 
 const NAV_LINKS = [
   { href: '/products', label: 'Shop' },
+  { href: '/bundles', label: 'Bundles' },
   { href: '/safety-hub', label: 'Safety Hub' },
   { href: '/blog', label: 'Journal' },
   { href: '/about', label: 'About' },

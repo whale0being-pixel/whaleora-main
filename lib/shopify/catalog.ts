@@ -3,6 +3,7 @@ import { publishedContent } from '@/lib/content/store';
 import type { ProductEditorial } from '@/lib/content/types';
 import { isShopifyConfigured, safely, shopifyFetch, SHOPIFY_PRODUCTS_TAG } from './client';
 import { PRODUCTS_QUERY } from './queries';
+import { isBundle, singlesOnly } from './bundles';
 import type { ShopifyMedia, ShopifyProduct, ShopifyVariant } from './types';
 
 export type CatalogVariant = {
@@ -212,7 +213,7 @@ function adopt(remote: ShopifyProduct): CatalogProduct {
     slug: remote.handle,
     shopifyHandle: remote.handle,
     title: remote.title,
-    category: remote.tags.includes('Alarms') ? 'Alarms' : 'Tools',
+    category: isBundle(remote) ? 'Bundles' : remote.tags.includes('Alarms') ? 'Alarms' : 'Tools',
     label: remote.tags[0] ?? 'Whaleora',
     shortDescription: summary,
     longDescription: description || summary,
@@ -258,6 +259,16 @@ export async function getCatalog(): Promise<CatalogProduct[]> {
   return [...merged, ...extras];
 }
 
+/** The catalogue without bundles, for every place built around single products. */
+export async function getSingles(): Promise<CatalogProduct[]> {
+  return singlesOnly(await getCatalog());
+}
+
+/** Just the bundles, in the store's order. */
+export async function getBundles(): Promise<CatalogProduct[]> {
+  return (await getCatalog()).filter((product) => product.category === 'Bundles');
+}
+
 /** What Shopify currently holds for each editable product, for the studio to
  *  show beside the override fields. Null price means the store has no answer. */
 export type ShopifySnapshot = { id: string; matched: boolean; title: string; description: string; images: string[]; price: number | null; currencyCode: string | null };
@@ -283,7 +294,7 @@ export async function shopifySnapshots(): Promise<{ connected: boolean; items: S
  * edit changed the product page and left the marketing copy contradicting it.
  */
 export async function catalogPrices() {
-  const catalog = await getCatalog();
+  const catalog = await getSingles();
   const prices = catalog.map((product) => product.price).filter((price) => Number.isFinite(price) && price > 0);
   const currencyCode = catalog[0]?.currencyCode ?? 'INR';
   const bySlug = new Map(catalog.map((product) => [product.slug, product] as const));

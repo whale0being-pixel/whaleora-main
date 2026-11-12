@@ -16,6 +16,7 @@ const PRODUCT_FRAGMENT = /* GraphQL */ `
     description
     availableForSale
     tags
+    collections(first: 20) { nodes { handle } }
     featuredImage { ...ImageFields }
     images(first: 8) { nodes { ...ImageFields } }
     media(first: 20) {

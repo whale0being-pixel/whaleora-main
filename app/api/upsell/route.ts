@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getCatalog, type CartProduct } from '@/lib/shopify/catalog';
+import { getSingles, type CartProduct } from '@/lib/shopify/catalog';
 
 /**
  * The products the shopping bag can suggest. A route rather than a server
@@ -12,7 +12,8 @@ import { getCatalog, type CartProduct } from '@/lib/shopify/catalog';
  */
 
 export async function GET() {
-  const catalog = await getCatalog();
+  // Singles only: a kit would repeat what's already in the bag.
+  const catalog = await getSingles();
   const items: CartProduct[] = catalog.map(({ id, slug, title, label, images, price, currencyCode, shopify }) => ({
     id, slug, title, label, price, currencyCode, shopify, images: images.slice(0, 1),
   }));

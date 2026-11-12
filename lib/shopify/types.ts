@@ -31,6 +31,8 @@ export type ShopifyProduct = {
   description: string;
   availableForSale: boolean;
   tags: string[];
+  /** Only the collections published to the site's sales channel. */
+  collections?: { nodes: { handle: string }[] } | null;
   featuredImage: ShopifyImage | null;
   images: { nodes: ShopifyImage[] };
   media: { nodes: ShopifyMedia[] };

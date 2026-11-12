@@ -12,6 +12,7 @@ import { productReviews } from '@/lib/content/product-reviews';
 import { productRating } from '@/lib/convex';
 import { formatPrice, PRODUCT_IMAGE_FALLBACK } from '@/data/products';
 import { getCatalog, getCatalogProduct } from '@/lib/shopify/catalog';
+import { singlesOnly } from '@/lib/shopify/bundles';
 import './product-page.css';
 
 export const dynamic = 'force-dynamic';
@@ -61,7 +62,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const product = catalog.find((item) => item.slug === slug);
   if (!product) notFound();
   
-  const related = catalog.filter((item) => item.id !== product.id).slice(0, 3);
+  const bundle = product.category === 'Bundles';
+  const singles = singlesOnly(catalog);
+  const related = singles.filter((item) => item.id !== product.id).slice(0, 3);
   const { quotes, videos } = productReviews(content, product);
   const handle = product.shopify?.handle ?? product.slug;
   const { written, rating } = await productRating(handle);
@@ -102,7 +105,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
     />
     
-    <nav className="pdp-breadcrumb shell" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/products">Shop</Link><span>/</span><span aria-current="page">{product.title}</span></nav>
+    <nav className="pdp-breadcrumb shell" aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span>{bundle ? <><Link href="/products">Shop</Link><span>/</span><Link href="/bundles">Bundles</Link></> : <Link href="/products">Shop</Link>}<span>/</span><span aria-current="page">{product.title}</span></nav>
     <section className="pdp-layout shell">
       <div className="pdp-media-column"><ProductGallery key={product.id} product={product} /><ProductQuote items={quotes} /></div>
       <ProductPurchase key={product.id} product={product} rating={content.settings.showWritten ? <RatingBadge summary={rating} href={`/products/${product.slug}#product-reviews`} /> : null}>
@@ -142,7 +145,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
     {product.scenarios.length > 0 && <section className="pdp-use-section pdp-section"><div className="shell"><div className="pdp-section-heading"><p className="eyebrow dark">Made for your everyday</p><h2>A little more prepared.<br />Wherever the day takes you.</h2><p>{product.shortDescription}</p></div><div className="pdp-use-grid">{product.scenarios.map((scenario, i) => <article key={scenario}><span>0{i + 1}</span><h3>{scenario}</h3><p>{i % 2 === 0 ? 'Keep it somewhere easy to reach.' : 'Make it part of your everyday kit.'}</p></article>)}</div><p className="pdp-use-caveat">{product.compare.caveat}</p></div></section>}
 
-    {catalog.length > 1 && <section className="pdp-comparison shell pdp-section"><div className="pdp-section-heading"><p className="eyebrow dark">Different tools. Different jobs.</p><h2>Find the right fit for your day.</h2><p>A side-by-side look at what each tool does, and what it needs from you.</p></div><div className="pdp-compare-scroll" tabIndex={0} role="region" aria-label="Product comparison, scroll horizontally on smaller screens"><table><caption className="visually-hidden">Compare Whaleora safety products</caption><thead><tr><th scope="col">At a glance</th>{[product, ...related].map((item) => <th scope="col" key={item.id} className={item.id === product.id ? 'current' : ''}><Link href={`/products/${item.slug}`}>{item.title}</Link>{item.id === product.id && <small>You’re viewing</small>}<span>{formatPrice(item.price, item.currencyCode)}</span></th>)}</tr></thead><tbody>{([{ label: 'The job', key: 'job' }, { label: 'Powered by', key: 'power' }, { label: 'Where to keep it', key: 'carry' }, { label: 'Worth knowing', key: 'caveat' }] as const).map((row) => <tr key={row.key}><th scope="row">{row.label}</th>{[product, ...related].map((item) => <td key={item.id} className={item.id === product.id ? 'current' : ''}>{item.compare[row.key]}</td>)}</tr>)}</tbody></table></div><p className="pdp-compare-hint" aria-hidden="true">Swipe to compare <ArrowRight size={15} strokeWidth={2} aria-hidden="true" /></p></section>}
+    {!bundle && singles.length > 1 && <section className="pdp-comparison shell pdp-section"><div className="pdp-section-heading"><p className="eyebrow dark">Different tools. Different jobs.</p><h2>Find the right fit for your day.</h2><p>A side-by-side look at what each tool does, and what it needs from you.</p></div><div className="pdp-compare-scroll" tabIndex={0} role="region" aria-label="Product comparison, scroll horizontally on smaller screens"><table><caption className="visually-hidden">Compare Whaleora safety products</caption><thead><tr><th scope="col">At a glance</th>{[product, ...related].map((item) => <th scope="col" key={item.id} className={item.id === product.id ? 'current' : ''}><Link href={`/products/${item.slug}`}>{item.title}</Link>{item.id === product.id && <small>You’re viewing</small>}<span>{formatPrice(item.price, item.currencyCode)}</span></th>)}</tr></thead><tbody>{([{ label: 'The job', key: 'job' }, { label: 'Powered by', key: 'power' }, { label: 'Where to keep it', key: 'carry' }, { label: 'Worth knowing', key: 'caveat' }] as const).map((row) => <tr key={row.key}><th scope="row">{row.label}</th>{[product, ...related].map((item) => <td key={item.id} className={item.id === product.id ? 'current' : ''}>{item.compare[row.key]}</td>)}</tr>)}</tbody></table></div><p className="pdp-compare-hint" aria-hidden="true">Swipe to compare <ArrowRight size={15} strokeWidth={2} aria-hidden="true" /></p></section>}
 
     <section className="pdp-faq pdp-section"><div className="shell"><div className="pdp-section-heading"><p className="eyebrow dark">Before you decide</p><h2>Your questions, answered.</h2><p>The practical details, in one place.</p></div><div className="pdp-faq-list">
       {product.specifications.length > 0 && <details><summary>What are the specifications?<span>+</span></summary><dl>{product.specifications.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl></details>}

@@ -5,7 +5,7 @@ import { livePosts } from '@/lib/content/blog';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = 'https://whaleora.com';
-  const routes = ['', '/products', '/about', '/safety-hub', '/blog', '/institutions', '/contact', '/warranty'];
+  const routes = ['', '/products', '/bundles', '/about', '/safety-hub', '/blog', '/institutions', '/contact', '/warranty'];
   const [catalog, { checklists, posts }] = await Promise.all([getCatalog(), publishedContent()]);
   
   return [

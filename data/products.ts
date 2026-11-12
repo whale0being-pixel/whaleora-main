@@ -4,7 +4,8 @@ export type Product = {
   title: string;
   /** Product handle in Shopify admin. Defaults to `slug` when omitted. */
   shopifyHandle?: string;
-  category: 'Alarms' | 'Tools';
+  /** Bundles only ever come from Shopify; the bundled records here are all singles. */
+  category: 'Alarms' | 'Tools' | 'Bundles';
   label: string;
   shortDescription: string;
   longDescription: string;

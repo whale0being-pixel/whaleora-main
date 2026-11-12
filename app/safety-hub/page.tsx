@@ -4,7 +4,7 @@ import { SafetyHubExplorer } from '@/components/safety-hub';
 import { EmergencyCard } from '@/components/emergency-card';
 import { hubProgrammes } from '@/data/safety-hub';
 import { publishedContent } from '@/lib/content/store';
-import { getCatalog } from '@/lib/shopify/catalog';
+import { getSingles } from '@/lib/shopify/catalog';
 import { whatsappHref } from '@/lib/content/contact';
 import type { Metadata } from 'next';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const partnerWhatsapp = whatsappHref('Hi Whaleora! I would like to partner with you for an awareness programme.');
 
 export default async function SafetyHubPage() {
-  const [content, catalog] = await Promise.all([publishedContent(), getCatalog()]);
+  const [content, catalog] = await Promise.all([publishedContent(), getSingles()]);
   return (
     <main className="page-main safety-page">
       <section className="safety-hero">

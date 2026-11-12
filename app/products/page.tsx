@@ -1,17 +1,21 @@
 import Image from 'next/image';
 import { ProductsBrowser, ShopNote } from '@/components/products-browser';
 import { getCatalog } from '@/lib/shopify/catalog';
+import { singlesOnly } from '@/lib/shopify/bundles';
 
 export const dynamic = 'force-dynamic';
 
-export default async function ProductsPage() {
-  const catalog = await getCatalog();
+export default async function ProductsPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  const [catalog, { category }] = await Promise.all([getCatalog(), searchParams]);
+  // The heading counts the objects themselves; bundles are kits of them.
+  const singles = singlesOnly(catalog).length;
+  const bundles = catalog.length - singles;
 
   return <main className="page-main">
     <section className="collection-hero"><div className="shell collection-hero-grid">
       <div className="collection-hero-copy">
         <p className="eyebrow dark">The whole catalogue</p>
-        <h1>{catalog.length === 4 ? <>Four objects.<br /><em>Every spec listed.</em></> : <>{catalog.length} objects.<br /><em>Every spec listed.</em></>}</h1>
+        <h1>{singles === 4 ? 'Four objects.' : `${singles} objects.`}<br /><em>{bundles ? `Plus ${bundles} ${bundles === 1 ? 'kit' : 'kits'}.` : 'Every spec listed.'}</em></h1>
         <p>Output in decibels, weight in grams, battery type, shelf life. If a number matters to your decision, it’s on the page — and so is what the thing can’t do.</p>
       </div>
       <figure className="collection-hero-visual">
@@ -20,7 +24,7 @@ export default async function ProductsPage() {
       </figure>
     </div></section>
 
-    <ProductsBrowser catalog={catalog} />
+    <ProductsBrowser catalog={catalog} initialCategory={category} />
     <ShopNote />
   </main>;
 }

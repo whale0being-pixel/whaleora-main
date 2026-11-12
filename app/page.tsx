@@ -10,7 +10,7 @@ import { TestimonialsMarquee } from '@/components/testimonials-marquee';
 
 import { Chooser, Objections, TrustBar } from '@/components/home-sections';
 
-import { catalogPrices, getCatalog } from '@/lib/shopify/catalog';
+import { catalogPrices, getSingles } from '@/lib/shopify/catalog';
 
 import { publishedContent } from '@/lib/content/store';
 
@@ -28,7 +28,7 @@ export const revalidate = 3600
 export default async function Home() {
 
   const [catalog, content, prices] = await Promise.all([
-    getCatalog(),
+    getSingles(),
     publishedContent(),
     catalogPrices()
   ]);
