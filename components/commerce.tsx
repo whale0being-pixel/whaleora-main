@@ -504,7 +504,7 @@ function CartDrawer() {
           <div className="empty-cart"><span>○</span><h3>Nothing in here yet.</h3><p>Four objects, one job each. Most people begin with the alarm.</p><Link href="/products" onClick={() => setOpen(false)} className="button button-primary">Browse all four <span aria-hidden="true"><ArrowRight size={16} strokeWidth={2} /></span></Link></div>
         ) : (
           <>
-            <div className="shipping-progress"><div><span style={{ width: `${Math.min(100, subtotal / FREE_SHIPPING_THRESHOLD * 100)}%` }} /></div><p>{shippingGap ? `${formatPrice(shippingGap, currencyCode)} away from free shipping.` : 'You have unlocked free shipping.'}</p></div>
+            <div className={`shipping-progress${shippingGap ? '' : ' is-unlocked'}`} style={{ '--progress': `${Math.min(100, subtotal / FREE_SHIPPING_THRESHOLD * 100)}%` } as CSSProperties}><div className="shipping-track"><span className="shipping-fill" /><Image className="shipping-rider" src="/brand/cart-progress-alarm.webp" alt="" width={18} height={56} unoptimized /></div><p>{shippingGap ? `${formatPrice(shippingGap, currencyCode)} away from free shipping.` : 'You have unlocked free shipping.'}</p></div>
             <div className="cart-lines">{lines.map((line) => {
               const record = localRecord(line);
               // A Shopify-only line may carry no handle; then the title is plain text.
