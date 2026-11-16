@@ -71,7 +71,7 @@ export const faqs: FaqEntry[] = [
     category: 'choose',
     question: 'Should I buy more than one tool to build a safety kit?',
     answer:
-      'Yes, building a layered safety kit is a very practical approach. A popular setup is keeping the SOS Alarm on your main keys and attaching the Survival Whistle to the bag you use most often. This ensures you always have a tool within reach, even if a battery dies or you switch bags.\n\nAdd pepper spray to your kit only if you commit to carrying it in a highly accessible spot (like a jacket pocket). Add the window breaker if you regularly commute by car.\n\nOrders over ₹1,499 ship for free across India, making it easy to bundle tools for yourself or your family.',
+      'Yes, building a layered safety kit is a very practical approach. A popular setup is keeping the SOS Alarm on your main keys and attaching the Survival Whistle to the bag you use most often. This ensures you always have a tool within reach, even if a battery dies or you switch bags.\n\nAdd pepper spray to your kit only if you commit to carrying it in a highly accessible spot (like a jacket pocket). Add the window breaker if you regularly commute by car.\n\nOrders over ₹849 ship for free across India, making it easy to bundle tools for yourself or your family.',
     keywords: ['kit', 'bundle', 'combo', 'together', 'more than one', 'pair', 'set', 'collection', 'all four', 'gift', 'layered safety'],
     followUps: ['orders-shipping', 'choose-which', 'window-where'],
     links: [{ label: 'Shop the collection', href: '/products' }],
@@ -115,7 +115,7 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'How much do Whaleora safety products cost?',
     answer:
-      'We believe reliable safety tools should be accessible. Our collection ranges from ₹299 to ₹1,699, with all taxes included.\n\n• Survival Whistle: ₹299\n• Pepper Spray: ₹499\n• Emergency Window Breaker: ₹599\n• Personal SOS Alarm: ₹1,699\n\nThere are no hidden fees, no required apps, and no monthly subscriptions. We also offer free shipping across India on all orders over ₹1,499.',
+      'We believe reliable safety tools should be accessible. Our collection ranges from ₹299 to ₹1,699, with all taxes included.\n\n• Survival Whistle: ₹299\n• Pepper Spray: ₹499\n• Emergency Window Breaker: ₹599\n• Personal SOS Alarm: ₹1,699\n\nThere are no hidden fees, no required apps, and no monthly subscriptions. We also offer free shipping across India on all orders over ₹849.',
     keywords: ['price', 'cost', 'how much', '₹', 'rupee', 'expensive', 'cheap', 'afford', '299', '499', '599', '1699', 'subscription', 'value'],
     followUps: ['choose-cheap-alarm', 'orders-shipping', 'choose-which'],
     links: [{ label: 'See all four', href: '/products' }],
@@ -265,8 +265,8 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'Do you offer free shipping across India?',
     answer:
-      'Yes, we provide free shipping on all orders over ₹1,499 anywhere in India. For orders below that amount, a standard shipping fee will be calculated at checkout based on your specific pincode.\n\nWe carefully package and dispatch all orders from our facility in Maharashtra. Accurate delivery estimates are provided directly at checkout so you know exactly when to expect your safety tools.',
-    keywords: ['shipping', 'delivery', 'deliver', 'free shipping', '1499', 'pincode', 'india', 'dispatch', 'how long', 'how long does delivery', 'days', 'courier', 'maharashtra'],
+      'Yes, we provide free shipping on all orders over ₹849 anywhere in India. For orders below that amount, a standard shipping fee will be calculated at checkout based on your specific pincode.\n\nWe carefully package and dispatch all orders from our facility in Maharashtra. Accurate delivery estimates are provided directly at checkout so you know exactly when to expect your safety tools.',
+    keywords: ['shipping', 'delivery', 'deliver', 'free shipping', '849', '1499', 'pincode', 'india', 'dispatch', 'how long', 'how long does delivery', 'days', 'courier', 'maharashtra'],
     followUps: ['orders-track', 'orders-payment', 'choose-prices'],
     links: [{ label: 'Shop the collection', href: '/products' }],
   },

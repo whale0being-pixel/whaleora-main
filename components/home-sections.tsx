@@ -8,7 +8,7 @@ const trustPoints = [
   { figure: '130dB', label: 'Loud dual-siren and strobe, on one pull' },
   { figure: '28g', label: 'Ultra-lightweight, designed for your keyring' },
   { figure: null, label: 'Where the everyday safety collection starts' },
-  { figure: '₹1,499+', label: 'Free shipping anywhere in India' },
+  { figure: '₹849+', label: 'Free shipping anywhere in India' },
 ];
 
 /** `from` is the live catalogue floor; the null figure above is its slot. */

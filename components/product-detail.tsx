@@ -188,7 +188,7 @@ content_name: chosen.title,
     </div>
     
     <div className="pdp-purchase-assurances"><span><ShieldCheck size={17} />Shopify checkout</span><span><Truck size={17} />Ships across India</span><span><RotateCcw size={17} />7-day returns</span><span><Headphones size={17} />Human support</span></div>
-    <p className="pdp-shipping-note">{chosen.currencyCode === 'INR' && total >= 1499 ? 'This set qualifies for free shipping.' : 'Free shipping on orders over ₹1,499.'} Delivery estimate shown at checkout.</p>
+    <p className="pdp-shipping-note">{chosen.currencyCode === 'INR' && total >= 849 ? 'This set qualifies for free shipping.' : 'Free shipping on orders over ₹849.'} Delivery estimate shown at checkout.</p>
     <div className="pdp-support-promise"><Headphones size={24} strokeWidth={1.5} /><div><strong>Help when you need it.</strong><p>A question about your order? <Link href="/contact">Talk to our team.</Link></p></div></div>
     {children}
     <details className="pdp-quick-detail"><summary>Good to know before you buy <Plus size={17} /></summary><p>{product.compare.caveat !== '—' ? product.compare.caveat : product.shortDescription}</p><p>A safety tool can help draw attention or create time. It cannot guarantee an outcome.</p></details>

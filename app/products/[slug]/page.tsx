@@ -115,7 +115,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       </ProductPurchase>
     </section>
 
-    <div className="pdp-service-strip"><div className="shell"><span><Truck size={22} strokeWidth={1.5} />Delivery across India</span><span><PackageCheck size={22} strokeWidth={1.5} />Free shipping over ₹1,499</span><span><Headphones size={22} strokeWidth={1.5} />Support from a real person</span></div></div>
+    <div className="pdp-service-strip"><div className="shell"><span><Truck size={22} strokeWidth={1.5} />Delivery across India</span><span><PackageCheck size={22} strokeWidth={1.5} />Free shipping over ₹849</span><span><Headphones size={22} strokeWidth={1.5} />Support from a real person</span></div></div>
 
     {content.settings.showWritten && <section className="pdp-written-reviews shell pdp-section" id="product-reviews" aria-labelledby="product-reviews-title">
       <div className="pdp-reviews-heading">
@@ -150,7 +150,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     <section className="pdp-faq pdp-section"><div className="shell"><div className="pdp-section-heading"><p className="eyebrow dark">Before you decide</p><h2>Your questions, answered.</h2><p>The practical details, in one place.</p></div><div className="pdp-faq-list">
       {product.specifications.length > 0 && <details><summary>What are the specifications?<span>+</span></summary><dl>{product.specifications.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl></details>}
       {product.included.length > 0 && <details><summary>What comes in the box?<span>+</span></summary><ul>{product.included.map((item) => <li key={item}>{item}</li>)}</ul></details>}
-      <details><summary>How much does shipping cost?<span>+</span></summary><p>Free shipping on orders over ₹1,499 across India. Below that, shipping charges and the delivery estimate for your pincode are shown at checkout.</p></details>
+      <details><summary>How much does shipping cost?<span>+</span></summary><p>Free shipping on orders over ₹849 across India. Below that, shipping charges and the delivery estimate for your pincode are shown at checkout.</p></details>
       <details><summary>What if I need help with my order?<span>+</span></summary><p>Email <a href="mailto:hello@whaleora.com">hello@whaleora.com</a> or <Link href="/contact">contact our team</Link>. If your unit arrived faulty, tell us what happened so we can help. Contact us before returning an item.</p></details>
       <details><summary>Can I take it when I travel?<span>+</span></summary><p>Check the rules for your destination, airline, and venue before travelling, especially with pepper spray or tools containing a blade. Follow the product instructions and local requirements.</p></details>
       <details><summary>What should I know before relying on it?<span>+</span></summary><p>{product.compare.caveat !== '—' ? product.compare.caveat : product.shortDescription} A safety tool cannot guarantee an outcome. Keep it accessible and learn how to use it before you need it.</p></details>

@@ -29,7 +29,7 @@ declare global {
 /** Product as rendered by the shop: local editorial plus whatever Shopify knows. */
 export type ShopProduct = CatalogProduct;
 
-const FREE_SHIPPING_THRESHOLD = 1499;
+const FREE_SHIPPING_THRESHOLD = 849;
 /** Footer entries whose href is a '#<policy>' open that dialog instead of navigating. */
 const policyKey = (href: string) => (href.startsWith('#') ? href.slice(1) as PolicyKey : null);
 
@@ -311,7 +311,7 @@ export function Header() {
 
   return (
     <>
-      <div className={`announcement ${scrolled ? 'is-tucked' : ''}`}><span>Free shipping over ₹1,499 · Delivered across India</span></div>
+      <div className={`announcement ${scrolled ? 'is-tucked' : ''}`}><span>Free shipping over ₹849 · Delivered across India</span></div>
       <header className={`site-header ${scrolled ? 'is-scrolled' : ''} ${overHero ? 'is-over-hero' : ''}`}>
         <button className="menu-button" onClick={() => setMenuOpen(true)} aria-label="Open menu" aria-expanded={menuOpen}><span /><span /><span /></button>
         <Link href="/" className="brand" aria-label="Whaleora home"><Image src="/brand/whaleora-logo.svg" width={186} height={48} alt="Whaleora" priority /></Link>

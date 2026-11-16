@@ -62,7 +62,7 @@ const LINES: { pattern: RegExp; text: string; ids?: string[] }[] = [
   {
     pattern: /\b(you('re| are) (stupid|dumb|useless|bad|wrong|broken)|this (bot|thing) (sucks|is (bad|useless|dumb)))\b/,
     text:
-      'Okay. I still know the free-shipping line (₹1,499) and whether pepper spray can go in a cabin bag.\n\nAsk that, or WhatsApp a person — no hard feelings.',
+      'Okay. I still know the free-shipping line (₹849) and whether pepper spray can go in a cabin bag.\n\nAsk that, or WhatsApp a person — no hard feelings.',
     ids: ['orders-shipping', 'legal-flight', 'orders-contact'],
   },
   {
@@ -97,7 +97,7 @@ const LINES: { pattern: RegExp; text: string; ids?: string[] }[] = [
   {
     pattern: /\b(secret|hidden menu|easter egg|password)\b/,
     text:
-      'No hidden menu. Four products, honest specs, free shipping over ₹1,499. If I’m stuck, a person reads the WhatsApp.',
+      'No hidden menu. Four products, honest specs, free shipping over ₹849. If I’m stuck, a person reads the WhatsApp.',
     ids: ['choose-prices', 'orders-shipping', 'orders-contact'],
   },
   {
