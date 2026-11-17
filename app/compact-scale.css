@@ -648,3 +648,30 @@
 .bundles-empty { max-width: 560px; padding-block: clamp(8px, 2vw, 24px); }
 .bundles-empty h2 { margin: 0 0 10px; font-family: var(--font-display), serif; font-size: clamp(26px, 3vw, 36px); font-weight: 400; }
 .bundles-empty p { margin: 0 0 22px; color: rgba(16,40,68,.65); line-height: 1.6; }
+
+/* Shop dropdown: the store's collections under the Shop link. */
+.nav-shop { position: relative; display: flex; align-items: center; gap: 2px; }
+.nav-shop-toggle { display: grid; place-items: center; width: 26px; height: 32px; margin-right: -8px; padding: 0; border: 0; background: none; color: inherit; opacity: .72; cursor: pointer; transition: opacity .25s ease; }
+.nav-shop-toggle svg { transition: transform .25s ease; }
+.nav-shop-toggle:hover, .nav-shop.is-open .nav-shop-toggle { opacity: 1; }
+.nav-shop.is-open .nav-shop-toggle svg { transform: rotate(180deg); }
+.nav-shop-panel { position: absolute; top: 100%; left: -22px; z-index: 20; padding-top: 14px; opacity: 0; visibility: hidden; transform: translateY(6px); transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s; }
+.nav-shop.is-open .nav-shop-panel { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+@media (hover: hover) {
+  .nav-shop:hover .nav-shop-panel { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .nav-shop:hover .nav-shop-toggle svg { transform: rotate(180deg); }
+}
+.nav-shop-panel ul { min-width: 264px; margin: 0; padding: 8px; list-style: none; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 18px 40px rgba(10, 27, 47, .12); color: var(--ink); }
+.site-header .nav-shop-panel a { display: block; padding: 11px 14px; border-radius: 4px; font-size: 15px; font-weight: 500; white-space: nowrap; opacity: 1; color: var(--ink); transition: background .2s ease, color .2s ease; }
+.site-header .nav-shop-panel a::after { content: none; }
+.site-header .nav-shop-panel a:hover, .site-header .nav-shop-panel a:focus-visible { background: var(--ivory); color: var(--terracotta); }
+.site-header .nav-shop-panel a[aria-current='page'] { color: var(--terracotta); }
+.site-header .nav-shop-panel li:first-child a { font-weight: 600; }
+.site-header .nav-shop-panel li:first-child { margin-bottom: 4px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+@media (prefers-reduced-motion: reduce) { .nav-shop-panel, .nav-shop-toggle svg { transition: none; } }
+
+/* Mobile menu: collections indented under the Shop row. */
+.mobile-submenu { margin: 0; padding: 4px 0 10px 34px; list-style: none; border-bottom: 1px solid rgba(255,255,255,.18); }
+.mobile-menu nav .mobile-submenu a { display: block; min-height: 0; padding: 9px 0; border-bottom: 0; font-family: var(--font-sans), sans-serif; font-size: 16px; line-height: 1.35; color: rgba(255,255,255,.78); }
+.mobile-menu nav .mobile-submenu a:hover, .mobile-menu nav .mobile-submenu a[aria-current='page'] { color: #efcdb1; }
+.mobile-menu nav a:has(+ .mobile-submenu) { border-bottom-color: transparent; }

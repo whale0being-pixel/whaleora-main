@@ -3,15 +3,16 @@
 import Image from 'next/image';
 import { ProductImage } from '@/components/product-image';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Plus, ShoppingCart } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ChevronDown, Plus, ShoppingCart } from 'lucide-react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition, type CSSProperties } from 'react';
+import { createContext, Fragment, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, useTransition, type CSSProperties } from 'react';
 import { AccountLink } from '@/components/account-link';
 import { addToCartAction, getCartAction, removeCartLineAction, updateCartLineAction } from '@/app/actions/cart';
 import type { CartProduct, CatalogProduct } from '@/lib/shopify/catalog';
 import type { CartState, CartStateLine } from '@/lib/shopify/types';
 import { addLine, dropLine, lineIdFor, pickUpsells, setLineQuantity, unlocksFreeShipping, unsellable, withLines } from '@/lib/shopify/cart-state';
 import { whatsappHref } from '@/lib/content/contact';
+import { shopMenu, type ShopMenuLink } from '@/lib/shopify/bundles';
 import { burstConfetti } from '@/lib/confetti';
 import { formatPrice, products, PRODUCT_IMAGE_FALLBACK } from '@/data/products';
 import { CheckoutGateDialog } from '@/components/checkout-gate';
@@ -247,7 +248,6 @@ export function useCart() {
 
 const NAV_LINKS = [
   { href: '/products', label: 'Shop' },
-  { href: '/bundles', label: 'Bundles' },
   { href: '/safety-hub', label: 'Safety Hub' },
   { href: '/blog', label: 'Journal' },
   { href: '/about', label: 'About' },
@@ -258,6 +258,12 @@ const MENU_LINKS = [...NAV_LINKS, { href: '/account', label: 'Account' }, { href
 
 /** A link is current on its own page and on anything nested beneath it. */
 const isCurrent = (pathname: string, href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
+/** Shop stays lit across everything its menu leads to. */
+const inShop = (pathname: string) => ['/products', '/collections', '/bundles'].some((href) => isCurrent(pathname, href));
+
+/** Used until the store answers, or if it can't: Bundles is never lost from the menu. */
+const FALLBACK_SHOP_LINKS = shopMenu([]);
 
 function useOverlayFocus(open: boolean, close: () => void) {
   const ref = useRef<HTMLDivElement>(null);
@@ -284,7 +290,50 @@ function useOverlayFocus(open: boolean, close: () => void) {
   return ref;
 }
 
-export function Header() {
+/**
+ * Shop with its collections underneath: opens on hover where there is one, and
+ * on the chevron for touch and keyboard. The Shop label itself still goes to
+ * the full catalogue.
+ */
+function ShopMenu({ links, pathname }: { links: ShopMenuLink[]; pathname: string }) {
+  // Remembers the page it was opened on, so navigating closes it without an effect.
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const open = openOn === pathname;
+  const setOpen = useCallback((value: boolean) => setOpenOn(value ? pathname : null), [pathname]);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onPointer = (event: PointerEvent) => { if (!ref.current?.contains(event.target as Node)) setOpen(false); };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      ref.current?.querySelector<HTMLButtonElement>('.nav-shop-toggle')?.focus();
+    };
+    document.addEventListener('pointerdown', onPointer);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('pointerdown', onPointer); document.removeEventListener('keydown', onKey); };
+  }, [open, setOpen]);
+
+  return (
+    <div ref={ref} className={`nav-shop ${open ? 'is-open' : ''}`} onMouseLeave={() => setOpen(false)}>
+      <Link href="/products" aria-current={inShop(pathname) ? 'page' : undefined}>Shop</Link>
+      <button type="button" className="nav-shop-toggle" aria-expanded={open} aria-controls="shop-menu" aria-label="Shop collections" onClick={() => setOpen(!open)}>
+        <ChevronDown size={15} strokeWidth={2} aria-hidden="true" />
+      </button>
+      <div className="nav-shop-panel" id="shop-menu">
+        <ul>
+          {links.map((link) => (
+            <li key={link.href}>
+              <Link href={link.href} aria-current={pathname === link.href ? 'page' : undefined} onClick={() => setOpen(false)}>{link.label}</Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export function Header({ shopLinks = FALLBACK_SHOP_LINKS }: { shopLinks?: ShopMenuLink[] }) {
   const { count, setOpen } = useCart();
   const pathname = usePathname() ?? '/';
   const [menuOpen, setMenuOpen] = useState(false);
@@ -316,9 +365,9 @@ export function Header() {
         <button className="menu-button" onClick={() => setMenuOpen(true)} aria-label="Open menu" aria-expanded={menuOpen}><span /><span /><span /></button>
         <Link href="/" className="brand" aria-label="Whaleora home"><Image src="/brand/whaleora-logo.svg" width={186} height={48} alt="Whaleora" priority /></Link>
         <nav aria-label="Primary navigation">
-          {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} aria-current={isCurrent(pathname, link.href) ? 'page' : undefined}>{link.label}</Link>
-          ))}
+          {NAV_LINKS.map((link) => link.href === '/products'
+            ? <ShopMenu key={link.href} links={shopLinks} pathname={pathname} />
+            : <Link key={link.href} href={link.href} aria-current={isCurrent(pathname, link.href) ? 'page' : undefined}>{link.label}</Link>)}
         </nav>
         <div className="header-actions">
           <Link href="/contact" className="contact-link" aria-current={isCurrent(pathname, '/contact') ? 'page' : undefined}>Contact</Link>
@@ -337,15 +386,24 @@ export function Header() {
         <button className="menu-close" onClick={() => setMenuOpen(false)} aria-label="Close menu"><span /><span /></button>
         <nav>
           {MENU_LINKS.map((link, index) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              style={{ '--i': index } as CSSProperties}
-              aria-current={isCurrent(pathname, link.href) ? 'page' : undefined}
-              onClick={() => setMenuOpen(false)}
-            >
-              <small>0{index + 1}</small>{link.label}<ArrowUpRight size={17} strokeWidth={1.5} aria-hidden="true" />
-            </Link>
+            <Fragment key={link.href}>
+              <Link
+                href={link.href}
+                style={{ '--i': index } as CSSProperties}
+                aria-current={(link.href === '/products' ? pathname === '/products' : isCurrent(pathname, link.href)) ? 'page' : undefined}
+                onClick={() => setMenuOpen(false)}
+              >
+                <small>0{index + 1}</small>{link.label}<ArrowUpRight size={17} strokeWidth={1.5} aria-hidden="true" />
+              </Link>
+              {/* The collections sit under Shop; "Shop all" is the row above. */}
+              {link.href === '/products' && <ul className="mobile-submenu" aria-label="Shop collections">
+                {shopLinks.filter((sub) => sub.href !== '/products').map((sub) => (
+                  <li key={sub.href}>
+                    <Link href={sub.href} style={{ '--i': index } as CSSProperties} aria-current={pathname === sub.href ? 'page' : undefined} onClick={() => setMenuOpen(false)}>{sub.label}</Link>
+                  </li>
+                ))}
+              </ul>}
+            </Fragment>
           ))}
         </nav>
         <div className="mobile-menu-footer">

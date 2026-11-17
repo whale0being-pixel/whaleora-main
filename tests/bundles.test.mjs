@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { BUNDLE_COLLECTION, isBundle, singlesOnly } from '../lib/shopify/bundles.ts';
+import { BUNDLE_COLLECTION, collectionHref, isBundle, shopMenu, singlesOnly } from '../lib/shopify/bundles.ts';
 
 const product = (over = {}) => ({ tags: [], collections: { nodes: [] }, ...over });
 
@@ -21,4 +21,23 @@ test('other collections and tags that merely contain the word do not', () => {
 test('singlesOnly drops bundles and keeps order', () => {
   const items = [{ id: 'a', category: 'Alarms' }, { id: 'k', category: 'Bundles' }, { id: 't', category: 'Tools' }];
   assert.deepEqual(singlesOnly(items).map((item) => item.id), ['a', 't']);
+});
+
+test('the Shop menu lists Shop all, then the store collections in Shopify order', () => {
+  const menu = shopMenu([
+    { handle: 'frontpage', title: 'Everyday Safety Essentials' },
+    { handle: BUNDLE_COLLECTION, title: 'Safety Kits & Bundles' },
+    { handle: 'safety-gifts', title: 'Safety Gifts' },
+  ]);
+  assert.deepEqual(menu, [
+    { href: '/products', label: 'Shop all' },
+    { href: '/collections/frontpage', label: 'Everyday Safety Essentials' },
+    { href: '/bundles', label: 'Safety Kits & Bundles' },
+    { href: '/collections/safety-gifts', label: 'Safety Gifts' },
+  ]);
+});
+
+test('without a store connection the Shop menu still offers bundles', () => {
+  assert.deepEqual(shopMenu([]).map((link) => link.href), ['/products', '/bundles']);
+  assert.equal(collectionHref('campus-commute'), '/collections/campus-commute');
 });

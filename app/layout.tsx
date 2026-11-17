@@ -3,6 +3,7 @@ import { Geist, Lora } from 'next/font/google';
 import { ConvexAuthNextjsServerProvider } from '@convex-dev/auth/nextjs/server';
 import { ConvexClientProvider } from '@/components/convex-provider';
 import { SiteFrame } from '@/components/site-frame';
+import { getCollections, shopMenu } from '@/lib/shopify/collections';
 import { Analytics } from '@vercel/analytics/next';
 import Script from 'next/script';
 import './globals.css';
@@ -37,7 +38,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  // The Shop dropdown mirrors the store's collections, in Shopify's order.
+  const shopLinks = shopMenu(await getCollections());
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -134,7 +137,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           />
           
           <ConvexClientProvider>
-            <SiteFrame>{children}</SiteFrame>
+            <SiteFrame shopLinks={shopLinks}>{children}</SiteFrame>
           </ConvexClientProvider>
           
           <Analytics />

@@ -2,11 +2,12 @@ import type { MetadataRoute } from 'next';
 import { getCatalog } from '@/lib/shopify/catalog';
 import { publishedContent } from '@/lib/content/store';
 import { livePosts } from '@/lib/content/blog';
+import { collectionHref, getCollections } from '@/lib/shopify/collections';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = 'https://whaleora.com';
   const routes = ['', '/products', '/bundles', '/about', '/safety-hub', '/blog', '/institutions', '/contact', '/warranty'];
-  const [catalog, { checklists, posts }] = await Promise.all([getCatalog(), publishedContent()]);
+  const [catalog, { checklists, posts }, collections] = await Promise.all([getCatalog(), publishedContent(), getCollections()]);
   
   return [
     // 1. Static Routes
@@ -15,6 +16,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // 2. Shopify Products
     ...catalog.map((product) => ({ url: `${base}/products/${product.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.9 })),
     
+    // Store collections (bundles already listed above as /bundles)
+    ...collections.map((collection) => collectionHref(collection.handle)).filter((href) => href !== '/bundles').map((href) => ({ url: `${base}${href}`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.8 })),
+
     // 3. Shopify Product Reviews
     ...catalog.map((product) => ({ url: `${base}/products/${product.slug}/reviews`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.6 })),
     
