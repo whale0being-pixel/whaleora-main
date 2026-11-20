@@ -3,7 +3,7 @@ import { publishedContent } from '@/lib/content/store';
 import type { ProductEditorial } from '@/lib/content/types';
 import { isShopifyConfigured, safely, shopifyFetch, SHOPIFY_PRODUCTS_TAG } from './client';
 import { PRODUCTS_QUERY } from './queries';
-import { isBundle, singlesOnly } from './bundles';
+import { inBundleOrder, isBundle, singlesOnly } from './bundles';
 import type { ShopifyMedia, ShopifyProduct, ShopifyVariant } from './types';
 
 export type CatalogVariant = {
@@ -255,7 +255,8 @@ export async function getCatalog(): Promise<CatalogProduct[]> {
     return resolve(local, match, editorialById.get(local.id));
   });
 
-  const extras = remote.filter((item) => !claimed.has(item.handle)).map(adopt);
+  // Shopify-only products are mostly the kits, which have an agreed running order.
+  const extras = inBundleOrder(remote.filter((item) => !claimed.has(item.handle)).map(adopt));
   return [...merged, ...extras];
 }
 

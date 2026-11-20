@@ -9,6 +9,8 @@
   --ivory: #f8ecde;
   --paper: #fff9f1;
   --terracotta: #d7673d;
+  /* Terracotta deepened enough for small text and white-on-colour labels (≥4.5:1). */
+  --terracotta-deep: color-mix(in srgb, var(--terracotta) 75%, var(--ink));
   --sand: #ddbb98;
   --sage: #748a83;
   --line: rgba(16, 40, 68, 0.14);

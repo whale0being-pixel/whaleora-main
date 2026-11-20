@@ -12,7 +12,7 @@ import type { CartProduct, CatalogProduct } from '@/lib/shopify/catalog';
 import type { CartState, CartStateLine } from '@/lib/shopify/types';
 import { addLine, dropLine, lineIdFor, pickUpsells, setLineQuantity, unlocksFreeShipping, unsellable, withLines } from '@/lib/shopify/cart-state';
 import { whatsappHref } from '@/lib/content/contact';
-import { shopMenu, type ShopMenuLink } from '@/lib/shopify/bundles';
+import { shopMenu, splitProductTitle, type ShopMenuLink } from '@/lib/shopify/bundles';
 import { burstConfetti } from '@/lib/confetti';
 import { formatPrice, products, PRODUCT_IMAGE_FALLBACK } from '@/data/products';
 import { CheckoutGateDialog } from '@/components/checkout-gate';
@@ -602,6 +602,13 @@ export function AddToCartButton({ product, quantity = 1, className = '', label =
 export function ProductCard({ product }: { product: ShopProduct }) {
   const { add, cart, pending } = useCart();
   const soldOut = unsellable(product, cart.connected);
+  // A kit leads with its name and lists what's inside, in place of a paragraph of description.
+  const { name, detail } = splitProductTitle(product.title);
+  // Shopify's compare-at price, struck through beside the price, as on the product page.
+  const compareAt = product.shopify?.compareAtPrice ?? null;
+  const wasPrice = compareAt !== null && compareAt > product.price ? compareAt : null;
+  // Said in rupees, not a percentage: "Save ₹49" is the number people compare.
+  const saving = wasPrice === null ? 0 : Math.round((wasPrice - product.price) * 100) / 100;
 
   const handleQuickAdd = () => {
     trackAddToCart(product);
@@ -612,9 +619,10 @@ export function ProductCard({ product }: { product: ShopProduct }) {
     <article className="product-card" style={{ '--accent': product.accent } as React.CSSProperties}>
       <Link href={`/products/${product.slug}`} className="product-visual">
         <ProductImage src={product.images[0] || PRODUCT_IMAGE_FALLBACK} width={700} height={700} alt={product.title} sizes="(max-width: 1100px) 50vw, 25vw" />
+        {saving > 0 && <span className="product-save">Save {formatPrice(saving, product.currencyCode)}</span>}
         <span className="product-card-cue">View object <ArrowUpRight size={14} strokeWidth={2} aria-hidden="true" /></span>
       </Link>
-      <div className="product-meta"><div><Link href={`/products/${product.slug}`}>{product.title}</Link><small>{product.shortDescription}</small></div><strong>{formatPrice(product.price, product.currencyCode)}</strong></div>
+      <div className="product-meta"><div><Link href={`/products/${product.slug}`}>{name}</Link><small>{detail || product.shortDescription}</small></div><strong>{formatPrice(product.price, product.currencyCode)}{wasPrice !== null && <s><span className="sr-only">, was </span>{formatPrice(wasPrice, product.currencyCode)}</s>}</strong></div>
       <button className="quick-add" onClick={handleQuickAdd} disabled={soldOut || pending} aria-label={`Add ${product.title} to bag`}>{soldOut ? 'Sold out' : pending ? 'Adding…' : <>Add to bag <Plus size={15} strokeWidth={2.2} aria-hidden="true" /></>}</button>
     </article>
   );
