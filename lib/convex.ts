@@ -1,8 +1,27 @@
 import { ConvexHttpClient } from 'convex/browser';
 import { fetchQuery } from 'convex/nextjs';
 import { api } from '@/convex/_generated/api';
+import { INSTAGRAM_STALE_AFTER_MS, type InstagramPost } from '@/lib/instagram';
 
 export const convexUrl = () => process.env.NEXT_PUBLIC_CONVEX_URL?.trim() || '';
+
+/**
+ * The home page's Instagram posts, newest first. Empty — which shows the
+ * pinned posts instead — when Convex is unset or unreachable, the feed has
+ * never synced, or it has stopped syncing for long enough that its image
+ * links will have expired.
+ */
+export async function instagramPosts(): Promise<InstagramPost[]> {
+  const url = convexUrl();
+  if (!url) return [];
+  try {
+    const feed = await fetchQuery(api.instagram.feed, {}, { url });
+    const age = feed ? Date.now() - Date.parse(feed.syncedAt) : Infinity;
+    return age < INSTAGRAM_STALE_AFTER_MS ? feed?.posts ?? [] : [];
+  } catch {
+    return [];
+  }
+}
 
 export function convexHttp() {
   const url = convexUrl();

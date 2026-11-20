@@ -52,6 +52,26 @@ The content document is a single row in the Convex `content` table, written thro
 
 For a self-hosted Node server, a persistent private `CONTENT_DATA_DIR` can be used instead of Convex. Use one server process and back up both credentials and content. Configure the password and session secret through environment variables in production.
 
+## Instagram feed
+
+The home page shows posts from @whaleora.safety between the SOS Alarm story and the written testimonials. It replaced the video-review carousel there; video reviews still appear on product pages.
+
+Until the live feed below is connected, it shows the hand-picked posts in `PINNED_INSTAGRAM_POSTS` (`lib/instagram.ts`) through Instagram's own embedded player, in a strip that scrolls sideways. To change them, edit that list and deploy; paste each link without the `?…` share-tracking part. Once the live feed has posts, it replaces them with the six newest, shown as the site's own photo tiles.
+
+It reads from the Instagram API ("Instagram API with Instagram Login"), which needs @whaleora.safety to be a professional (Business or Creator) account. To connect it:
+
+1. In [Meta for Developers](https://developers.facebook.com/apps), create an app, add the **Instagram** product, and open **API setup with Instagram login**.
+2. Under **Generate access tokens**, add the @whaleora.safety account and generate a token. The app can stay in Development mode while the account has a role on it, since it only reads its own posts.
+3. Give the token to Convex, not Vercel; it never reaches the site itself:
+   ```text
+   npx convex env set INSTAGRAM_ACCESS_TOKEN <token> --prod
+   ```
+4. Fill the feed now instead of waiting for the hourly sync: `npx convex run instagram:sync --prod`. The home page picks it up within the hour (it is regenerated hourly).
+
+From then on it runs itself (`convex/crons.ts`): an hourly job reads the latest posts into the `instagramFeed` table, and a daily job refreshes the token once it is a week old, well inside its 60-day life. Refreshed tokens are kept in the `instagramToken` table, which no public query reads.
+
+If the feed stops updating, check the Convex logs for `Instagram feed sync failed`. A changed Instagram password or a revoked app invalidates the token: generate a new one and set it as in step 3. A new value replaces the stored token automatically. If syncing fails for two days the section falls back to the pinned posts, because Instagram's image links expire and would otherwise show as broken images. To go back to the pinned posts, `npx convex env remove INSTAGRAM_ACCESS_TOKEN --prod`; the pinned posts return after the next hourly sync.
+
 ## Customer review photos
 
 Reviews carry up to four photos each, uploaded from the review form to [UploadThing](https://uploadthing.com) — Vercel has no writable disk, so the local `/api/media/…` uploads the studio uses are unavailable there.

@@ -2,6 +2,16 @@ import { defineSchema, defineTable } from 'convex/server';
 import { authTables } from '@convex-dev/auth/server';
 import { v } from 'convex/values';
 
+/** One post in the home page's Instagram feed; mirrors InstagramPost in lib/instagram.ts. */
+export const instagramPost = v.object({
+  id: v.string(),
+  permalink: v.string(),
+  image: v.string(),
+  caption: v.string(),
+  kind: v.union(v.literal('image'), v.literal('video'), v.literal('carousel')),
+  postedAt: v.string(),
+});
+
 export default defineSchema({
   ...authTables,
   orders: defineTable({
@@ -96,4 +106,25 @@ export default defineSchema({
   })
     .index('by_product_status', ['productHandle', 'status'])
     .index('by_status', ['status']),
+
+  /**
+   * The Instagram access token behind the home page feed, as last refreshed.
+   * A single row, and secret: only the internal functions in
+   * convex/instagram.ts read it, and no public query touches this table.
+   *
+   * `seed` is the INSTAGRAM_ACCESS_TOKEN value this token was refreshed from,
+   * so a new value in the environment can be told apart from an old one.
+   */
+  instagramToken: defineTable({
+    token: v.string(),
+    seed: v.string(),
+    expiresAt: v.string(),
+    refreshedAt: v.string(),
+  }),
+
+  /** The latest Instagram posts, as the hourly sync last read them. A single row; public. */
+  instagramFeed: defineTable({
+    posts: v.array(instagramPost),
+    syncedAt: v.string(),
+  }),
 });

@@ -10,8 +10,10 @@
 
 import type * as auth from "../auth.js";
 import type * as content from "../content.js";
+import type * as crons from "../crons.js";
 import type * as emergencyCards from "../emergencyCards.js";
 import type * as http from "../http.js";
+import type * as instagram from "../instagram.js";
 import type * as orders from "../orders.js";
 import type * as reviewFilter from "../reviewFilter.js";
 import type * as reviews from "../reviews.js";
@@ -26,8 +28,10 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   content: typeof content;
+  crons: typeof crons;
   emergencyCards: typeof emergencyCards;
   http: typeof http;
+  instagram: typeof instagram;
   orders: typeof orders;
   reviewFilter: typeof reviewFilter;
   reviews: typeof reviews;

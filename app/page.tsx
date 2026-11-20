@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { ProductCard } from '@/components/commerce';
 
-import { SafetyJourneyGallery } from '@/components/safety-journey-gallery';
+import { InstagramFeed } from '@/components/instagram-feed';
 
 import { TestimonialsMarquee } from '@/components/testimonials-marquee';
 
@@ -13,6 +13,8 @@ import { Chooser, Objections, TrustBar } from '@/components/home-sections';
 import { catalogPrices, getSingles } from '@/lib/shopify/catalog';
 
 import { publishedContent } from '@/lib/content/store';
+
+import { instagramPosts } from '@/lib/convex';
 
 import { formatPrice } from '@/data/products';
 
@@ -27,10 +29,11 @@ export const revalidate = 3600
 
 export default async function Home() {
 
-  const [catalog, content, prices] = await Promise.all([
+  const [catalog, content, prices, instagram] = await Promise.all([
     getSingles(),
     publishedContent(),
-    catalogPrices()
+    catalogPrices(),
+    instagramPosts()
   ]);
 
   const alarm = {
@@ -226,10 +229,7 @@ export default async function Home() {
 
       </section>
 
-      <SafetyJourneyGallery
-        items={content.videos}
-        settings={content.settings}
-      />
+      <InstagramFeed posts={instagram} />
 
       <TestimonialsMarquee
         items={content.testimonials}
