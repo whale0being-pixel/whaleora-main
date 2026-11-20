@@ -619,9 +619,10 @@ export function ProductCard({ product }: { product: ShopProduct }) {
     <article className="product-card" style={{ '--accent': product.accent } as React.CSSProperties}>
       <Link href={`/products/${product.slug}`} className="product-visual">
         <ProductImage src={product.images[0] || PRODUCT_IMAGE_FALLBACK} width={700} height={700} alt={product.title} sizes="(max-width: 1100px) 50vw, 25vw" />
-        {saving > 0 && <span className="product-save">Save {formatPrice(saving, product.currencyCode)}</span>}
         <span className="product-card-cue">View object <ArrowUpRight size={14} strokeWidth={2} aria-hidden="true" /></span>
       </Link>
+      {/* Outside the photo's link: the photo clips its overflow, and the tag hangs past its edge. */}
+      {saving > 0 && <span className="product-save"><small>Save</small> <b>{formatPrice(saving, product.currencyCode)}</b></span>}
       <div className="product-meta"><div><Link href={`/products/${product.slug}`}>{name}</Link><small>{detail || product.shortDescription}</small></div><strong>{formatPrice(product.price, product.currencyCode)}{wasPrice !== null && <s><span className="sr-only">, was </span>{formatPrice(wasPrice, product.currencyCode)}</s>}</strong></div>
       <button className="quick-add" onClick={handleQuickAdd} disabled={soldOut || pending} aria-label={`Add ${product.title} to bag`}>{soldOut ? 'Sold out' : pending ? 'Adding…' : <>Add to bag <Plus size={15} strokeWidth={2.2} aria-hidden="true" /></>}</button>
     </article>

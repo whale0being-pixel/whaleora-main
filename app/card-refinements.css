@@ -27,9 +27,22 @@
 .product-meta a { font-size: 23px; line-height: 1.2; letter-spacing: -.025em; }
 .product-meta small { font-size: 12px; line-height: 1.65; }
 .product-meta strong { padding-top: 4px; font-size: 12px; font-weight: 500; }
-/* "Save ₹49" on a card whose Shopify compare-at price is higher. Overrides the
-   hover cue's placement, which every span in the image otherwise inherits. */
-.product-visual > .product-save { top: 12px; right: auto; bottom: auto; left: 12px; z-index: 1; padding: 6px 9px; border-radius: 2px; background: var(--terracotta-deep); color: #fff; font-size: 10px; font-weight: 600; letter-spacing: var(--label-track); text-transform: uppercase; opacity: 1; transform: none; }
+/* "Save ₹49" on a card whose Shopify compare-at price is higher: a block tag
+   hanging off the photo's left edge, with a darker extruded side and a folded
+   tail. The drop-shadow, not a box-shadow, so the tail gets its edge too. */
+.product-card { position: relative; }
+.product-save {
+  --save-shade: color-mix(in srgb, var(--terracotta-deep) 62%, var(--deep));
+  position: absolute; top: 14px; left: -6px; z-index: 2;
+  display: grid; justify-items: start; gap: 1px;
+  padding: 7px 10px 8px;
+  background: var(--terracotta-deep); color: var(--paper);
+  filter: drop-shadow(-4px 4px 0 var(--save-shade));
+  pointer-events: none;
+}
+.product-save::after { content: ''; position: absolute; top: calc(100% - 1px); right: 6px; width: 12px; height: 9px; background: inherit; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.product-save small { font-size: 9px; font-weight: 600; letter-spacing: .14em; line-height: 1; text-transform: uppercase; }
+.product-save b { font-size: 17px; font-weight: 700; letter-spacing: -.01em; line-height: 1.05; font-variant-numeric: tabular-nums; }
 .product-meta strong s { display: block; margin-top: 4px; color: rgba(16,40,68,.5); font-size: 11px; font-weight: 400; text-align: right; }
 .quick-add { font-size: 10px; }
 .quick-add:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); color: #fff; }
@@ -81,7 +94,9 @@
   .product-meta small { font-size: 11px; line-height: 1.6; }
   .product-meta strong { margin-top: auto; padding-top: 0; font-size: 12px; }
   .product-meta strong s { display: inline; margin: 0 0 0 8px; text-align: left; }
-  .product-visual > .product-save { display: block; top: 8px; left: 8px; padding: 5px 7px; font-size: 9px; }
+  .product-save { top: 10px; left: -4px; padding: 5px 8px 6px; filter: drop-shadow(-2px 2px 0 var(--save-shade)); }
+  .product-save::after { right: 5px; width: 9px; height: 7px; }
+  .product-save b { font-size: 14px; }
   .quick-add { min-height: 42px; font-size: 9px; }
   .guide-card { min-height: 380px; padding: 26px; }
   .guide-card h2 { font-size: 36px; }
