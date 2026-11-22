@@ -29,9 +29,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const product = await getCatalogProduct(slug);
   if (!product) return {};
-  const title = `${product.title} reviews | Whaleora`;
+  const title = `${product.title} reviews`;
   const description = `What customers say about the ${product.title}, and a place to write your own review.`;
-  return { title, description, openGraph: { title, description, images: [{ url: product.images[0] || PRODUCT_IMAGE_FALLBACK }] } };
+  return { title, description, alternates: { canonical: `/products/${slug}/reviews` }, openGraph: { title, description, images: [{ url: product.images[0] || PRODUCT_IMAGE_FALLBACK }] } };
 }
 
 export default async function ProductReviewsPage({ params }: { params: Promise<{ slug: string }> }) {
