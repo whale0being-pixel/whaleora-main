@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 import { ProductCard } from '@/components/commerce';
 import { getCatalog } from '@/lib/shopify/catalog';
@@ -14,13 +14,13 @@ type Props = { params: Promise<{ handle: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const collection = await getCollection((await params).handle);
   if (!collection) return {};
-  return { title: collection.title, description: collection.description || `${collection.title} from Whaleora.` };
+  return { title: collection.title, description: collection.description || `${collection.title} from Whaleora.`, alternates: { canonical: `/collections/${(await params).handle}` } };
 }
 
 /** A Shopify collection, shown with the site's own product cards in the store's order. */
 export default async function CollectionPage({ params }: Props) {
   const { handle } = await params;
-  if (handle === BUNDLE_COLLECTION) redirect('/bundles');
+  if (handle === BUNDLE_COLLECTION) permanentRedirect('/bundles');
   const [collection, catalog] = await Promise.all([getCollection(handle), getCatalog()]);
   if (!collection) notFound();
 
