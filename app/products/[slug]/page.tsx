@@ -151,34 +151,30 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     <section className="pdp-faq pdp-section"><div className="shell"><div className="pdp-section-heading"><p className="eyebrow dark">Before you decide</p><h2>Your questions, answered.</h2><p>The practical details, in one place.</p></div><div className="pdp-faq-list">
       {product.specifications.length > 0 && <details><summary>What are the specifications?<span>+</span></summary><dl>{product.specifications.map((spec) => <div key={spec.label}><dt>{spec.label}</dt><dd>{spec.value}</dd></div>)}</dl></details>}
       {product.included.length > 0 && <details><summary>What comes in the box?<span>+</span></summary><ul>{product.included.map((item) => <li key={item}>{item}</li>)}</ul></details>}
-      <details><summary>How much does shipping cost?<span>+</span></summary><p>Free shipping on orders over ₹849 across India. Below that, shipping charges and the delivery estimate for your pincode are shown at checkout.</p></details>
-      <details><summary>What if I need help with my order?<span>+</span></summary><p>Email <a href="mailto:hello@whaleora.com">hello@whaleora.com</a> or <Link href="/contact">contact our team</Link>. If your unit arrived faulty, tell us what happened so we can help. Contact us before returning an item.</p></details>
-      <details><summary>Can I take it when I travel?<span>+</span></summary><p>Check the rules for your destination, airline, and venue before travelling, especially with pepper spray or tools containing a blade. Follow the product instructions and local requirements.</p></details>
-      <details><summary>What should I know before relying on it?<span>+</span></summary><p>{product.compare.caveat !== '—' ? product.compare.caveat : product.shortDescription} A safety tool cannot guarantee an outcome. Keep it accessible and learn how to use it before you need it.</p></details>
+      <details><summary>How much is shipping?<span>+</span></summary><p>Free shipping on orders over ₹849. Delivery charges and estimates for other orders appear at checkout.</p></details>
+      <details><summary>Can I travel with it?<span>+</span></summary><p>Check local, airline and venue rules before travelling, especially for pepper spray or tools with a blade.</p></details>
+      <details><summary>Need help with your order?<span>+</span></summary><p>Email <a href="mailto:hello@whaleora.com">hello@whaleora.com</a> or <Link href="/contact">contact our team</Link>. Please contact us before returning an item.</p></details>
+      <details><summary>Anything to know before using it?<span>+</span></summary><p>{product.compare.caveat !== '—' ? product.compare.caveat : product.shortDescription} Read the instructions and practise using it before you need it. No safety tool can guarantee an outcome.</p></details>
     </div></div></section>
 
     {slug === 'whistle' && <section className="pdp-comparison shell pdp-section" aria-labelledby="whistle-comparison-title">
       <div className="pdp-section-heading">
-        <p className="eyebrow dark">A closer look</p>
-        <h2 id="whistle-comparison-title">Whaleora Survival Whistle vs Fox 40 Classic.</h2>
-        <p>Compare published specifications. These are manufacturer claims, not results from a controlled head-to-head test.</p>
+        <p className="eyebrow dark">Quick comparison</p>
+        <h2>Whaleora vs Fox 40 Classic.</h2>
+        <p>Three useful differences at a glance.</p>
       </div>
-      <div className="pdp-compare-scroll" tabIndex={0} role="region" aria-label="Whistle comparison table">
+      <div className="pdp-compare-scroll" tabIndex={0} role="region" aria-label="Whistle comparison">
         <table>
           <caption className="visually-hidden">Whaleora Survival Whistle and Fox 40 Classic comparison</caption>
-          <thead><tr><th scope="col">Specification</th><th scope="col">Whaleora Survival Whistle</th><th scope="col">Fox 40 Classic</th></tr></thead>
+          <thead><tr><th scope="col">Specification</th><th scope="col">Whaleora</th><th scope="col">Fox 40 Classic</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Published sound power</th><td>120dB (Whaleora product specification)</td><td>115dB (Fox 40 manufacturer page)</td></tr>
-            <tr><th scope="row">Design</th><td>Dual-tube design</td><td>3-chamber pealess design</td></tr>
-            <tr><th scope="row">Material</th><td>Aviation-grade aluminium alloy</td><td>Not specified on the official Classic page</td></tr>
-            <tr><th scope="row">Power</th><td>Breath-powered; no battery</td><td>Breath-powered; pealess design</td></tr>
-            <tr><th scope="row">Water information</th><td>No water-resistance rating stated in Whaleora's listed specifications</td><td>Fox 40 says its chambers are designed to self-clear when submerged</td></tr>
-            <tr><th scope="row">Published weight</th><td>12 grams</td><td>Not specified on the official Classic page</td></tr>
-            <tr><th scope="row">Use described by manufacturer</th><td>Everyday carry, travel and emergency kits</td><td>Referees, coaches, rescue professionals and general safety</td></tr>
+            <tr><th scope="row">Published sound rating</th><td>120dB</td><td>115dB</td></tr>
+            <tr><th scope="row">Design</th><td>Dual-tube</td><td>3-chamber, pealess</td></tr>
+            <tr><th scope="row">Material</th><td>Aviation-grade aluminium alloy</td><td>Not specified on official product page</td></tr>
           </tbody>
         </table>
       </div>
-      <p className="pdp-use-caveat">Sound ratings can depend on measurement conditions and should not be treated as directly equivalent without a shared test method. Fox 40 specifications: <a href="https://www.fox40world.com/classic" target="_blank" rel="noreferrer">Fox 40 Classic official product page</a>.</p>
+      <p className="pdp-use-caveat">Both are breath-powered. Sound ratings are manufacturer-published and may use different test methods. <a href="https://www.fox40world.com/classic" target="_blank" rel="noreferrer">Fox 40 specifications</a>.</p>
     </section>}
 
     {related.length > 0 && <section className="pdp-recommendations shell pdp-section"><div className="pdp-section-heading"><p className="eyebrow dark">Better prepared, together</p><h2>Build your everyday kit.</h2><p>Choose the tools that suit your routine.</p></div><div className="product-grid">{related.map((item) => <ProductCard key={item.id} product={item} />)}</div></section>}
