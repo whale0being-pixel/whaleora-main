@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import { whatsappHref } from '@/lib/content/contact';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
-export const metadata: Metadata = { title: 'Safety programmes for campuses & workplaces — Whaleora', description: 'Safety sessions that people remember, plus resources they keep. For universities, workplaces, community organisations and retail partners.' };
+export const metadata: Metadata = { title: 'Safety programmes for campuses & workplaces', description: 'Safety sessions that people remember, plus resources they keep. For universities, workplaces, community organisations and retail partners.' };
 
 const whatsapp = whatsappHref('Hi Whaleora! I would like to explore institutional partnerships.');
 
