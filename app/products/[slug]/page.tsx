@@ -157,6 +157,30 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <details><summary>What should I know before relying on it?<span>+</span></summary><p>{product.compare.caveat !== '—' ? product.compare.caveat : product.shortDescription} A safety tool cannot guarantee an outcome. Keep it accessible and learn how to use it before you need it.</p></details>
     </div></div></section>
 
+    {slug === 'whistle' && <section className="pdp-comparison shell pdp-section" aria-labelledby="whistle-comparison-title">
+      <div className="pdp-section-heading">
+        <p className="eyebrow dark">A closer look</p>
+        <h2 id="whistle-comparison-title">Whaleora Survival Whistle vs Fox 40 Classic.</h2>
+        <p>Compare published specifications. These are manufacturer claims, not results from a controlled head-to-head test.</p>
+      </div>
+      <div className="pdp-compare-scroll" tabIndex={0} role="region" aria-label="Whistle comparison table">
+        <table>
+          <caption className="visually-hidden">Whaleora Survival Whistle and Fox 40 Classic comparison</caption>
+          <thead><tr><th scope="col">Specification</th><th scope="col">Whaleora Survival Whistle</th><th scope="col">Fox 40 Classic</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Published sound power</th><td>120dB (Whaleora product specification)</td><td>115dB (Fox 40 manufacturer page)</td></tr>
+            <tr><th scope="row">Design</th><td>Dual-tube design</td><td>3-chamber pealess design</td></tr>
+            <tr><th scope="row">Material</th><td>Aviation-grade aluminium alloy</td><td>Not specified on the official Classic page</td></tr>
+            <tr><th scope="row">Power</th><td>Breath-powered; no battery</td><td>Breath-powered; pealess design</td></tr>
+            <tr><th scope="row">Water information</th><td>No water-resistance rating stated in Whaleora's listed specifications</td><td>Fox 40 says its chambers are designed to self-clear when submerged</td></tr>
+            <tr><th scope="row">Published weight</th><td>12 grams</td><td>Not specified on the official Classic page</td></tr>
+            <tr><th scope="row">Use described by manufacturer</th><td>Everyday carry, travel and emergency kits</td><td>Referees, coaches, rescue professionals and general safety</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p className="pdp-use-caveat">Sound ratings can depend on measurement conditions and should not be treated as directly equivalent without a shared test method. Fox 40 specifications: <a href="https://www.fox40world.com/classic" target="_blank" rel="noreferrer">Fox 40 Classic official product page</a>.</p>
+    </section>}
+
     {related.length > 0 && <section className="pdp-recommendations shell pdp-section"><div className="pdp-section-heading"><p className="eyebrow dark">Better prepared, together</p><h2>Build your everyday kit.</h2><p>Choose the tools that suit your routine.</p></div><div className="product-grid">{related.map((item) => <ProductCard key={item.id} product={item} />)}</div></section>}
   </main>;
 }
