@@ -7,8 +7,9 @@ import { getBundles } from '@/lib/shopify/catalog';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Safety Kits & Bundles | Whaleora',
+  title: 'Safety Kits & Bundles',
   description: 'Whaleora safety essentials packed together as ready-made kits, for yourself or as a gift.',
+  alternates: { canonical: '/bundles' },
 };
 
 /** Kits of the singles, sold as their own products. Sets of one item (Duo, Four-piece) stay on the product pages. */
