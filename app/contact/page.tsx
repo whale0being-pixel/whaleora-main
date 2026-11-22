@@ -3,7 +3,7 @@ import { whatsappHref } from '@/lib/content/contact';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact — Whaleora',
+  title: 'Contact',
   description: 'WhatsApp, email, or send an enquiry. A person at Whaleora reads these — product questions, orders, partnerships, workshops.',
 };
 
