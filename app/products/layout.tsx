@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Shop Personal Safety Essentials — Whaleora',
+  title: 'Shop Personal Safety Essentials',
   description: 'Explore Whaleora personal alarms and practical everyday safety tools designed for calm, accessible preparedness.',
 };
 

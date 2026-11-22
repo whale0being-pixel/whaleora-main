@@ -30,21 +30,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // --- NEW: High-intent SEO modifiers ---
   const seoOverrides: Record<string, { title: string; description: string }> = {
     'pepperspray': {
-      title: 'Maximum Strength Pepper Spray | Whaleora Personal Safety',
+      title: 'Maximum Strength Pepper Spray',
       description: 'Reliable, easy-to-use pepper spray for everyday preparedness. Designed for quick access during commutes, campus life, and late shifts in India.'
     },
     'sos-alarm': {
-      title: 'Personal SOS Safety Alarm (130dB) | Whaleora',
+      title: 'Personal SOS Safety Alarm (130dB)',
       description: 'A loud, 130dB personal safety alarm designed for urban commutes and night travel. Pull the pin for an instant, attention-grabbing siren.'
     },
     'windowbreaker': {
-      title: 'Car Window Breaker & Seatbelt Cutter | Whaleora',
+      title: 'Car Window Breaker & Seatbelt Cutter',
       description: 'An essential 2-in-1 emergency escape tool for your car. Shatter tempered glass and cut jammed seatbelts instantly during transit emergencies.'
     }
   };
 
   const override = seoOverrides[slug];
-  const title = override ? override.title : `${product.title} — ${formatPrice(product.price, product.currencyCode)} | Whaleora`;
+  const title = override ? override.title : `${product.title} — ${formatPrice(product.price, product.currencyCode)}`;
   const description = override ? override.description : product.shortDescription;
   const card = product.images[0] || PRODUCT_IMAGE_FALLBACK;
 
@@ -53,6 +53,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description,
     openGraph: { title, description, images: [{ url: card }] },
     twitter: { card: 'summary_large_image', title, description, images: [card] },
+    alternates: { canonical: `/products/${product.slug}` },
   };
 }
 

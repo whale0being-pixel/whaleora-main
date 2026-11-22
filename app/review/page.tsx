@@ -9,7 +9,8 @@ import './review-hub.css';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Write a review | Whaleora',
+  title: 'Write a review',
+  robots: { index: false, follow: false },
   description: 'Choose the product you bought and tell the next person what it is actually like.',
 };
 
