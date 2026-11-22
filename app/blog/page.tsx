@@ -11,7 +11,7 @@ import './blog.css';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Journal — practical safety reading | Whaleora',
+  title: 'Journal — practical safety reading',
   description: 'Short, practical reads on everyday safety, commuting, travel and preparedness from the Whaleora team.',
 };
 
