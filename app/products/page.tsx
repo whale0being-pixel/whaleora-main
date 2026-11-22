@@ -1,9 +1,16 @@
 import Image from 'next/image';
+import type { Metadata } from 'next';
 import { ProductsBrowser, ShopNote } from '@/components/products-browser';
 import { getCatalog } from '@/lib/shopify/catalog';
 import { singlesOnly } from '@/lib/shopify/bundles';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Shop Personal Safety Essentials',
+  description: 'Explore Whaleora personal safety essentials: a 130dB SOS alarm, pepper spray, safety whistle and emergency window breaker. Compare practical features and choose what fits your routine.',
+  alternates: { canonical: '/products' },
+};
 
 export default async function ProductsPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
   const [catalog, { category }] = await Promise.all([getCatalog(), searchParams]);
