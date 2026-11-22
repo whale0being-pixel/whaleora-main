@@ -5,7 +5,7 @@ import { livePosts } from '@/lib/content/blog';
 import { collectionHref, getCollections } from '@/lib/shopify/collections';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = 'https://whaleora.com';
+  const base = 'https://www.whaleora.com';
   const routes = ['', '/products', '/bundles', '/about', '/safety-hub', '/blog', '/institutions', '/contact', '/warranty'];
   const [catalog, { checklists, posts }, collections] = await Promise.all([getCatalog(), publishedContent(), getCollections()]);
   
