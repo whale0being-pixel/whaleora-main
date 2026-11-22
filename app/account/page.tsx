@@ -12,6 +12,7 @@ export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: 'Account — Whaleora',
   description: 'Sign in with Shopify to see your Whaleora orders and track them.',
+  robots: { index: false, follow: false },
 };
 
 const NOTES: Record<string, string> = {
