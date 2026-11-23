@@ -245,7 +245,7 @@
   .pdp-purchase { order: 2; min-width: 0; }
   .pdp-quote { order: 3; min-width: 0; }
   .pdp-gallery-stage { grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  .pdp-gallery-image { aspect-ratio: 1.35; border-radius: 9px; }
+  .pdp-gallery-image { aspect-ratio: 1; border-radius: 9px; }
   .pdp-gallery-image > img { object-fit: contain; }
   .pdp-highlight-rail { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: none; gap: 8px; }
   .pdp-highlight-rail > div { padding: 10px 6px; gap: 4px; border-radius: 7px; }
