@@ -28,9 +28,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 function renderInline(text: string) {
-  const parts = text.split(/(\\[[^\\]]+\\]\\(\\/[a-zA-Z0-9/_-]+\\))/g);
+  const parts = text.split(/(\[[^\]]+\]\(\/[a-zA-Z0-9/_-]+\))/g);
   return parts.map((part, index) => {
-    const match = part.match(/^\\[([^\\]]+)\\]\\((\\/[a-zA-Z0-9/_-]+)\\)$/);
+    const match = part.match(/^\[([^\]]+)\]\((\/[a-zA-Z0-9/_-]+)\)$/);
     return match ? <Link href={match[2]} key={index}>{match[1]}</Link> : part;
   });
 }
