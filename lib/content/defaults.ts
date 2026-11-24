@@ -51,15 +51,28 @@ function releaseUntouched(item: ProductEditorial): ProductEditorial {
   const bundled = bundledProducts.find((product) => product.id === item.id);
   if (!bundled) return item;
   const inherited = <T extends 'title' | 'shortDescription' | 'longDescription'>(key: T) => (item[key] === bundled[key] ? '' : item[key]);
-  const specifications = item.specifications.map((spec) => {
-    if (item.id === 'pepper-spray' && spec.label.toLowerCase() === 'range') return { ...spec, value: 'Up to 7 feet' };
-    if (item.id === 'window-breaker' && spec.label.toLowerCase() === 'weight') return { ...spec, value: '92 grams' };
-    if (item.id === 'sos-alarm' && spec.label.toLowerCase() === 'battery') return { ...spec, value: 'USB-C rechargeable Lithium-Ion battery' };
-    return spec;
-  });
+  const specifications = item.id === 'sos-alarm'
+    ? [
+        { label: 'Sound output', value: '130dB' },
+        { label: 'Battery', value: '130mAh Type-C rechargeable lithium battery' },
+        { label: 'Charging time', value: 'About 90 minutes' },
+        { label: 'Alarm duration', value: 'About 70 minutes' },
+        { label: 'Steady light duration', value: 'About 240 minutes' },
+        { label: 'Strobe duration', value: 'About 300 minutes' },
+        { label: 'Material', value: 'ABS' },
+        { label: 'Weight', value: '28 grams' },
+        { label: 'Dimensions', value: '100 × 31 × 13.5mm' },
+      ]
+    : item.specifications.map((spec) => {
+        if (item.id === 'pepper-spray' && spec.label.toLowerCase() === 'range') return { ...spec, value: 'Up to 7 feet' };
+        if (item.id === 'window-breaker' && spec.label.toLowerCase() === 'weight') return { ...spec, value: '92 grams' };
+        return spec;
+      });
   const features = item.id === 'window-breaker' ? item.features.filter((feature) => !/keyring-friendly/i.test(feature)) : item.features;
   const included = item.id === 'window-breaker' ? item.included.filter((entry) => !/keyring attachment/i.test(entry)) : item.included;
-  const highlights = item.id === 'pepper-spray'
+  const highlights = item.id === 'sos-alarm'
+    ? [{ value: '130 dB', label: 'Alarm' }, { value: '28 g', label: 'Carry weight' }, { value: '90 min', label: 'Charging time' }]
+    : item.id === 'pepper-spray'
     ? item.highlights.map((highlight) => highlight.label.toLowerCase() === 'range' ? { ...highlight, value: 'Up to 7 ft' } : highlight)
     : item.id === 'window-breaker'
       ? item.highlights.map((highlight) => highlight.label.toLowerCase().includes('weight') ? { ...highlight, value: '92 g' } : highlight)
@@ -72,12 +85,15 @@ function releaseUntouched(item: ProductEditorial): ProductEditorial {
   const shortDescription = item.id === 'pepper-spray'
     ? item.shortDescription.replace(/8(?:–|-| to )10 feet/gi, 'up to 7 feet')
     : item.id === 'window-breaker' ? item.shortDescription.replace(/28 grams/gi, '92 grams') : item.shortDescription;
+  const howItWorks = item.id === 'sos-alarm'
+    ? [{ title: 'Carry', text: 'Clip it where it stays within easy reach.' }, { title: 'Pull', text: 'Remove the top pin to activate the 130dB alarm and flashing LED.' }, { title: 'Use the light', text: 'Press once for steady light, twice for strobe, and a third time to switch the light off.' }]
+    : item.howItWorks;
   const compare = item.id === 'window-breaker' ? { ...item.compare, carry: 'Glovebox or door pocket — not your keyring' } : item.compare;
   const releasedShortDescription = item.shortDescription === bundled.shortDescription ? '' : shortDescription;
   const releasedLongDescription = item.longDescription === bundled.longDescription ? '' : longDescription;
   return {
     ...item,
-    features, specifications, highlights, compare, included,
+    features, specifications, highlights, compare, included, howItWorks,
     title: inherited('title'),
     shortDescription: releasedShortDescription,
     longDescription: releasedLongDescription,
