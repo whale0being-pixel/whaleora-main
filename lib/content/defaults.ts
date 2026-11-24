@@ -73,12 +73,14 @@ function releaseUntouched(item: ProductEditorial): ProductEditorial {
     ? item.shortDescription.replace(/8(?:–|-| to )10 feet/gi, 'up to 7 feet')
     : item.id === 'window-breaker' ? item.shortDescription.replace(/28 grams/gi, '92 grams') : item.shortDescription;
   const compare = item.id === 'window-breaker' ? { ...item.compare, carry: 'Glovebox or door pocket — not your keyring' } : item.compare;
+  const releasedShortDescription = item.shortDescription === bundled.shortDescription ? '' : shortDescription;
+  const releasedLongDescription = item.longDescription === bundled.longDescription ? '' : longDescription;
   return {
     ...item,
-    features, specifications, highlights, longDescription, shortDescription, compare, included,
+    features, specifications, highlights, compare, included,
     title: inherited('title'),
-    shortDescription: inherited('shortDescription'),
-    longDescription: inherited('longDescription'),
+    shortDescription: releasedShortDescription,
+    longDescription: releasedLongDescription,
     images: item.images ?? [],
     howItWorksImage: item.howItWorksImage ?? '',
     price: item.price ?? null,
