@@ -53,8 +53,9 @@ function releaseUntouched(item: ProductEditorial): ProductEditorial {
   const inherited = <T extends 'title' | 'shortDescription' | 'longDescription'>(key: T) => (item[key] === bundled[key] ? '' : item[key]);
   const specifications = item.id === 'sos-alarm'
     ? [
+        { label: 'Model', value: 'AF-2004' },
         { label: 'Sound output', value: '130dB' },
-        { label: 'Battery', value: '130mAh Type-C rechargeable lithium battery' },
+        { label: 'Battery', value: '130mAh Type-C (USB-C) rechargeable lithium battery' },
         { label: 'Charging time', value: 'About 90 minutes' },
         { label: 'Alarm duration', value: 'About 70 minutes' },
         { label: 'Steady light duration', value: 'About 240 minutes' },
@@ -86,7 +87,7 @@ function releaseUntouched(item: ProductEditorial): ProductEditorial {
     ? item.shortDescription.replace(/8(?:–|-| to )10 feet/gi, 'up to 7 feet')
     : item.id === 'window-breaker' ? item.shortDescription.replace(/28 grams/gi, '92 grams') : item.shortDescription;
   const howItWorks = item.id === 'sos-alarm'
-    ? [{ title: 'Carry', text: 'Clip it where it stays within easy reach.' }, { title: 'Pull', text: 'Remove the top pin to activate the 130dB alarm and flashing LED.' }, { title: 'Use the light', text: 'Press once for steady light, twice for strobe, and a third time to switch the light off.' }]
+    ? [{ title: 'Carry', text: 'Clip it where it stays within easy reach.' }, { title: 'Pull', text: 'Remove the top pin to activate the 130dB alarm and flashing LED.' }, { title: 'Use the light', text: 'Press the light button once to turn on the light, press twice for strobe, and press a third time to switch it off.' }]
     : item.howItWorks;
   const compare = item.id === 'window-breaker' ? { ...item.compare, carry: 'Glovebox or door pocket — not your keyring' } : item.compare;
   const releasedShortDescription = item.shortDescription === bundled.shortDescription ? '' : shortDescription;
