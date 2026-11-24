@@ -1,4 +1,4 @@
-/** Placeholder footage only. Replace with permissioned customer reviews before launch. */
+/** Creator-shared product videos approved for use on Whaleora product pages. */
 export const reviewVideos = [
   { id: 'alarm-everyday', title: 'Small enough for every day.', product: 'Personal SOS Alarm', slug: 'sos-alarm', poster: '/products/158A9291.jpg', video: '/reviews/360.mp4', duration: '0:08' },
   { id: 'whistle-first-look', title: 'One less thing to charge.', product: 'Survival Whistle', slug: 'whistle', poster: '/products/survival-whistle-mockup.webp', video: '/reviews/whistle-first-look.mp4', duration: '0:08' },
