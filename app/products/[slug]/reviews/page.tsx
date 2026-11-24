@@ -45,8 +45,7 @@ export default async function ProductReviewsPage({ params }: { params: Promise<{
   const { written, rating } = await productRating(handle);
   const total = written.length + quotes.length;
 
-  // --- NEW: AI & SEO Reviews and Video Schema ---
-// --- NEW: AI & SEO Reviews and Video Schema ---
+  // Product, submitted review and creator-video structured data.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
@@ -57,7 +56,15 @@ const jsonLd = {
     '@type': 'Brand',
     name: 'Whaleora',
   },
-  // 1. Inject the Aggregate Gold Star Rating
+  offers: {
+    '@type': 'Offer',
+    url: `https://www.whaleora.com/products/${product.slug}`,
+    priceCurrency: product.currencyCode || 'INR',
+    price: product.price,
+    itemCondition: 'https://schema.org/NewCondition',
+    ...(product.shopify && { availability: product.shopify.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }),
+  },
+  // Only publish an aggregate rating when genuine submitted customer ratings exist.
   ...(rating.count > 0 && {
     aggregateRating: {
       '@type': 'AggregateRating',
