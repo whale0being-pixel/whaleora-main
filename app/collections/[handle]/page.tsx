@@ -32,7 +32,9 @@ export default async function CollectionPage({ params }: Props) {
       <div className="collection-hero-copy">
         <p className="eyebrow dark"><Link href="/products">Shop</Link> · {items.length} {items.length === 1 ? 'object' : 'objects'}</p>
         <h1>{collection.title}</h1>
-        {collection.description && <p>{collection.description}</p>}
+        {collection.description
+          ? <p>{collection.description}</p>
+          : <p>Explore the products in this collection, compare what each one is designed to do, and choose the option that fits your routine. Check each product page for specifications, what is included and practical use guidance.</p>}
       </div>
     </div></section>
 
