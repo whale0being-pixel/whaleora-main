@@ -51,8 +51,30 @@ function releaseUntouched(item: ProductEditorial): ProductEditorial {
   const bundled = bundledProducts.find((product) => product.id === item.id);
   if (!bundled) return item;
   const inherited = <T extends 'title' | 'shortDescription' | 'longDescription'>(key: T) => (item[key] === bundled[key] ? '' : item[key]);
+  const specifications = item.specifications.map((spec) => {
+    if (item.id === 'pepper-spray' && spec.label.toLowerCase() === 'range') return { ...spec, value: 'Up to 7 feet' };
+    if (item.id === 'window-breaker' && spec.label.toLowerCase() === 'weight') return { ...spec, value: '92 grams' };
+    if (item.id === 'sos-alarm' && spec.label.toLowerCase() === 'battery') return { ...spec, value: 'USB-C rechargeable Lithium-Ion battery' };
+    return spec;
+  });
+  const features = item.id === 'window-breaker' ? item.features.filter((feature) => !/keyring-friendly/i.test(feature)) : item.features;
+  const highlights = item.id === 'pepper-spray'
+    ? item.highlights.map((highlight) => highlight.label.toLowerCase() === 'range' ? { ...highlight, value: 'Up to 7 ft' } : highlight)
+    : item.id === 'window-breaker'
+      ? item.highlights.map((highlight) => highlight.label.toLowerCase().includes('weight') ? { ...highlight, value: '92 g' } : highlight)
+      : item.highlights;
+  const longDescription = item.id === 'sos-alarm'
+    ? item.longDescription.replace(/, no charging\.?/i, '. USB-C rechargeable')
+    : item.id === 'pepper-spray'
+      ? item.longDescription.replace(/8(?:–|-| to )10 feet/gi, 'up to 7 feet')
+      : item.id === 'window-breaker' ? item.longDescription.replace(/28 grams/gi, '92 grams') : item.longDescription;
+  const shortDescription = item.id === 'pepper-spray'
+    ? item.shortDescription.replace(/8(?:–|-| to )10 feet/gi, 'up to 7 feet')
+    : item.id === 'window-breaker' ? item.shortDescription.replace(/28 grams/gi, '92 grams') : item.shortDescription;
+  const compare = item.id === 'window-breaker' ? { ...item.compare, carry: 'Glovebox or door pocket — not your keyring' } : item.compare;
   return {
     ...item,
+    features, specifications, highlights, longDescription, shortDescription, compare,
     title: inherited('title'),
     shortDescription: inherited('shortDescription'),
     longDescription: inherited('longDescription'),
@@ -75,8 +97,8 @@ export function hydrateContent(content: ReviewContent): ReviewContent {
 }
 
 export const defaultContent: ReviewContent = {
-  settings: { writtenTitle: 'A few words from the everyday.', writtenSubtitle: '', videoTitle: 'A closer look.\nIn motion.', videoSubtitle: 'Browse the clips. Tap a review to watch.', showWritten: true, showVideos: true, marqueeSeconds: 65 },
-  videos: reviewVideos.map((video) => ({ ...video, visible: true, demo: true })),
+  settings: { writtenTitle: 'A few words from the everyday.', writtenSubtitle: '', videoTitle: 'A closer look.\nIn motion.', videoSubtitle: 'Creator-shared videos. Tap a clip to watch.', showWritten: true, showVideos: true, marqueeSeconds: 65 },
+  videos: reviewVideos.map((video) => ({ ...video, visible: true, demo: false })),
   products: productEditorialFromCatalog(),
   checklists: defaultChecklists(),
   habits: defaultHabits(),
