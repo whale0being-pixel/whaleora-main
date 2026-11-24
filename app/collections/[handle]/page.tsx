@@ -32,7 +32,9 @@ export default async function CollectionPage({ params }: Props) {
       <div className="collection-hero-copy">
         <p className="eyebrow dark"><Link href="/products">Shop</Link> · {items.length} {items.length === 1 ? 'object' : 'objects'}</p>
         <h1>{collection.title}</h1>
-        {collection.description && <p>{collection.description}</p>}
+        {collection.description
+          ? <p>{collection.description}</p>
+          : <div className="collection-description-fallback"><p>Compare the products in this collection by the job each one is designed to do. Start with the use case that matches your routine:</p><ul>{items.map((item) => <li key={item.id}><strong>{item.title}:</strong> {item.compare.job}. {item.compare.reachFor}</li>)}</ul><p>Open each product page for specifications, what is included, care guidance and important limitations.</p></div>}
       </div>
     </div></section>
 

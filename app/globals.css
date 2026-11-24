@@ -1669,3 +1669,17 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .gate-back { margin-top: 16px; padding: 6px 0 0; border: 0; background: none; cursor: pointer; font-size: var(--label-size); font-weight: var(--label-weight); letter-spacing: var(--label-track); text-transform: uppercase; color: rgba(16,40,68,.5); transition: color .2s ease; }
 .gate-back:hover { color: var(--ink); }
 @media (max-width: 480px) { .gate-dialog { width: calc(100vw - 24px); } .gate-actions .button { min-height: 50px; } }
+
+
+/* Crawlable policy pages share the calm, readable treatment of the policy dialog. */
+.policy-page > header { max-width: 900px; }
+.policy-page > header h1 { margin: 10px 0 8px; font: 400 clamp(34px, 5vw, 58px)/1.08 var(--font-display), serif; color: var(--navy, #102844); }
+.policy-page-updated { margin: 0 0 20px; font-size: 12px; color: rgba(16,40,68,.55); }
+.policy-page-intro { max-width: 720px; font-size: 17px; line-height: 1.75; color: rgba(16,40,68,.78); }
+.policy-page-content { max-width: 900px; padding-bottom: 72px; }
+.policy-page-content section { padding: 24px 0; border-top: 1px solid var(--line, rgba(16,40,68,.14)); }
+.policy-page-content h2 { margin: 0 0 12px; font: 400 clamp(21px, 2.4vw, 28px)/1.2 var(--font-display), serif; color: var(--navy, #102844); }
+.policy-page-content p, .policy-page-content li { max-width: 760px; font-size: 15px; line-height: 1.8; color: rgba(16,40,68,.78); }
+.policy-page-content ul { padding-left: 22px; }
+.policy-page-content a { color: var(--navy, #102844); text-decoration: underline; text-underline-offset: 3px; }
+.policy-page-nav { display: flex; flex-wrap: wrap; gap: 18px; padding-top: 24px; border-top: 1px solid var(--line, rgba(16,40,68,.14)); }

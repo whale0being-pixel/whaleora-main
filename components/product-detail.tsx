@@ -80,8 +80,8 @@ export function ProductQuote({ items }: { items: Testimonial[] }) {
 export function ProductReviewRail({ items }: { items: VideoReview[] }) {
   const [selected, setSelected] = useState<VideoReview | null>(null);
   if (!items.length) return null;
-  return <section className="pdp-review-rail" aria-labelledby="pdp-review-heading"><div className="pdp-small-heading"><h2 id="pdp-review-heading">See it in everyday life.</h2>{items.some((item) => item.demo) && <span>Demo clips</span>}</div><div className="pdp-review-clips">{items.map((item) => <button type="button" key={item.id} onClick={() => setSelected(item)} aria-label={`Watch ${item.demo ? 'demo ' : ''}review: ${item.title}`}><ProductImage src={item.poster} alt="" fill sizes="150px" /><span className="pdp-clip-play"><Play size={17} fill="currentColor" /></span><span className="pdp-clip-caption">{item.title}</span></button>)}</div>
-    {selected && <MediaDialog title={`${selected.demo ? 'Demo review' : 'Review'} · ${selected.product}`} close={() => setSelected(null)}><video src={selected.video} poster={optimisedImageUrl(selected.poster, 760)} controls autoPlay muted playsInline aria-label={selected.title} />{selected.demo && <p className="pdp-demo-disclosure">Sample clip for preview, not a customer testimonial.</p>}</MediaDialog>}
+  return <section className="pdp-review-rail" aria-labelledby="pdp-review-heading"><div className="pdp-small-heading"><h2 id="pdp-review-heading">Creator videos</h2><span>Shared by creators</span></div><div className="pdp-review-clips">{items.map((item) => <button type="button" key={item.id} onClick={() => setSelected(item)} aria-label={`Watch creator video: ${item.title}`}><ProductImage src={item.poster} alt="" fill sizes="150px" /><span className="pdp-clip-play"><Play size={17} fill="currentColor" /></span><span className="pdp-clip-caption">{item.title}</span></button>)}</div>
+    {selected && <MediaDialog title={`Creator video · ${selected.product}`} close={() => setSelected(null)}><video src={selected.video} poster={optimisedImageUrl(selected.poster, 760)} controls autoPlay muted playsInline aria-label={selected.title} /></MediaDialog>}
   </section>;
 }
 

@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const product = await getCatalogProduct(slug);
   if (!product) return {};
   const title = `${product.title} reviews`;
-  const description = `What customers say about the ${product.title}, and a place to write your own review.`;
+  const description = `Customer-submitted written feedback and creator-shared videos for the ${product.title}.`;
   return { title, description, alternates: { canonical: `/products/${slug}/reviews` }, openGraph: { title, description, images: [{ url: product.images[0] || PRODUCT_IMAGE_FALLBACK }] } };
 }
 
@@ -45,53 +45,49 @@ export default async function ProductReviewsPage({ params }: { params: Promise<{
   const { written, rating } = await productRating(handle);
   const total = written.length + quotes.length;
 
-  // --- NEW: AI & SEO Reviews and Video Schema ---
-// --- NEW: AI & SEO Reviews and Video Schema ---
+  // Product, submitted review and creator-video structured data.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: product.title,
-  image: product.images[0] || PRODUCT_IMAGE_FALLBACK,
+  image: (product.images[0] || PRODUCT_IMAGE_FALLBACK).startsWith('http')
+    ? product.images[0]
+    : new URL(product.images[0] || PRODUCT_IMAGE_FALLBACK, 'https://www.whaleora.com').toString(),
   description: product.shortDescription,
   brand: {
     '@type': 'Brand',
     name: 'Whaleora',
   },
-  // 1. Inject the Aggregate Gold Star Rating
+  offers: {
+    '@type': 'Offer',
+    url: `https://www.whaleora.com/products/${product.slug}`,
+    priceCurrency: product.currencyCode || 'INR',
+    price: product.price,
+    itemCondition: 'https://schema.org/NewCondition',
+    ...(product.shopify && { availability: product.shopify.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }),
+    seller: { '@type': 'Organization', name: 'Whaleora' },
+  },
+  // Only publish an aggregate rating when genuine submitted customer ratings exist.
   ...(rating.count > 0 && {
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: rating.average,
+      ratingValue: Number(rating.average.toFixed(2)),
       reviewCount: rating.count,
+      ratingCount: rating.count,
     },
   }),
-  // 2. Loop through written reviews and non-demo quotes
-  review: [
-    ...written.map((r) => ({
+  // Only reviews with an actual submitted star rating are represented as Review schema.
+  ...(written.length > 0 && {
+    review: written.map((r) => ({
       '@type': 'Review',
       author: { '@type': 'Person', name: r.name },
       datePublished: new Date(r.submittedAt).toISOString().split('T')[0],
       reviewBody: r.body,
       reviewRating: { '@type': 'Rating', ratingValue: r.rating },
     })),
-    ...quotes.filter(q => !q.demo).map((q) => ({
-      '@type': 'Review',
-      author: { '@type': 'Person', name: q.name },
-      reviewBody: q.quote,
-      reviewRating: { '@type': 'Rating', ratingValue: 5 }, // Assume featured quotes are top-tier
-    })),
-  ],
-  // 3. Loop through product videos for Google's Video Tab (TypeScript Error Fixed)
-  ...(videos.length > 0 && {
-    subjectOf: videos.map((v: any) => ({
-      '@type': 'VideoObject',
-      name: `${product.title} Customer Review Video`,
-      description: `Watch a real customer demonstration and review of the ${product.title} by Whaleora.`,
-      thumbnailUrl: product.images[0] || PRODUCT_IMAGE_FALLBACK,
-      contentUrl: v.src || v.url || `https://www.whaleora.com/products/${product.slug}/reviews`,
-      uploadDate: new Date().toISOString().split('T')[0],
-    })),
   }),
+  // Creator-shared videos have no verified publication dates in the content records.
+  // Keep them visible on-page, but do not emit VideoObject markup until dates can be verified.
 };
 
   return <main className="page-main pdp-reference reviews-page">
@@ -112,7 +108,7 @@ const jsonLd = {
       <div className="reviews-head-copy">
         <p className="eyebrow dark">Reviews · {product.title}</p>
         <h1>A few words from everyday life.</h1>
-        <p className="reviews-head-note">Every published review is written by someone who bought this product. We publish them as they come, good or bad.</p>
+        <p className="reviews-head-note">Explore customer-submitted written feedback and creator-shared product videos. Verified-buyer labels appear only when an order match confirms a purchase.</p>
         <div className="reviews-head-actions">
           <a className="button button-primary" href="#write">Write a review <span aria-hidden="true"><ArrowUpRight size={16} strokeWidth={2} /></span></a>
           <Link className="icon-link reviews-back" href={`/products/${product.slug}`}><ArrowLeft size={15} strokeWidth={2} aria-hidden="true" /> Back to the {product.title}</Link>

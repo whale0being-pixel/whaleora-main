@@ -94,7 +94,7 @@ const objections = [
   },
   {
     q: 'What happens when the SOS Alarm battery dies?',
-    a: 'The SOS Alarm runs on a modern, rechargeable Lithium-Ion battery. It comes with a C-Type USB cable in the box, and a single charge lasts up to a month on standby. The whistle and the window breaker require no battery at all, which is exactly why they make the perfect fail-safe backups.',
+    a: 'The SOS Alarm (model AF-2004) uses a 130mAh Type-C rechargeable lithium battery. The supplier lists about 90 minutes to charge, about 70 minutes of continuous alarm, 240 minutes of steady lighting, or 300 minutes of flashing light. A low-battery reminder is also listed. The supplier sheet does not specify standby runtime or confirm the cable contents, so check the product packaging for included accessories. The Survival Whistle is battery-free.',
   },
   {
     q: 'Can I pack these safety tools on a flight?',

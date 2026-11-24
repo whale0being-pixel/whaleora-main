@@ -58,7 +58,7 @@ export const faqs: FaqEntry[] = [
     category: 'choose',
     question: 'What is the difference between the SOS alarm and the whistle?',
     answer:
-      'Both are powerful acoustic safety tools designed to attract immediate help, but they work differently to ensure you are never left without options.\n\nThe Personal SOS Alarm is our loudest tool (130dB) and includes a flashing strobe light. It runs on a rechargeable Lithium-Ion battery (C-Type USB) and sounds continuously until you push the pin back in. \n\nThe Survival Whistle (120dB) is your mechanical backup. Crafted from aviation-grade aluminium, it relies entirely on your breath—meaning it will never run out of battery or fail in harsh weather. We often recommend carrying both for complete peace of mind.',
+      'Both are powerful acoustic safety tools designed to attract immediate help, but they work differently to ensure you are never left without options.\n\nThe Personal SOS Alarm is our loudest tool (130dB) and includes a flashing strobe light. It runs on a 130mAh Type-C (USB-C) rechargeable lithium battery and sounds until you push the pin back in. \n\nThe Survival Whistle (120dB) is your mechanical backup. Crafted from aviation-grade aluminium, it relies entirely on your breath—meaning it will never run out of battery or fail in harsh weather. We often recommend carrying both for complete peace of mind.',
     keywords: ['alarm vs whistle', 'difference', 'compare alarm', 'siren vs whistle', 'both', 'instead', 'acoustic', 'backup'],
     followUps: ['choose-kit', 'alarm-how', 'whistle-how', 'care-battery'],
     links: [
@@ -125,7 +125,7 @@ export const faqs: FaqEntry[] = [
     category: 'choose',
     question: 'Why choose Whaleora over a cheaper alarm online?',
     answer:
-      'Your peace of mind shouldn’t rely on a compromised product. Many unbranded alarms claim to be 130dB but fail to deliver when tested. \n\nWe provide exact, honest specifications you can trust: a verified 130dB output, a lightweight 28g impact-resistant polymer body, and a reliable rechargeable Lithium-Ion battery. We prioritize build quality and rigorous testing so you know your tool will work the moment you pull the pin. If you ever experience a defect, our support team is easily reachable to make it right.',
+      'The supplier specification for our Personal SOS Alarm (model AF-2004) lists a 130dB output, a 28g ABS body and a 130mAh Type-C rechargeable lithium battery. We publish the model’s listed charging and operating times on the product page so you can compare specifications rather than rely on broad claims. If your alarm arrives faulty or stops working, our support team can help under the applicable warranty and returns terms.',
     keywords: ['cheap', 'amazon', 'flipkart', '99', 'duplicate', 'fake', 'why whaleora', 'quality', 'rated', 'trust', 'reliable'],
     followUps: ['alarm-loud', 'orders-faulty', 'choose-prices'],
     links: [{ label: 'SOS Alarm specs', href: '/products/sos-alarm' }],
@@ -136,7 +136,7 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'How do you use the Personal SOS Alarm?',
     answer:
-      'It is designed to be intuitive under stress. It takes just three seconds to learn:\n\n1. Carry: Clip it to your keyring, lanyard, or bag strap so it is always within reach.\n2. Pull: Firmly yank the top pin. A piercing 130dB dual-siren and flashing strobe light will activate instantly.\n3. Reset: Push the pin back into the device to silence the alarm.\n\nThere are no apps to pair, no buttons to fumble with, and no complex settings. Simply pull to activate.',
+      'It is designed to be intuitive under stress. It takes just three seconds to learn:\n\n1. Carry: Clip it to your keyring, lanyard, or bag strap so it is always within reach.\n2. Pull: Firmly yank the top pin. A piercing 130dB dual-siren and flashing strobe light will activate instantly.\n3. Light modes: Press the light button once to turn on the light, twice for strobe, and a third time to switch it off.\n\nTo stop the siren, reinsert the pin. There is no app or pairing required.',
     keywords: ['how it works', 'how to use', 'pull pin', 'activate', 'reset', 'siren', 'strobe', 'instructions', 'operate', 'sos alarm', 'guide'],
     followUps: ['alarm-loud', 'care-battery', 'alarm-does-it-stop'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
@@ -167,8 +167,8 @@ export const faqs: FaqEntry[] = [
     category: 'alarm',
     question: 'Is the SOS Alarm heavy or bulky to carry?',
     answer:
-      'Not at all. It weighs just 28 grams and is designed in a compact, modern keychain format so it never feels burdensome to carry every day.\n\nYour order includes the alarm, a C-Type charging cable, a user manual, and a durable keychain attachment. The casing is weather-resistant, meaning it can easily handle daily commutes and rain, though it should not be fully submerged in water.',
-    keywords: ['weight', 'size', 'heavy', 'how heavy', 'how big', '28g', '28 grams', 'small', 'keyring', 'keychain', 'compact', 'dimensions', 'weather-resistant', 'waterproof', 'rain'],
+      'Not at all. It weighs just 28 grams and is designed in a compact, modern keychain format so it never feels burdensome to carry every day.\n\nThe alarm has a compact 28g ABS body and a keychain attachment. Check the packaging contents supplied with your order for the included accessories. The supplier sheet specifies an ABS body but does not state a water-resistance rating. Keep the alarm dry and follow the care instructions supplied with your product.',
+    keywords: ['weight', 'size', 'heavy', 'how heavy', 'how big', '28g', '28 grams', 'small', 'keyring', 'keychain', 'compact', 'dimensions', 'water resistance', 'waterproof', 'rain'],
     followUps: ['care-battery', 'alarm-how', 'choose-kit'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
   },
@@ -197,7 +197,7 @@ export const faqs: FaqEntry[] = [
     category: 'pepper',
     question: 'How do you use the pepper spray safely?',
     answer:
-      'Our 50ml Oleoresin Capsicum (OC) canister is designed for intuitive, one-handed use under stress. It features a secure locking cap to prevent accidental discharge in your bag and offers a safe deployment range of 8 to 10 feet.\n\nTo use it: carry it in an accessible outer pocket, flip or twist the safety lock, aim the stream directly at the face, and immediately run toward safety and help. Remember, pepper spray is meant to buy you distance—it is a tool for escape, not engagement.',
+      'Our 50ml Oleoresin Capsicum (OC) canister is designed for intuitive, one-handed use under stress. It features a secure locking cap to prevent accidental discharge in your bag and offers a range of up to 7 feet.\n\nTo use it: carry it in an accessible outer pocket, flip or twist the safety lock, aim the stream directly at the face, and immediately run toward safety and help. Remember, pepper spray is meant to buy you distance—it is a tool for escape, not engagement.',
     keywords: ['pepper', 'spray', 'oc', 'oleoresin', 'capsicum', '50ml', 'range', 'lock', 'how to spray', 'stream', 'use spray', 'safety lock'],
     followUps: ['pepper-legal', 'pepper-shelf', 'legal-flight'],
     links: [{ label: 'Pepper Spray', href: '/products/pepperspray' }],
@@ -236,7 +236,7 @@ export const faqs: FaqEntry[] = [
     category: 'window',
     question: 'How do you use the car window breaker and seatbelt cutter?',
     answer:
-      'This 92-gram tool is engineered for rapid extraction during transit emergencies. \n\nIf a seatbelt mechanism jams after a collision, pull the fabric taut and slice through it using the concealed stainless steel blade. If the vehicle doors will not open, firmly press the spring-loaded tungsten steel point against the corner of the side window to shatter the glass.\n\nBecause it relies on a mechanical spring rather than a hammer strike, it works perfectly even underwater.',
+      'This 92-gram tool is engineered for rapid extraction during transit emergencies. \n\nIf a seatbelt mechanism jams after a collision, pull the fabric taut and slice through it using the concealed stainless steel blade. If the vehicle doors will not open, firmly press the spring-loaded tungsten steel point against the corner of the side window to shatter the glass.\n\nIt relies on a mechanical spring. Keep it stored securely in the vehicle and follow the product instructions.',
     keywords: ['window breaker', 'glass breaker', 'tungsten', 'spring', 'strike', 'cutter', 'seatbelt cutter', 'escape', 'how to break', 'underwater', 'car crash'],
     followUps: ['window-glass', 'window-where', 'legal-flight'],
     links: [{ label: 'Emergency Window Breaker', href: '/products/windowbreaker' }],
@@ -268,7 +268,7 @@ export const faqs: FaqEntry[] = [
       'Yes, we provide free shipping on all orders over ₹849 anywhere in India. For orders below that amount, a standard shipping fee will be calculated at checkout based on your specific pincode.\n\nWe carefully package and dispatch all orders from our facility in Maharashtra. Accurate delivery estimates are provided directly at checkout so you know exactly when to expect your safety tools.',
     keywords: ['shipping', 'delivery', 'deliver', 'free shipping', '849', '1499', 'pincode', 'india', 'dispatch', 'how long', 'how long does delivery', 'days', 'courier', 'maharashtra'],
     followUps: ['orders-track', 'orders-payment', 'choose-prices'],
-    links: [{ label: 'Shop the collection', href: '/products' }],
+    links: [{ label: 'Shop the collection', href: '/products' }, { label: 'Shipping policy', href: '/shipping' }],
   },
   {
     id: 'orders-track',
@@ -316,20 +316,24 @@ export const faqs: FaqEntry[] = [
       'We offer a 7-day return window from the date of delivery. If you change your mind, or if an item is incorrect or damaged, email hello@whaleora.com to initiate the return.\n\nIf the error is ours (e.g., faulty or wrong item), we cover all return shipping costs. For standard changes of mind, return shipping is deducted from the refund. Please note: for safety and hygiene reasons, tools must be returned in an unused, checkable condition (e.g., pepper spray safety seals must be intact). Refunds are processed within 7 business days of approval.',
     keywords: ['return', 'refund', 'exchange', 'send back', 'policy', 'unused', 'change of mind', '7 days', 'return window', 'money back'],
     followUps: ['orders-faulty', 'orders-contact', 'pepper-how'],
-    links: [{ label: 'Contact support', href: '/contact' }],
+    links: [{ label: 'Returns & refunds policy', href: '/returns' }, { label: 'Shipping policy', href: '/shipping' }, { label: 'Contact support', href: '/contact' }],
   },
   {
     id: 'orders-contact',
     category: 'orders',
+    featured: true,
     question: 'How can I contact Whaleora customer support?',
     answer:
-      'We believe in real human support. For quick questions, order tracking, or product advice, WhatsApp is the fastest channel. \n\nFor institutional partnerships, bulk orders, or detailed support claims, please email us at hello@whaleora.com. Our team operates out of Sambhaji Nagar, Thane, Maharashtra, and we read and reply to every message personally.',
+      'For quick product questions or order updates, WhatsApp is the fastest way to reach us. For returns, damaged or faulty items, warranty claims, and partnership enquiries, email hello@whaleora.com and include your order number where relevant.\n\nYou can also use the Contact page to send an enquiry. Our support team is based in Thane, Maharashtra; please never share a card PIN, password or OTP with anyone claiming to be Whaleora.',
     keywords: ['contact', 'whatsapp', 'email', 'phone', 'human', 'support', 'hello', 'thane', 'address', 'talk to', 'call', 'customer service'],
     followUps: ['partnerships-how', 'orders-faulty', 'brand-where'],
     links: [
       { label: 'WhatsApp', href: whatsappHref('Hi Whaleora! I have an inquiry.') },
       { label: 'hello@whaleora.com', href: 'mailto:hello@whaleora.com' },
       { label: 'Contact page', href: '/contact' },
+      { label: 'Shipping policy', href: '/shipping' },
+      { label: 'Returns & refunds', href: '/returns' },
+      { label: 'Warranty', href: '/warranty' },
     ],
   },
   {
@@ -358,8 +362,8 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'How do I charge the SOS Alarm, and how long does the battery last?',
     answer:
-      'The Personal SOS Alarm features a modern, rechargeable Lithium-Ion battery. It comes with a C-Type USB cable in the box for easy charging. When fully charged, the battery will hold its power for up to a month on standby.\n\nBecause batteries can eventually drain, we always suggest pairing your alarm with the mechanical Survival Whistle so you are never left without a way to call for help.',
-    keywords: ['battery', 'charge', 'charging', 'Lithium Ion', 'coin cell', 'dies', 'dead', 'replace battery', 'usb', 'power', 'standby', 'how long'],
+      'The Personal SOS Alarm (model AF-2004) has a 130mAh Type-C (USB-C) rechargeable lithium battery. The supplier lists a charging time of about 90 minutes. A full charge is specified for about 70 minutes of continuous alarm, 240 minutes of steady lighting, or 300 minutes of flashing light. Actual performance may vary with battery condition and use.\n\nThe supplier also lists a low-battery reminder. Check the charge periodically and keep a battery-free Survival Whistle as a backup.',
+    keywords: ['battery', 'charge', 'charging', 'Lithium Ion', 'coin cell', 'dies', 'dead', 'replace battery', 'usb', 'type-c', 'power', 'standby', 'how long', '130mah', '90 minutes'],
     followUps: ['care-test', 'choose-alarm-vs-whistle', 'alarm-how'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
   },
