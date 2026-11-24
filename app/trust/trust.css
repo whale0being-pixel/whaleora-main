@@ -1,0 +1,11 @@
+.trust-page { background: var(--paper); }
+.trust-hero { padding-block: clamp(44px, 6vw, 88px) 36px; border-bottom: 1px solid var(--line); }
+.trust-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 44px; padding-block: 20px 70px; }
+.trust-grid article { padding: 28px 0; border-bottom: 1px solid var(--line); }
+.trust-grid article > span { color: var(--terracotta); font-size: 12px; letter-spacing: .1em; }
+.trust-grid h2 { margin: 12px 0; font-size: clamp(22px, 2.5vw, 30px); font-weight: 400; }
+.trust-grid p, .trust-contact p { color: rgba(16,40,68,.72); line-height: 1.75; }
+.trust-grid a { display: inline-flex; align-items: center; gap: 8px; color: var(--navy); text-decoration: none; font-size: 14px; }
+.trust-contact { padding-block: 30px 80px; border-top: 1px solid var(--line); }
+.trust-contact h2 { font-weight: 400; }
+@media (max-width: 650px) { .trust-grid { grid-template-columns: 1fr; } .trust-hero { padding-block: 28px 24px; } .trust-hero h1 { font-size: 34px; } }
