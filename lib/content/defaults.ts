@@ -89,6 +89,8 @@ export function hydrateContent(content: ReviewContent): ReviewContent {
   const edited = new Map(content.products.map((item) => [item.id, releaseUntouched(item)]));
   return {
     ...content,
+    // Creator videos are real creator-shared assets; clear legacy demo flags on videos only.
+    videos: content.videos.map((video) => ({ ...video, demo: false })),
     products: bundled.map((item) => edited.get(item.id) ?? item),
     checklists: content.checklists.length ? content.checklists : defaultChecklists(),
     habits: content.habits.length ? content.habits : defaultHabits(),
