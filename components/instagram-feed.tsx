@@ -1,6 +1,5 @@
 import { ArrowUpRight, Layers, Play } from 'lucide-react';
 import type { ReactNode } from 'react';
-import { Stars } from '@/components/review-rating';
 import { INSTAGRAM_HANDLE, INSTAGRAM_PROFILE_URL, PINNED_INSTAGRAM_POSTS, type InstagramPost } from '@/lib/instagram';
 
 /** The live feed's newest posts; the strip scrolls sideways, so this is about page weight, not room. */
@@ -8,7 +7,7 @@ const SHOWN = 8;
 
 const KIND_LABEL = { image: 'Photo', video: 'Video', carousel: 'Album' } as const;
 
-/** Hashtags are noise once a caption leaves Instagram, so the cards and alt text drop them. */
+/** Hashtags are noise once a caption leaves Instagram, so the alt text drops them. */
 const plainCaption = (caption: string) => caption.replace(/(^|\s)#[\p{L}\p{N}_]+/gu, ' ').replace(/\s+/g, ' ').trim();
 
 /** Cut at a word boundary, so alt text doesn't end mid-word. */
@@ -16,15 +15,6 @@ const clip = (text: string, max: number) => {
   if (text.length <= max) return text;
   const cut = text.slice(0, max);
   return `${cut.slice(0, cut.lastIndexOf(' ') > max / 2 ? cut.lastIndexOf(' ') : max).trimEnd()}…`;
-};
-
-/**
- * A caption split the way the cards show it: its first sentence as the bold
- * title, the rest as the teaser under it.
- */
-const splitCaption = (caption: string) => {
-  const match = caption.match(/^(.{8,90}?[.!?])\s+(.+)$/u);
-  return match ? { title: match[1], text: match[2] } : { title: clip(caption, 90), text: '' };
 };
 
 /** lucide ships no brand glyphs; this is the footer's Instagram mark. */
@@ -35,22 +25,6 @@ function InstagramMark() {
       <circle cx="12" cy="12" r="4" />
       <circle cx="17.1" cy="6.9" r="1.05" fill="currentColor" stroke="none" />
     </svg>
-  );
-}
-
-/** The caption panel under every card: bold title, optional stars, a one-line teaser and "more". */
-function ReelCaption({ title, text, rating, more }: { title: string; text: string; rating?: number; more: ReactNode }) {
-  return (
-    <div className="reel-caption">
-      <div className="reel-caption-head">
-        <p className="reel-title">{title}</p>
-        {rating ? <Stars value={rating} className="reel-stars" /> : null}
-      </div>
-      <p className="reel-teaser">
-        <span>{text}</span>
-        {more}
-      </p>
-    </div>
   );
 }
 
@@ -68,7 +42,6 @@ function FeedTiles({ posts }: { posts: InstagramPost[] }) {
     <ReelStrip label={`Latest posts from @${INSTAGRAM_HANDLE}. Scroll sideways for more.`}>
       {posts.slice(0, SHOWN).map((post) => {
         const caption = plainCaption(post.caption);
-        const { title, text } = caption ? splitCaption(caption) : { title: `@${INSTAGRAM_HANDLE}`, text: '' };
         return (
           <li key={post.id} className="reel-card">
             <a className="reel-link" href={post.permalink} target="_blank" rel="noopener noreferrer">
@@ -91,7 +64,6 @@ function FeedTiles({ posts }: { posts: InstagramPost[] }) {
                 )}
               </span>
               <span className="sr-only">{` (${KIND_LABEL[post.kind].toLowerCase()} on Instagram, opens in a new tab)`}</span>
-              <ReelCaption title={title} text={text || 'Watch on Instagram'} more={<span className="reel-more" aria-hidden="true">...more</span>} />
             </a>
           </li>
         );
@@ -108,13 +80,13 @@ function FeedTiles({ posts }: { posts: InstagramPost[] }) {
 function PinnedEmbeds() {
   return (
     <ReelStrip label={`Reels from @${INSTAGRAM_HANDLE}. Scroll sideways for more.`}>
-      {PINNED_INSTAGRAM_POSTS.map((post, index) => {
-        const kind = post.url.includes('/reel/') ? 'Reel' : 'Post';
+      {PINNED_INSTAGRAM_POSTS.map((url, index) => {
+        const kind = url.includes('/reel/') ? 'Reel' : 'Post';
         return (
-          <li key={post.url} className="reel-card">
+          <li key={url} className="reel-card">
             <div className="reel-media reel-embed">
               <iframe
-                src={`${post.url}embed/`}
+                src={`${url}embed/`}
                 title={`${kind} ${index + 1} from @${INSTAGRAM_HANDLE} on Instagram`}
                 loading="lazy"
                 scrolling="no"
@@ -123,16 +95,6 @@ function PinnedEmbeds() {
                 sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
               />
             </div>
-            <ReelCaption
-              title={post.title ?? `@${INSTAGRAM_HANDLE}`}
-              text={post.text ?? `Watch the full ${kind.toLowerCase()} on Instagram`}
-              rating={post.rating}
-              more={
-                <a className="reel-more" href={post.url} target="_blank" rel="noopener noreferrer">
-                  ...more<span className="sr-only">{` — open ${kind.toLowerCase()} ${index + 1} on Instagram (new tab)`}</span>
-                </a>
-              }
-            />
           </li>
         );
       })}

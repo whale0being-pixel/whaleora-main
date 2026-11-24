@@ -56,7 +56,7 @@ For a self-hosted Node server, a persistent private `CONTENT_DATA_DIR` can be us
 
 The home page shows posts from @whaleora.safety between the SOS Alarm story and the written testimonials. It replaced the video-review carousel there; video reviews still appear on product pages.
 
-Until the live feed below is connected, it shows the hand-picked posts in `PINNED_INSTAGRAM_POSTS` (`lib/instagram.ts`) through Instagram's own embedded player, in a strip that scrolls sideways. Each one shows as a tall card: the video, cropped to 9:16, with a caption panel under it. To change them, edit that list and deploy; paste each `url` without the `?…` share-tracking part. Give a post a `title` (bold line) and `text` (one-line teaser) to fill its caption, and a `rating` (out of 5) only if it's a customer review, to show stars; without them the card shows the handle and a "watch on Instagram" line. Once the live feed has posts, it replaces them with the eight newest in the same card format, titled from the first sentence of each caption.
+Until the live feed below is connected, it shows the hand-picked posts in `PINNED_INSTAGRAM_POSTS` (`lib/instagram.ts`) through Instagram's own embedded player, in a strip that scrolls sideways. Each one shows as a tall card: the video, cropped to 9:16, in a white frame. To change them, edit that list and deploy; paste each link without the `?…` share-tracking part. Once the live feed has posts, it replaces them with the eight newest in the same card format.
 
 It reads from the Instagram API ("Instagram API with Instagram Login"), which needs @whaleora.safety to be a professional (Business or Creator) account. To connect it:
 

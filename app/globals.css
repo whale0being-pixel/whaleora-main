@@ -1276,12 +1276,12 @@ h1 em, h2 em { font-weight: 400; }
 .insta-section .journey-aside a { border-bottom: 1px solid currentColor; color: var(--ink); }
 .insta-section .center-action { margin-top: clamp(28px, 3.6vw, 52px); }
 /* Reels: one sideways strip of tall cards, each a 9:16 picture in a white
-   frame with its caption underneath. The strip bleeds to the screen edge but
+   frame. The strip bleeds to the screen edge but
    its first card lines up with the shell, so the next card peeks in. */
 .reel-strip { --reel-s: 1.12; --reel-h: calc(405px * var(--reel-s)); --reel-w: calc(var(--reel-h) * 9 / 16); --reel-gutter: calc((100% - min(1540px, 100% - clamp(40px, 8vw, 140px))) / 2); margin: clamp(36px, 4.6vw, 68px) 0 0; padding: 4px var(--reel-gutter) 16px; list-style: none; display: grid; grid-auto-flow: column; grid-auto-columns: calc(var(--reel-w) + 14px); gap: clamp(12px, 1.2vw, 18px); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--reel-gutter); scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--ink) 30%, transparent) transparent; }
 .reel-strip:focus-visible { outline: 2px solid var(--terracotta); outline-offset: -2px; }
-.reel-card { scroll-snap-align: start; display: flex; flex-direction: column; padding: 6px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: 0 1px 2px rgba(16,40,68,.05); }
-.reel-link { display: flex; flex: 1; flex-direction: column; color: inherit; }
+.reel-card { scroll-snap-align: start; padding: 6px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: 0 1px 2px rgba(16,40,68,.05); }
+.reel-link { display: block; color: inherit; }
 .reel-link:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 5px; border-radius: 10px; }
 .reel-media { position: relative; display: block; height: var(--reel-h); overflow: hidden; overflow: clip; border-radius: 8px; background: rgba(16,40,68,.08); }
 .reel-media img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .6s cubic-bezier(.16,1,.3,1); }
@@ -1293,18 +1293,6 @@ h1 em, h2 em { font-weight: 400; }
    centre it, so the card's 9:16 window shows only the video. Clip, not
    hidden: a hidden box can still be scrolled by focus moving inside it. */
 .reel-embed iframe { position: absolute; top: 0; left: 50%; width: 324px; height: 632px; border: 0; transform-origin: top center; transform: translate(-50%, calc(-54px * var(--reel-s))) scale(var(--reel-s)); }
-.reel-caption { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 12px 6px 4px; }
-.reel-caption-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-.reel-title { margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--ink); font-size: 15px; font-weight: 650; line-height: 1.35; overflow-wrap: anywhere; }
-/* The product page's star bar, restated: its stylesheet doesn't load on the home page. */
-.reel-caption .reel-stars { position: relative; display: inline-flex; flex: none; margin-top: 2px; font-size: 15px; line-height: 1; letter-spacing: 1px; color: rgba(16,40,68,.18); }
-.reel-caption .reel-stars > span:last-child { position: absolute; inset: 0 auto 0 0; overflow: hidden; color: #f2b01e; }
-.reel-caption .reel-stars > span:last-child > span { display: block; width: max-content; }
-.reel-teaser { margin: auto 0 0; display: flex; align-items: baseline; gap: 6px; color: color-mix(in srgb, var(--ink) 72%, transparent); font-size: 13.5px; line-height: 1.45; }
-.reel-teaser span:first-child { min-width: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.reel-more { flex: none; color: color-mix(in srgb, var(--ink) 60%, transparent); font-size: 12px; }
-a.reel-more:hover { color: var(--terracotta); }
-a.reel-more:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 2px; border-radius: 2px; }
 
 @media (max-width: 1050px) {
   .reel-strip { --reel-gutter: 18px; }
