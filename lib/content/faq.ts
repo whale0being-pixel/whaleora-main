@@ -268,7 +268,7 @@ export const faqs: FaqEntry[] = [
       'Yes, we provide free shipping on all orders over ₹849 anywhere in India. For orders below that amount, a standard shipping fee will be calculated at checkout based on your specific pincode.\n\nWe carefully package and dispatch all orders from our facility in Maharashtra. Accurate delivery estimates are provided directly at checkout so you know exactly when to expect your safety tools.',
     keywords: ['shipping', 'delivery', 'deliver', 'free shipping', '849', '1499', 'pincode', 'india', 'dispatch', 'how long', 'how long does delivery', 'days', 'courier', 'maharashtra'],
     followUps: ['orders-track', 'orders-payment', 'choose-prices'],
-    links: [{ label: 'Shop the collection', href: '/products' }],
+    links: [{ label: 'Shop the collection', href: '/products' }, { label: 'Shipping policy', href: '/shipping' }],
   },
   {
     id: 'orders-track',
@@ -316,7 +316,7 @@ export const faqs: FaqEntry[] = [
       'We offer a 7-day return window from the date of delivery. If you change your mind, or if an item is incorrect or damaged, email hello@whaleora.com to initiate the return.\n\nIf the error is ours (e.g., faulty or wrong item), we cover all return shipping costs. For standard changes of mind, return shipping is deducted from the refund. Please note: for safety and hygiene reasons, tools must be returned in an unused, checkable condition (e.g., pepper spray safety seals must be intact). Refunds are processed within 7 business days of approval.',
     keywords: ['return', 'refund', 'exchange', 'send back', 'policy', 'unused', 'change of mind', '7 days', 'return window', 'money back'],
     followUps: ['orders-faulty', 'orders-contact', 'pepper-how'],
-    links: [{ label: 'Contact support', href: '/contact' }],
+    links: [{ label: 'Returns & refunds policy', href: '/returns' }, { label: 'Shipping policy', href: '/shipping' }, { label: 'Contact support', href: '/contact' }],
   },
   {
     id: 'orders-contact',
