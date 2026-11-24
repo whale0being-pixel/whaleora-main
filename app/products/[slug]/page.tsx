@@ -85,13 +85,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       '@type': 'Brand',
       name: 'Whaleora',
     },
+    ...(rating.count > 0 && {
+      aggregateRating: { '@type': 'AggregateRating', ratingValue: rating.average, reviewCount: rating.count },
+    }),
     offers: {
       '@type': 'Offer',
       url: `https://www.whaleora.com/products/${product.slug}`,
       priceCurrency: product.currencyCode || 'INR',
       price: product.price,
       itemCondition: 'https://schema.org/NewCondition',
-      availability: 'https://schema.org/InStock',
+      ...(product.shopify && { availability: product.shopify.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }),
       seller: {
         '@type': 'Organization',
         name: 'Whaleora',
