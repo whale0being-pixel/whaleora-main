@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const product = await getCatalogProduct(slug);
   if (!product) return {};
   const title = `${product.title} reviews`;
-  const description = `What customers say about the ${product.title}, and a place to write your own review.`;
+  const description = `Customer-submitted written feedback and creator-shared videos for the ${product.title}.`;
   return { title, description, alternates: { canonical: `/products/${slug}/reviews` }, openGraph: { title, description, images: [{ url: product.images[0] || PRODUCT_IMAGE_FALLBACK }] } };
 }
 
@@ -65,31 +65,24 @@ const jsonLd = {
       reviewCount: rating.count,
     },
   }),
-  // 2. Loop through written reviews and non-demo quotes
-  review: [
-    ...written.map((r) => ({
+  // Only reviews with an actual submitted star rating are represented as Review schema.
+  ...(written.length > 0 && {
+    review: written.map((r) => ({
       '@type': 'Review',
       author: { '@type': 'Person', name: r.name },
       datePublished: new Date(r.submittedAt).toISOString().split('T')[0],
       reviewBody: r.body,
       reviewRating: { '@type': 'Rating', ratingValue: r.rating },
     })),
-    ...quotes.filter(q => !q.demo).map((q) => ({
-      '@type': 'Review',
-      author: { '@type': 'Person', name: q.name },
-      reviewBody: q.quote,
-      reviewRating: { '@type': 'Rating', ratingValue: 5 }, // Assume featured quotes are top-tier
-    })),
-  ],
-  // 3. Loop through product videos for Google's Video Tab (TypeScript Error Fixed)
+  }),
+  // Creator videos are represented as videos, not as customer reviews.
   ...(videos.length > 0 && {
-    subjectOf: videos.map((v: any) => ({
+    subjectOf: videos.map((video) => ({
       '@type': 'VideoObject',
-      name: `${product.title} Customer Review Video`,
-      description: `Watch a real customer demonstration and review of the ${product.title} by Whaleora.`,
-      thumbnailUrl: product.images[0] || PRODUCT_IMAGE_FALLBACK,
-      contentUrl: v.src || v.url || `https://www.whaleora.com/products/${product.slug}/reviews`,
-      uploadDate: new Date().toISOString().split('T')[0],
+      name: video.title,
+      description: `Creator-shared video featuring the ${product.title}.`,
+      thumbnailUrl: new URL(video.poster, 'https://www.whaleora.com').toString(),
+      contentUrl: new URL(video.video, 'https://www.whaleora.com').toString(),
     })),
   }),
 };
@@ -112,7 +105,7 @@ const jsonLd = {
       <div className="reviews-head-copy">
         <p className="eyebrow dark">Reviews · {product.title}</p>
         <h1>A few words from everyday life.</h1>
-        <p className="reviews-head-note">Every published review is written by someone who bought this product. We publish them as they come, good or bad.</p>
+        <p className="reviews-head-note">Explore customer-submitted written feedback and creator-shared product videos. Verified-buyer labels appear only when an order match confirms a purchase.</p>
         <div className="reviews-head-actions">
           <a className="button button-primary" href="#write">Write a review <span aria-hidden="true"><ArrowUpRight size={16} strokeWidth={2} /></span></a>
           <Link className="icon-link reviews-back" href={`/products/${product.slug}`}><ArrowLeft size={15} strokeWidth={2} aria-hidden="true" /> Back to the {product.title}</Link>
