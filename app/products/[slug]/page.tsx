@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // --- NEW: High-intent SEO modifiers ---
   const seoOverrides: Record<string, { title: string; description: string }> = {
     'pepperspray': {
-      title: 'Maximum Strength Pepper Spray',
+      title: 'Pepper Spray for Personal Safety',
       description: 'Reliable, easy-to-use pepper spray for everyday preparedness. Designed for quick access during commutes, campus life, and late shifts in India.'
     },
     'sos-alarm': {
