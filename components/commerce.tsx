@@ -665,7 +665,7 @@ export function Footer() {
   const [policy, setPolicy] = useState<PolicyKey | null>(null);
   const groups = useMemo(() => [
     { title: 'Shop', links: [['Shop all', '/products'], ['SOS Alarm', '/products/sos-alarm'], ['Pepper Spray', '/products/pepperspray']] },
-    { title: 'Explore', links: [['Our story', '/about'], ['Safety Hub', '/safety-hub'], ['Journal', '/blog'], ['Partnerships', '/institutions']] },
+    { title: 'Explore', links: [['Our story', '/about'], ['Safety Hub', '/safety-hub'], ['Journal', '/blog'], ['FAQs', '/faq'], ['Trust & support', '/trust'], ['Partnerships', '/institutions']] },
     { title: 'Support', links: [['Account', '/account'], ['Contact & FAQ', '/contact'], ['Shipping policy', '/shipping'], ['Returns & refunds', '/returns'], ['Warranty', '/warranty']] },
   ], []);
   return (
