@@ -68,8 +68,9 @@ const jsonLd = {
   ...(rating.count > 0 && {
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: rating.average,
+      ratingValue: Number(rating.average.toFixed(2)),
       reviewCount: rating.count,
+      ratingCount: rating.count,
     },
   }),
   // Only reviews with an actual submitted star rating are represented as Review schema.
@@ -90,6 +91,7 @@ const jsonLd = {
       description: `Creator-shared video featuring the ${product.title}.`,
       thumbnailUrl: new URL(video.poster, 'https://www.whaleora.com').toString(),
       contentUrl: new URL(video.video, 'https://www.whaleora.com').toString(),
+      // Creator video records do not carry a verified publication date; omit uploadDate rather than invent one.
     })),
   }),
 };
