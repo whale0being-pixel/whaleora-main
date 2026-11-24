@@ -15,6 +15,7 @@ const assurances = [
   { title: '12-month SOS Alarm warranty', detail: 'The Personal SOS Alarm is covered for 12 months against manufacturing defects. The Survival Whistle, Pepper Spray and Window Breaker are not covered by this warranty.', href: '/warranty', label: 'Check warranty coverage' },
   { title: 'Speak to a person', detail: 'For product questions, order support, returns, warranty claims or partnerships, contact the Whaleora team directly.', href: '/contact', label: 'Contact Whaleora' },
   { title: 'Product information and creator videos', detail: 'Explore product specifications, use instructions, comparisons and creator-shared videos. Product demonstrations are not a substitute for reading the instructions supplied with your product.', href: '/products', label: 'Explore products and creator videos' },
+  { title: 'Questions before you buy?', detail: 'Browse answers about product selection, specifications, safe handling, orders and support, grouped by topic.', href: '/faq', label: 'Browse frequently asked questions' },
 ];
 
 export default function TrustPage() {
