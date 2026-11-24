@@ -80,7 +80,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     '@type': 'Product',
     name: product.title,
     description: product.shortDescription,
-    image: product.images,
+    image: product.images.map((image) => new URL(image, 'https://www.whaleora.com').toString()),
     brand: {
       '@type': 'Brand',
       name: 'Whaleora',
