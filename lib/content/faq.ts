@@ -167,7 +167,7 @@ export const faqs: FaqEntry[] = [
     category: 'alarm',
     question: 'Is the SOS Alarm heavy or bulky to carry?',
     answer:
-      'Not at all. It weighs just 28 grams and is designed in a compact, modern keychain format so it never feels burdensome to carry every day.\n\nYour order includes the alarm, a USB-C charging cable, a user manual, and a durable keychain attachment. The casing is weather-resistant, meaning it can easily handle daily commutes and rain, though it should not be fully submerged in water.',
+      'Not at all. It weighs just 28 grams and is designed in a compact, modern keychain format so it never feels burdensome to carry every day.\n\nThe alarm has a compact 28g ABS body and a keychain attachment. Check the packaging contents supplied with your order for the included accessories. The casing is weather-resistant, meaning it can easily handle daily commutes and rain, though it should not be fully submerged in water.',
     keywords: ['weight', 'size', 'heavy', 'how heavy', 'how big', '28g', '28 grams', 'small', 'keyring', 'keychain', 'compact', 'dimensions', 'weather-resistant', 'waterproof', 'rain'],
     followUps: ['care-battery', 'alarm-how', 'choose-kit'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
@@ -321,15 +321,19 @@ export const faqs: FaqEntry[] = [
   {
     id: 'orders-contact',
     category: 'orders',
+    featured: true,
     question: 'How can I contact Whaleora customer support?',
     answer:
-      'We believe in real human support. For quick questions, order tracking, or product advice, WhatsApp is the fastest channel. \n\nFor institutional partnerships, bulk orders, or detailed support claims, please email us at hello@whaleora.com. Our team operates out of Sambhaji Nagar, Thane, Maharashtra, and we read and reply to every message personally.',
+      'For quick product questions or order updates, WhatsApp is the fastest way to reach us. For returns, damaged or faulty items, warranty claims, and partnership enquiries, email hello@whaleora.com and include your order number where relevant.\n\nYou can also use the Contact page to send an enquiry. Our support team is based in Thane, Maharashtra; please never share a card PIN, password or OTP with anyone claiming to be Whaleora.',
     keywords: ['contact', 'whatsapp', 'email', 'phone', 'human', 'support', 'hello', 'thane', 'address', 'talk to', 'call', 'customer service'],
     followUps: ['partnerships-how', 'orders-faulty', 'brand-where'],
     links: [
       { label: 'WhatsApp', href: whatsappHref('Hi Whaleora! I have an inquiry.') },
       { label: 'hello@whaleora.com', href: 'mailto:hello@whaleora.com' },
       { label: 'Contact page', href: '/contact' },
+      { label: 'Shipping policy', href: '/shipping' },
+      { label: 'Returns & refunds', href: '/returns' },
+      { label: 'Warranty', href: '/warranty' },
     ],
   },
   {
@@ -358,7 +362,7 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'How do I charge the SOS Alarm, and how long does the battery last?',
     answer:
-      'The Personal SOS Alarm has a 130mAh Type-C rechargeable lithium battery. The supplier lists a charging time of about 90 minutes. A full charge is specified for about 70 minutes of continuous alarm, 240 minutes of steady lighting, or 300 minutes of flashing light. Actual performance may vary with battery condition and use.\n\nThe supplier also lists a low-battery reminder. Check the charge periodically and keep a battery-free Survival Whistle as a backup.',
+      'The Personal SOS Alarm (model AF-2004) has a 130mAh Type-C (USB-C) rechargeable lithium battery. The supplier lists a charging time of about 90 minutes. A full charge is specified for about 70 minutes of continuous alarm, 240 minutes of steady lighting, or 300 minutes of flashing light. Actual performance may vary with battery condition and use.\n\nThe supplier also lists a low-battery reminder. Check the charge periodically and keep a battery-free Survival Whistle as a backup.',
     keywords: ['battery', 'charge', 'charging', 'Lithium Ion', 'coin cell', 'dies', 'dead', 'replace battery', 'usb', 'type-c', 'power', 'standby', 'how long', '130mah', '90 minutes'],
     followUps: ['care-test', 'choose-alarm-vs-whistle', 'alarm-how'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
