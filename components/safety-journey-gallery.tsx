@@ -48,7 +48,7 @@ export function SafetyJourneyGallery({ items, settings }: { items: VideoReview[]
       <CoverFlowCarousel
         sectionLabel=""
         autoplay={selected === null}
-        items={reviewVideos.map((item) => ({ id: item.id, tag: `Creator video · ${item.duration}`, titleLine1: item.title, titleLine2: item.product, img: item.poster, ctaText: 'Watch review' }))}
+        items={reviewVideos.map((item) => ({ id: item.id, tag: `Creator video · ${item.duration}`, titleLine1: item.title, titleLine2: item.product, img: item.poster, ctaText: 'Watch video' }))}
         onCtaClick={(item) => { const index = reviewVideos.findIndex((video) => video.id === item.id); if (index >= 0) openReview(index); }}
       />
 
