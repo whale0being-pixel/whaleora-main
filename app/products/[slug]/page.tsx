@@ -86,7 +86,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       name: 'Whaleora',
     },
     ...(rating.count > 0 && {
-      aggregateRating: { '@type': 'AggregateRating', ratingValue: rating.average, reviewCount: rating.count },
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: Number(rating.average.toFixed(2)),
+        reviewCount: rating.count,
+        ratingCount: rating.count,
+      },
     }),
     offers: {
       '@type': 'Offer',
