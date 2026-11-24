@@ -11,8 +11,8 @@ import './blog.css';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Journal — practical safety reading',
-  description: 'Short, practical reads on everyday safety, commuting, travel and preparedness from the Whaleora team.',
+  title: 'Personal Safety Comparisons & Buying Guides | Whaleora Journal',
+  description: 'Compare personal safety alarms, whistles, pepper spray and car escape tools. Read practical women’s safety product buying guides and everyday preparedness articles.',
 };
 
 export default async function BlogPage() {
@@ -23,7 +23,7 @@ export default async function BlogPage() {
       <header className="blog-hero shell">
         <p className="eyebrow dark">The Whaleora journal</p>
         <h1>Short reads, <em>worth a second look.</em></h1>
-        <p>Practical notes on commuting, travel, campus life and being prepared — written to be useful, not to make you nervous.</p>
+        <p>Practical product comparisons, buying guides and notes on commuting, travel and campus life — written to help you choose, not to make you nervous.</p>
       </header>
 
       {!featured && <p className="blog-empty shell">New posts are on the way. In the meantime, the <Link href="/safety-hub" className="icon-link">Safety Hub <ArrowRight size={14} aria-hidden="true" /></Link> has guides and checklists.</p>}

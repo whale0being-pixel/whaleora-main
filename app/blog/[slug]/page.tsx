@@ -27,6 +27,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+function renderInline(text: string) {
+  const parts = text.split(/(\[[^\]]+\]\(\/[a-zA-Z0-9/_-]+\))/g);
+  return parts.map((part, index) => {
+    const match = part.match(/^\[([^\]]+)\]\((\/[a-zA-Z0-9/_-]+)\)$/);
+    return match ? <Link href={match[2]} key={index}>{match[1]}</Link> : part;
+  });
+}
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const posts = await loadPosts();
@@ -50,7 +58,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             ? <h2 key={index}>{block.text}</h2>
             : block.kind === 'list'
               ? <ul key={index}>{block.items.map((item, i) => <li key={i}>{item}</li>)}</ul>
-              : <p key={index}>{block.text}</p>)}
+              : <p key={index}>{renderInline(block.text)}</p>)}
         </div>
       </article>
 

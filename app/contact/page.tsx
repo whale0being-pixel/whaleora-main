@@ -22,7 +22,7 @@ export default function ContactPage() {
               <a href="#enquiry">Send an enquiry</a>
               <a href={enquiryWhatsapp}>WhatsApp</a>
               <a href="mailto:hello@whaleora.com">Email</a>
-              <a href="#faq">FAQs</a>
+              <a href="/faq">All FAQs</a>
             </nav>
           </div>
         </div>
