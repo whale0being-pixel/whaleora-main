@@ -11,6 +11,19 @@ export const INSTAGRAM_HANDLE = 'whaleora.safety';
 export const INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}`;
 
 /**
+ * A hand-picked post. The card under each reel shows `title` in bold and
+ * `text` as a one-line teaser; `rating` (out of 5) adds stars beside the
+ * title, so set it only on a post that is a customer's review. Leave the copy
+ * out and the card falls back to the handle and a "watch on Instagram" line.
+ */
+export type PinnedInstagramPost = {
+  url: string;
+  title?: string;
+  text?: string;
+  rating?: number;
+};
+
+/**
  * Posts the home page shows, in this order, until the live feed is connected
  * (ADMIN.md → Instagram feed). Without API access there are no cover images
  * to show, so these render through Instagram's own embedded player. Once the
@@ -18,15 +31,15 @@ export const INSTAGRAM_PROFILE_URL = `https://www.instagram.com/${INSTAGRAM_HAND
  *
  * Paste links without the share-tracking query string Instagram adds.
  */
-export const PINNED_INSTAGRAM_POSTS = [
-  'https://www.instagram.com/reel/DdgNsX7h0oH/',
-  'https://www.instagram.com/reel/DdzCt4fK-on/',
-  'https://www.instagram.com/reel/Dev2RdwhLT1/',
-  'https://www.instagram.com/reel/DfPd_T8PzSj/',
-  'https://www.instagram.com/p/DeD1k-GmkH0/',
-  'https://www.instagram.com/reel/DehIh6ghtfZ/',
-  'https://www.instagram.com/reel/Dd6f70rhCSZ/',
-] as const;
+export const PINNED_INSTAGRAM_POSTS: readonly PinnedInstagramPost[] = [
+  { url: 'https://www.instagram.com/reel/DdgNsX7h0oH/' },
+  { url: 'https://www.instagram.com/reel/DdzCt4fK-on/' },
+  { url: 'https://www.instagram.com/reel/Dev2RdwhLT1/' },
+  { url: 'https://www.instagram.com/reel/DfPd_T8PzSj/' },
+  { url: 'https://www.instagram.com/p/DeD1k-GmkH0/' },
+  { url: 'https://www.instagram.com/reel/DehIh6ghtfZ/' },
+  { url: 'https://www.instagram.com/reel/Dd6f70rhCSZ/' },
+];
 
 /** How many posts a sync keeps. The home page shows the newest six. */
 export const INSTAGRAM_FEED_SIZE = 12;

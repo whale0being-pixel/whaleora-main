@@ -1274,43 +1274,51 @@ h1 em, h2 em { font-weight: 400; }
 .insta-mark { width: 52px; height: 52px; display: grid; place-items: center; border: 1px solid color-mix(in srgb, var(--terracotta) 45%, transparent); border-radius: 50%; color: var(--terracotta); }
 .insta-section .journey-aside { align-items: center; }
 .insta-section .journey-aside a { border-bottom: 1px solid currentColor; color: var(--ink); }
-.insta-grid { margin: clamp(36px, 4.6vw, 68px) auto 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: clamp(8px, .9vw, 14px); }
-.insta-tile { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 6px; background: rgba(16,40,68,.08); }
-.insta-tile img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .6s cubic-bezier(.16,1,.3,1); }
-.insta-tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,27,47,.85), rgba(10,27,47,0) 62%); opacity: 0; transition: opacity .3s ease; pointer-events: none; }
-.insta-kind { position: absolute; top: 12px; right: 12px; z-index: 1; color: white; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
-.insta-caption { position: absolute; right: 16px; bottom: 14px; left: 16px; z-index: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; color: white; font-size: 12px; line-height: 1.5; opacity: 0; transform: translateY(6px); transition: opacity .3s ease, transform .3s ease; }
-.insta-tile:hover img, .insta-tile:focus-visible img { transform: scale(1.04); }
-.insta-tile:hover::after, .insta-tile:focus-visible::after, .insta-tile:hover .insta-caption, .insta-tile:focus-visible .insta-caption { opacity: 1; transform: none; }
-.insta-tile:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 3px; }
 .insta-section .center-action { margin-top: clamp(28px, 3.6vw, 52px); }
-/* Pinned posts: Instagram's own players, 326px being the narrowest it lays out at. */
-.insta-embeds { --embed-h: 632px; margin: clamp(36px, 4.6vw, 68px) auto 0; padding: 0 0 14px; list-style: none; display: grid; grid-auto-flow: column; grid-auto-columns: 326px; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--ink) 30%, transparent) transparent; }
-.insta-embeds:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 6px; }
-/* Each embed is cropped to Instagram's header and the video: the "View more
-   on Instagram" link, likes and comment box sit below it. At 326px wide the
-   header is 54px and the video frame 4:5 (324 × 1.25 = 405), plus the 1px
-   border top and bottom. Clip, not hidden: a hidden box can still be scrolled
-   by focus moving to a link inside the frame, which would pull that strip
-   back into view. */
-.insta-embeds li { scroll-snap-align: start; height: 461px; border: 1px solid var(--line); border-radius: 8px; background: white; overflow: hidden; overflow: clip; }
-.insta-embeds iframe { width: 100%; height: var(--embed-h); display: block; border: 0; }
+/* Reels: one sideways strip of tall cards, each a 9:16 picture in a white
+   frame with its caption underneath. The strip bleeds to the screen edge but
+   its first card lines up with the shell, so the next card peeks in. */
+.reel-strip { --reel-s: 1.12; --reel-h: calc(405px * var(--reel-s)); --reel-w: calc(var(--reel-h) * 9 / 16); --reel-gutter: calc((100% - min(1540px, 100% - clamp(40px, 8vw, 140px))) / 2); margin: clamp(36px, 4.6vw, 68px) 0 0; padding: 4px var(--reel-gutter) 16px; list-style: none; display: grid; grid-auto-flow: column; grid-auto-columns: calc(var(--reel-w) + 14px); gap: clamp(12px, 1.2vw, 18px); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: var(--reel-gutter); scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--ink) 30%, transparent) transparent; }
+.reel-strip:focus-visible { outline: 2px solid var(--terracotta); outline-offset: -2px; }
+.reel-card { scroll-snap-align: start; display: flex; flex-direction: column; padding: 6px; border: 1px solid var(--line); border-radius: 12px; background: white; box-shadow: 0 1px 2px rgba(16,40,68,.05); }
+.reel-link { display: flex; flex: 1; flex-direction: column; color: inherit; }
+.reel-link:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 5px; border-radius: 10px; }
+.reel-media { position: relative; display: block; height: var(--reel-h); overflow: hidden; overflow: clip; border-radius: 8px; background: rgba(16,40,68,.08); }
+.reel-media img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform .6s cubic-bezier(.16,1,.3,1); }
+.reel-link:hover .reel-media img, .reel-link:focus-visible .reel-media img { transform: scale(1.04); }
+.reel-kind { position: absolute; top: 12px; right: 12px; color: white; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
+/* Instagram's player is 324px wide at its narrowest: a 54px header, then the
+   video in a 4:5 frame (324 × 1.25 = 405), then likes and comments. Scale it
+   up so that frame fills the card's height, lift the header out of view and
+   centre it, so the card's 9:16 window shows only the video. Clip, not
+   hidden: a hidden box can still be scrolled by focus moving inside it. */
+.reel-embed iframe { position: absolute; top: 0; left: 50%; width: 324px; height: 632px; border: 0; transform-origin: top center; transform: translate(-50%, calc(-54px * var(--reel-s))) scale(var(--reel-s)); }
+.reel-caption { flex: 1; display: flex; flex-direction: column; gap: 6px; padding: 12px 6px 4px; }
+.reel-caption-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.reel-title { margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--ink); font-size: 15px; font-weight: 650; line-height: 1.35; overflow-wrap: anywhere; }
+/* The product page's star bar, restated: its stylesheet doesn't load on the home page. */
+.reel-caption .reel-stars { position: relative; display: inline-flex; flex: none; margin-top: 2px; font-size: 15px; line-height: 1; letter-spacing: 1px; color: rgba(16,40,68,.18); }
+.reel-caption .reel-stars > span:last-child { position: absolute; inset: 0 auto 0 0; overflow: hidden; color: #f2b01e; }
+.reel-caption .reel-stars > span:last-child > span { display: block; width: max-content; }
+.reel-teaser { margin: auto 0 0; display: flex; align-items: baseline; gap: 6px; color: color-mix(in srgb, var(--ink) 72%, transparent); font-size: 13.5px; line-height: 1.45; }
+.reel-teaser span:first-child { min-width: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.reel-more { flex: none; color: color-mix(in srgb, var(--ink) 60%, transparent); font-size: 12px; }
+a.reel-more:hover { color: var(--terracotta); }
+a.reel-more:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 2px; border-radius: 2px; }
 
-@media (max-width: 1100px) {
-  .insta-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1050px) {
+  .reel-strip { --reel-gutter: 18px; }
 }
 
 @media (max-width: 600px) {
-  .insta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; }
-  .insta-grid li:nth-child(n + 5) { display: none; }
+  .reel-strip { --reel-s: 1.18; margin-top: 24px; }
   /* The eyebrow already says Instagram; like the video count before it, the mark is noise on a phone. */
   .insta-mark { display: none; }
-  .insta-caption { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .insta-tile img, .insta-caption { transition: none; }
-  .insta-tile:hover img, .insta-tile:focus-visible img { transform: none; }
+  .reel-media img { transition: none; }
+  .reel-link:hover .reel-media img, .reel-link:focus-visible .reel-media img { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
