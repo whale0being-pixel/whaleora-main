@@ -209,8 +209,8 @@ export default async function Home() {
             </div>
 
             <div>
-              <dt>C-Type USB</dt>
-              <dd>Long Battery Life</dd>
+              <dt>Type-C rechargeable</dt>
+              <dd>130mAh lithium battery</dd>
             </div>
 
           </dl>
