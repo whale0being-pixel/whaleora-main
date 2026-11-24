@@ -62,9 +62,8 @@ Sit near the driver or in a busier carriage. Keep one ear free if you are listen
 
 Have your keys in hand before you reach your door, and let your contact know you are home. It is a small message, and it closes the loop.`,
     visible: true,
-  },
-,
-  {
+  }
+  ,{
     "id": "post-sos-alarm-vs-whistle",
     "slug": "personal-safety-alarm-vs-safety-whistle",
     "title": "Personal safety alarm vs safety whistle: which should you carry?",
