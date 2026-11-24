@@ -50,7 +50,9 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: product.title,
-  image: product.images[0] || PRODUCT_IMAGE_FALLBACK,
+  image: (product.images[0] || PRODUCT_IMAGE_FALLBACK).startsWith('http')
+    ? product.images[0]
+    : new URL(product.images[0] || PRODUCT_IMAGE_FALLBACK, 'https://www.whaleora.com').toString(),
   description: product.shortDescription,
   brand: {
     '@type': 'Brand',
@@ -63,6 +65,7 @@ const jsonLd = {
     price: product.price,
     itemCondition: 'https://schema.org/NewCondition',
     ...(product.shopify && { availability: product.shopify.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock' }),
+    seller: { '@type': 'Organization', name: 'Whaleora' },
   },
   // Only publish an aggregate rating when genuine submitted customer ratings exist.
   ...(rating.count > 0 && {
@@ -83,17 +86,8 @@ const jsonLd = {
       reviewRating: { '@type': 'Rating', ratingValue: r.rating },
     })),
   }),
-  // Creator videos are represented as videos, not as customer reviews.
-  ...(videos.length > 0 && {
-    subjectOf: videos.map((video) => ({
-      '@type': 'VideoObject',
-      name: video.title,
-      description: `Creator-shared video featuring the ${product.title}.`,
-      thumbnailUrl: new URL(video.poster, 'https://www.whaleora.com').toString(),
-      contentUrl: new URL(video.video, 'https://www.whaleora.com').toString(),
-      // Creator video records do not carry a verified publication date; omit uploadDate rather than invent one.
-    })),
-  }),
+  // Creator-shared videos have no verified publication dates in the content records.
+  // Keep them visible on-page, but do not emit VideoObject markup until dates can be verified.
 };
 
   return <main className="page-main pdp-reference reviews-page">
