@@ -58,6 +58,7 @@ function releaseUntouched(item: ProductEditorial): ProductEditorial {
     return spec;
   });
   const features = item.id === 'window-breaker' ? item.features.filter((feature) => !/keyring-friendly/i.test(feature)) : item.features;
+  const included = item.id === 'window-breaker' ? item.included.filter((entry) => !/keyring attachment/i.test(entry)) : item.included;
   const highlights = item.id === 'pepper-spray'
     ? item.highlights.map((highlight) => highlight.label.toLowerCase() === 'range' ? { ...highlight, value: 'Up to 7 ft' } : highlight)
     : item.id === 'window-breaker'
@@ -74,7 +75,7 @@ function releaseUntouched(item: ProductEditorial): ProductEditorial {
   const compare = item.id === 'window-breaker' ? { ...item.compare, carry: 'Glovebox or door pocket — not your keyring' } : item.compare;
   return {
     ...item,
-    features, specifications, highlights, longDescription, shortDescription, compare,
+    features, specifications, highlights, longDescription, shortDescription, compare, included,
     title: inherited('title'),
     shortDescription: inherited('shortDescription'),
     longDescription: inherited('longDescription'),
