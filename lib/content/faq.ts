@@ -136,7 +136,7 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'How do you use the Personal SOS Alarm?',
     answer:
-      'It is designed to be intuitive under stress. It takes just three seconds to learn:\n\n1. Carry: Clip it to your keyring, lanyard, or bag strap so it is always within reach.\n2. Pull: Firmly yank the top pin. A piercing 130dB dual-siren and flashing strobe light will activate instantly.\n3. Reset: Push the pin back into the device to silence the alarm.\n\nThere are no apps to pair, no buttons to fumble with, and no complex settings. Simply pull to activate.',
+      'It is designed to be intuitive under stress. It takes just three seconds to learn:\n\n1. Carry: Clip it to your keyring, lanyard, or bag strap so it is always within reach.\n2. Pull: Firmly yank the top pin. A piercing 130dB dual-siren and flashing strobe light will activate instantly.\n3. Light modes: Press the light button once for steady light, twice for strobe, and a third time to switch the light off.\n\nTo stop the siren, reinsert the pin. There is no app or pairing required.',
     keywords: ['how it works', 'how to use', 'pull pin', 'activate', 'reset', 'siren', 'strobe', 'instructions', 'operate', 'sos alarm', 'guide'],
     followUps: ['alarm-loud', 'care-battery', 'alarm-does-it-stop'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
@@ -358,8 +358,8 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'How do I charge the SOS Alarm, and how long does the battery last?',
     answer:
-      'The Personal SOS Alarm features a modern, rechargeable Lithium-Ion battery. It comes with a USB-C charging cable in the box for easy charging. When fully charged, the battery will hold its power for up to a month on standby.\n\nBecause batteries can eventually drain, we always suggest pairing your alarm with the mechanical Survival Whistle so you are never left without a way to call for help.',
-    keywords: ['battery', 'charge', 'charging', 'Lithium Ion', 'coin cell', 'dies', 'dead', 'replace battery', 'usb', 'power', 'standby', 'how long'],
+      'The Personal SOS Alarm has a 130mAh Type-C rechargeable lithium battery. The supplier lists a charging time of about 90 minutes. A full charge is specified for about 70 minutes of continuous alarm, 240 minutes of steady lighting, or 300 minutes of flashing light. Actual performance may vary with battery condition and use.\n\nThe supplier also lists a low-battery reminder. Check the charge periodically and keep a battery-free Survival Whistle as a backup.',
+    keywords: ['battery', 'charge', 'charging', 'Lithium Ion', 'coin cell', 'dies', 'dead', 'replace battery', 'usb', 'type-c', 'power', 'standby', 'how long', '130mah', '90 minutes'],
     followUps: ['care-test', 'choose-alarm-vs-whistle', 'alarm-how'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
   },
