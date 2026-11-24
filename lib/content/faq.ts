@@ -58,7 +58,7 @@ export const faqs: FaqEntry[] = [
     category: 'choose',
     question: 'What is the difference between the SOS alarm and the whistle?',
     answer:
-      'Both are powerful acoustic safety tools designed to attract immediate help, but they work differently to ensure you are never left without options.\n\nThe Personal SOS Alarm is our loudest tool (130dB) and includes a flashing strobe light. It runs on a rechargeable Lithium-Ion battery (C-Type USB) and sounds continuously until you push the pin back in. \n\nThe Survival Whistle (120dB) is your mechanical backup. Crafted from aviation-grade aluminium, it relies entirely on your breath—meaning it will never run out of battery or fail in harsh weather. We often recommend carrying both for complete peace of mind.',
+      'Both are powerful acoustic safety tools designed to attract immediate help, but they work differently to ensure you are never left without options.\n\nThe Personal SOS Alarm is our loudest tool (130dB) and includes a flashing strobe light. It runs on a rechargeable Lithium-Ion battery (USB-C) and sounds continuously until you push the pin back in. \n\nThe Survival Whistle (120dB) is your mechanical backup. Crafted from aviation-grade aluminium, it relies entirely on your breath—meaning it will never run out of battery or fail in harsh weather. We often recommend carrying both for complete peace of mind.',
     keywords: ['alarm vs whistle', 'difference', 'compare alarm', 'siren vs whistle', 'both', 'instead', 'acoustic', 'backup'],
     followUps: ['choose-kit', 'alarm-how', 'whistle-how', 'care-battery'],
     links: [
@@ -167,7 +167,7 @@ export const faqs: FaqEntry[] = [
     category: 'alarm',
     question: 'Is the SOS Alarm heavy or bulky to carry?',
     answer:
-      'Not at all. It weighs just 28 grams and is designed in a compact, modern keychain format so it never feels burdensome to carry every day.\n\nYour order includes the alarm, a C-Type charging cable, a user manual, and a durable keychain attachment. The casing is weather-resistant, meaning it can easily handle daily commutes and rain, though it should not be fully submerged in water.',
+      'Not at all. It weighs just 28 grams and is designed in a compact, modern keychain format so it never feels burdensome to carry every day.\n\nYour order includes the alarm, a USB-C charging cable, a user manual, and a durable keychain attachment. The casing is weather-resistant, meaning it can easily handle daily commutes and rain, though it should not be fully submerged in water.',
     keywords: ['weight', 'size', 'heavy', 'how heavy', 'how big', '28g', '28 grams', 'small', 'keyring', 'keychain', 'compact', 'dimensions', 'weather-resistant', 'waterproof', 'rain'],
     followUps: ['care-battery', 'alarm-how', 'choose-kit'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
@@ -197,7 +197,7 @@ export const faqs: FaqEntry[] = [
     category: 'pepper',
     question: 'How do you use the pepper spray safely?',
     answer:
-      'Our 50ml Oleoresin Capsicum (OC) canister is designed for intuitive, one-handed use under stress. It features a secure locking cap to prevent accidental discharge in your bag and offers a safe deployment range of 8 to 10 feet.\n\nTo use it: carry it in an accessible outer pocket, flip or twist the safety lock, aim the stream directly at the face, and immediately run toward safety and help. Remember, pepper spray is meant to buy you distance—it is a tool for escape, not engagement.',
+      'Our 50ml Oleoresin Capsicum (OC) canister is designed for intuitive, one-handed use under stress. It features a secure locking cap to prevent accidental discharge in your bag and offers a range of up to 7 feet.\n\nTo use it: carry it in an accessible outer pocket, flip or twist the safety lock, aim the stream directly at the face, and immediately run toward safety and help. Remember, pepper spray is meant to buy you distance—it is a tool for escape, not engagement.',
     keywords: ['pepper', 'spray', 'oc', 'oleoresin', 'capsicum', '50ml', 'range', 'lock', 'how to spray', 'stream', 'use spray', 'safety lock'],
     followUps: ['pepper-legal', 'pepper-shelf', 'legal-flight'],
     links: [{ label: 'Pepper Spray', href: '/products/pepperspray' }],
@@ -236,7 +236,7 @@ export const faqs: FaqEntry[] = [
     category: 'window',
     question: 'How do you use the car window breaker and seatbelt cutter?',
     answer:
-      'This 92-gram tool is engineered for rapid extraction during transit emergencies. \n\nIf a seatbelt mechanism jams after a collision, pull the fabric taut and slice through it using the concealed stainless steel blade. If the vehicle doors will not open, firmly press the spring-loaded tungsten steel point against the corner of the side window to shatter the glass.\n\nBecause it relies on a mechanical spring rather than a hammer strike, it works perfectly even underwater.',
+      'This 92-gram tool is engineered for rapid extraction during transit emergencies. \n\nIf a seatbelt mechanism jams after a collision, pull the fabric taut and slice through it using the concealed stainless steel blade. If the vehicle doors will not open, firmly press the spring-loaded tungsten steel point against the corner of the side window to shatter the glass.\n\nIt relies on a mechanical spring. Keep it stored securely in the vehicle and follow the product instructions.',
     keywords: ['window breaker', 'glass breaker', 'tungsten', 'spring', 'strike', 'cutter', 'seatbelt cutter', 'escape', 'how to break', 'underwater', 'car crash'],
     followUps: ['window-glass', 'window-where', 'legal-flight'],
     links: [{ label: 'Emergency Window Breaker', href: '/products/windowbreaker' }],
@@ -358,7 +358,7 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'How do I charge the SOS Alarm, and how long does the battery last?',
     answer:
-      'The Personal SOS Alarm features a modern, rechargeable Lithium-Ion battery. It comes with a C-Type USB cable in the box for easy charging. When fully charged, the battery will hold its power for up to a month on standby.\n\nBecause batteries can eventually drain, we always suggest pairing your alarm with the mechanical Survival Whistle so you are never left without a way to call for help.',
+      'The Personal SOS Alarm features a modern, rechargeable Lithium-Ion battery. It comes with a USB-C charging cable in the box for easy charging. When fully charged, the battery will hold its power for up to a month on standby.\n\nBecause batteries can eventually drain, we always suggest pairing your alarm with the mechanical Survival Whistle so you are never left without a way to call for help.',
     keywords: ['battery', 'charge', 'charging', 'Lithium Ion', 'coin cell', 'dies', 'dead', 'replace battery', 'usb', 'power', 'standby', 'how long'],
     followUps: ['care-test', 'choose-alarm-vs-whistle', 'alarm-how'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
