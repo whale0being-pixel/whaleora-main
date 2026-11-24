@@ -114,7 +114,8 @@ export function hydrateContent(content: ReviewContent): ReviewContent {
     products: bundled.map((item) => edited.get(item.id) ?? item),
     checklists: content.checklists.length ? content.checklists : defaultChecklists(),
     habits: content.habits.length ? content.habits : defaultHabits(),
-    // Add new bundled Journal guides without overwriting saved Studio edits. Existing IDs always win.\n    posts: [...(content.posts ?? []), ...defaultPosts().filter((post) => !(content.posts ?? []).some((saved) => saved.id === post.id))].slice(0, 24),
+    // Add new bundled Journal guides without overwriting saved Studio edits. Existing IDs always win.
+    posts: [...(content.posts ?? []), ...defaultPosts().filter((post) => !(content.posts ?? []).some((saved) => saved.id === post.id))].slice(0, 24),
   };
 }
 
