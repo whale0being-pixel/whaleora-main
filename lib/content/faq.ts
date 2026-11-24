@@ -58,7 +58,7 @@ export const faqs: FaqEntry[] = [
     category: 'choose',
     question: 'What is the difference between the SOS alarm and the whistle?',
     answer:
-      'Both are powerful acoustic safety tools designed to attract immediate help, but they work differently to ensure you are never left without options.\n\nThe Personal SOS Alarm is our loudest tool (130dB) and includes a flashing strobe light. It runs on a rechargeable Lithium-Ion battery (USB-C) and sounds continuously until you push the pin back in. \n\nThe Survival Whistle (120dB) is your mechanical backup. Crafted from aviation-grade aluminium, it relies entirely on your breath—meaning it will never run out of battery or fail in harsh weather. We often recommend carrying both for complete peace of mind.',
+      'Both are powerful acoustic safety tools designed to attract immediate help, but they work differently to ensure you are never left without options.\n\nThe Personal SOS Alarm is our loudest tool (130dB) and includes a flashing strobe light. It runs on a 130mAh Type-C (USB-C) rechargeable lithium battery and sounds until you push the pin back in. \n\nThe Survival Whistle (120dB) is your mechanical backup. Crafted from aviation-grade aluminium, it relies entirely on your breath—meaning it will never run out of battery or fail in harsh weather. We often recommend carrying both for complete peace of mind.',
     keywords: ['alarm vs whistle', 'difference', 'compare alarm', 'siren vs whistle', 'both', 'instead', 'acoustic', 'backup'],
     followUps: ['choose-kit', 'alarm-how', 'whistle-how', 'care-battery'],
     links: [
@@ -125,7 +125,7 @@ export const faqs: FaqEntry[] = [
     category: 'choose',
     question: 'Why choose Whaleora over a cheaper alarm online?',
     answer:
-      'Your peace of mind shouldn’t rely on a compromised product. Many unbranded alarms claim to be 130dB but fail to deliver when tested. \n\nWe provide exact, honest specifications you can trust: a verified 130dB output, a lightweight 28g impact-resistant polymer body, and a reliable rechargeable Lithium-Ion battery. We prioritize build quality and rigorous testing so you know your tool will work the moment you pull the pin. If you ever experience a defect, our support team is easily reachable to make it right.',
+      'The supplier specification for our Personal SOS Alarm (model AF-2004) lists a 130dB output, a 28g ABS body and a 130mAh Type-C rechargeable lithium battery. We publish the model’s listed charging and operating times on the product page so you can compare specifications rather than rely on broad claims. If your alarm arrives faulty or stops working, our support team can help under the applicable warranty and returns terms.',
     keywords: ['cheap', 'amazon', 'flipkart', '99', 'duplicate', 'fake', 'why whaleora', 'quality', 'rated', 'trust', 'reliable'],
     followUps: ['alarm-loud', 'orders-faulty', 'choose-prices'],
     links: [{ label: 'SOS Alarm specs', href: '/products/sos-alarm' }],
@@ -136,7 +136,7 @@ export const faqs: FaqEntry[] = [
     featured: true,
     question: 'How do you use the Personal SOS Alarm?',
     answer:
-      'It is designed to be intuitive under stress. It takes just three seconds to learn:\n\n1. Carry: Clip it to your keyring, lanyard, or bag strap so it is always within reach.\n2. Pull: Firmly yank the top pin. A piercing 130dB dual-siren and flashing strobe light will activate instantly.\n3. Light modes: Press the light button once for steady light, twice for strobe, and a third time to switch the light off.\n\nTo stop the siren, reinsert the pin. There is no app or pairing required.',
+      'It is designed to be intuitive under stress. It takes just three seconds to learn:\n\n1. Carry: Clip it to your keyring, lanyard, or bag strap so it is always within reach.\n2. Pull: Firmly yank the top pin. A piercing 130dB dual-siren and flashing strobe light will activate instantly.\n3. Light modes: Press the light button once to turn on the light, twice for strobe, and a third time to switch it off.\n\nTo stop the siren, reinsert the pin. There is no app or pairing required.',
     keywords: ['how it works', 'how to use', 'pull pin', 'activate', 'reset', 'siren', 'strobe', 'instructions', 'operate', 'sos alarm', 'guide'],
     followUps: ['alarm-loud', 'care-battery', 'alarm-does-it-stop'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
@@ -167,8 +167,8 @@ export const faqs: FaqEntry[] = [
     category: 'alarm',
     question: 'Is the SOS Alarm heavy or bulky to carry?',
     answer:
-      'Not at all. It weighs just 28 grams and is designed in a compact, modern keychain format so it never feels burdensome to carry every day.\n\nThe alarm has a compact 28g ABS body and a keychain attachment. Check the packaging contents supplied with your order for the included accessories. The casing is weather-resistant, meaning it can easily handle daily commutes and rain, though it should not be fully submerged in water.',
-    keywords: ['weight', 'size', 'heavy', 'how heavy', 'how big', '28g', '28 grams', 'small', 'keyring', 'keychain', 'compact', 'dimensions', 'weather-resistant', 'waterproof', 'rain'],
+      'Not at all. It weighs just 28 grams and is designed in a compact, modern keychain format so it never feels burdensome to carry every day.\n\nThe alarm has a compact 28g ABS body and a keychain attachment. Check the packaging contents supplied with your order for the included accessories. The supplier sheet specifies an ABS body but does not state a water-resistance rating. Keep the alarm dry and follow the care instructions supplied with your product.',
+    keywords: ['weight', 'size', 'heavy', 'how heavy', 'how big', '28g', '28 grams', 'small', 'keyring', 'keychain', 'compact', 'dimensions', 'water resistance', 'waterproof', 'rain'],
     followUps: ['care-battery', 'alarm-how', 'choose-kit'],
     links: [{ label: 'Personal SOS Alarm', href: '/products/sos-alarm' }],
   },
