@@ -62,8 +62,9 @@ export const products: Product[] = [
     howItWorksImage: '/products/158A9620.jpg',
     features: ['Pull-pin activation', 'Compact keychain format', 'Built-in strobe light', 'ABS integrated body'],
     specifications: [
+      { label: 'Model', value: 'AF-2004' },
       { label: 'Sound output', value: '130dB' },
-      { label: 'Battery', value: '130mAh Type-C rechargeable lithium battery' },
+      { label: 'Battery', value: '130mAh Type-C (USB-C) rechargeable lithium battery' },
       { label: 'Charging time', value: 'About 90 minutes' },
       { label: 'Alarm duration', value: 'About 70 minutes' },
       { label: 'Steady light duration', value: 'About 240 minutes' },
@@ -75,7 +76,7 @@ export const products: Product[] = [
     howItWorks: [
       { title: 'Carry', text: 'Clip it where it stays within easy reach.' },
       { title: 'Pull', text: 'Remove the top pin to activate the 130dB alarm and flashing LED.' },
-      { title: 'Use the light', text: 'Press once for steady light, twice for strobe, and a third time to switch the light off.' },
+      { title: 'Use the light', text: 'Press the light button once to turn on the light, press twice for strobe, and press a third time to switch it off.' },
     ],
     scenarios: ['Campus', 'Commute', 'Travel', 'Evening walks'],
     included: ['Personal SOS Alarm', 'Lithium Ion battery', 'Keychain attachment'],
