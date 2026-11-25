@@ -6,7 +6,7 @@ import './faq.css';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Frequently Asked Questions | Whaleora',
+  title: 'Frequently Asked Questions',
   description: 'Clear answers about Whaleora personal safety products, choosing the right tool, product use, shipping, returns, warranty and support in India.',
   alternates: { canonical: 'https://www.whaleora.com/faq' },
 };

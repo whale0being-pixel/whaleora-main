@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = (await loadPosts()).find((item) => item.slug === slug);
   if (!post) return {};
   return {
-    title: `${post.title} | Whaleora Journal`,
+    title: post.title,
     description: post.excerpt,
     openGraph: { type: 'article', title: post.title, description: post.excerpt, publishedTime: post.date, images: post.coverImage ? [post.coverImage] : undefined },
   };

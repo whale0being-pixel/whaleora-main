@@ -5,7 +5,7 @@ import { catalogPrices } from '@/lib/shopify/catalog';
 import { formatPrice } from '@/data/products';
 
 export const metadata: Metadata = {
-  title: 'About Whaleora — Safety should not feel scary',
+  title: 'About — Safety should not feel scary',
   description: 'We believe personal safety should feel calm, intuitive and accessible—not intimidating.',
 };
 

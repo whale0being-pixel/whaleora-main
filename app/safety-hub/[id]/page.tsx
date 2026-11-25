@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!checklist) return {};
 
   return {
-    title: `${checklist.title} | Whaleora Safety Hub`,
+    title: `${checklist.title} | Safety Hub`,
     description: checklist.description,
   };
 }

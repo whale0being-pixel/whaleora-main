@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import './trust.css';
 
 export const metadata: Metadata = {
-  title: 'Customer Trust & Support | Whaleora',
+  title: 'Customer Trust & Support',
   description: 'Find Whaleora shipping timelines, returns and refunds, SOS Alarm warranty coverage, product support and creator-shared product videos.',
   alternates: { canonical: 'https://www.whaleora.com/trust' },
 };
@@ -36,11 +36,6 @@ export default function TrustPage() {
           </article>
         ))}
       </div>
-      <section className="shell trust-contact">
-        <h2>Need help with a specific order?</h2>
-        <p>Email <a href="mailto:hello@whaleora.com">hello@whaleora.com</a> with your order number, or use the Contact page.</p>
-        <Link className="button button-primary" href="/contact">Get in touch</Link>
-      </section>
     </main>
   );
 }
