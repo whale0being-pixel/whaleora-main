@@ -12,7 +12,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Safety Hub — free guides & checklists | Whaleora',
+  title: 'Safety Hub — free guides & checklists',
   description: 'Practical personal-safety guides, checklists, emergency numbers and tools for commutes, campus life and travel. Free to read, no signup.',
 };
 

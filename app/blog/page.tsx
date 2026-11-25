@@ -11,7 +11,7 @@ import './blog.css';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Personal Safety Comparisons & Buying Guides | Whaleora Journal',
+  title: 'Personal Safety Comparisons & Buying Guides',
   description: 'Compare personal safety alarms, whistles, pepper spray and car escape tools. Read practical women’s safety product buying guides and everyday preparedness articles.',
 };
 
